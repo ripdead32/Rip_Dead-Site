@@ -9,7 +9,7 @@
 
 <style>
 
-/* ================= VOIDUI ================= */
+/* ================= VOIDUI TRANSITIONS ================= */
 
 body{
   margin:0;
@@ -23,38 +23,51 @@ body{
   transition:0.6s ease;
 }
 
-body.void-enter{opacity:1;transform:translateY(0);}
-body.void-exit{opacity:0;transform:translateY(80px);}
+body.void-enter{
+  opacity:1;
+  transform:translateY(0);
+}
+
+body.void-exit{
+  opacity:0;
+  transform:translateY(80px);
+}
+
+/* ================= VOID BACKGROUND ================= */
 
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  z-index:-3;
+  z-index:-2;
   background:
-    radial-gradient(circle at 50% 40%,rgba(150,0,255,0.30),rgba(0,0,0,0.85) 60%,#000 100%);
+    radial-gradient(circle at 50% 40%,rgba(150,0,255,0.30),rgba(0,0,0,0.9),#000);
 }
 
 body::after{
   content:"";
   position:fixed;
   inset:0;
-  z-index:-2;
+  z-index:-1;
   background:
-    radial-gradient(circle at 25% 70%,rgba(170,0,255,0.18),transparent 60%),
-    radial-gradient(circle at 75% 30%,rgba(0,255,200,0.12),transparent 55%);
+    radial-gradient(circle at 20% 60%,rgba(168,85,247,0.2),transparent 60%),
+    radial-gradient(circle at 80% 30%,rgba(0,255,200,0.1),transparent 60%);
   filter:blur(50px);
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 .top{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   padding:20px;
 }
 
-.title{font-size:24px;font-weight:bold;}
+.title{
+  font-size:24px;
+  font-weight:bold;
+}
 
 .back{
   padding:10px 14px;
@@ -63,6 +76,7 @@ body::after{
   color:#000;
   text-decoration:none;
   font-weight:bold;
+  transition:0.25s;
 }
 
 .back:hover{
@@ -70,55 +84,32 @@ body::after{
   box-shadow:0 0 15px rgba(168,85,247,0.6);
 }
 
-/* SEARCH */
+/* ================= GRID ================= */
 
-.search{
+.container{
   display:flex;
   justify-content:center;
-  margin:10px 0;
+  padding:20px;
 }
-
-.search input{
-  width:320px;
-  padding:12px;
-  border-radius:10px;
-  border:none;
-}
-
-/* FILTERS */
-
-.filters{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:10px;
-}
-
-.filter-btn{
-  padding:8px 12px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.08);
-  cursor:pointer;
-}
-
-/* GRID */
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;
-  padding:20px;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+  width:min(900px,90%);
 }
 
 /* CARD */
 
 .card{
-  position:relative;
   background:rgba(20,20,20,0.55);
   backdrop-filter:blur(12px);
+
   border-radius:14px;
   padding:18px;
+
+  border:1px solid rgba(255,255,255,0.06);
+  transition:0.3s;
 }
 
 .card:hover{
@@ -126,23 +117,30 @@ body::after{
   box-shadow:0 0 25px rgba(168,85,247,0.25);
 }
 
-/* DOWNLOAD */
+.card h3{
+  margin:0;
+}
 
-.download{
-  display:block;
+/* BUTTON */
+
+.download-btn{
+  display:inline-block;
   margin-top:12px;
-  padding:12px;
-  text-align:center;
+
+  padding:10px 12px;
+  border-radius:10px;
+
   background:#a855f7;
   color:#000;
   font-weight:bold;
-  border-radius:10px;
   text-decoration:none;
+
+  transition:0.25s;
 }
 
-.download:hover{
+.download-btn:hover{
   background:#c084fc;
-  box-shadow:0 0 18px rgba(168,85,247,0.7);
+  box-shadow:0 0 18px rgba(168,85,247,0.6);
 }
 
 /* FOOTER */
@@ -151,9 +149,12 @@ footer{
   text-align:center;
   padding:25px;
   margin-top:80px;
+
   background:rgba(0,0,0,0.35);
   backdrop-filter:blur(12px);
+
   border-top:1px solid rgba(255,255,255,0.05);
+
   font-size:14px;
   opacity:0.85;
 }
@@ -173,19 +174,18 @@ footer a:hover{
 
 <body>
 
+<!-- HEADER -->
 <div class="top">
-  <div class="title">📦 Downloads Engine v3</div>
+  <div class="title">📦 Downloads</div>
   <a class="back" href="/">← Back Home</a>
 </div>
 
-<div class="search">
-  <input id="search" placeholder="Search downloads...">
+<!-- DOWNLOAD GRID -->
+<div class="container">
+  <div class="grid" id="downloads"></div>
 </div>
 
-<div class="filters" id="filters"></div>
-
-<div class="grid" id="grid"></div>
-
+<!-- FOOTER -->
 <footer>
   © 2026 Rip_Dead Studios™ —
   <a href="https://github.com/ripdead32/Rip_Dead-Site" target="_blank">
@@ -195,60 +195,84 @@ footer a:hover{
 
 <script>
 
-/* JS unchanged from v3 system */
+/* ================= VOIDUI TRANSITIONS FIX ================= */
 
-let data=[];
-let active="all";
+(function () {
 
-window.addEventListener("DOMContentLoaded",()=>{
-  document.body.classList.add("void-enter");
-  load();
+  window.addEventListener("load", () => {
+    requestAnimationFrame(() => {
+      document.body.classList.add("void-enter");
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("a");
+
+    if (!link) return;
+    if (link.target === "_blank") return;
+    if (link.href.includes("#")) return;
+
+    e.preventDefault();
+
+    document.body.classList.remove("void-enter");
+    document.body.classList.add("void-exit");
+
+    setTimeout(() => {
+      window.location.href = link.href;
+    }, 520);
+
+  });
+
+})();
+
+/* ================= DOWNLOAD DATA (CMS STYLE READY) ================= */
+
+const downloads = [
+  {
+    name: "Kahoot App v1.0",
+    desc: "Stable release of Kahoot App",
+    link: "https://github.com/ripdead32/Kahoot-App/releases/download/V1.0/Kahoot-App_Setup-v1.0.exe"
+  },
+  {
+    name: "Kahoot App v1.2",
+    desc: "Bug fixes and improvements",
+    link: "https://github.com/ripdead32/Kahoot-App/releases/download/V1.2/Kahoot-App_Setup-v1.2.exe"
+  },
+  {
+    name: "Kahoot ISO Image",
+    desc: "Bootable install image",
+    link: "https://github.com/ripdead32/Kahoot-App/releases/download/iso/KA-install-image.iso"
+  },
+  {
+    name: "FNF Tutorial Remastered",
+    desc: "Mod download package",
+    link: "https://cdn-ripdead.kozow.com/apis/libraries/zip/tut-rem-v1.zip"
+  }
+];
+
+/* ================= RENDER ================= */
+
+const box = document.getElementById("downloads");
+
+downloads.forEach(d => {
+  box.innerHTML += `
+    <div class="card">
+      <h3>${d.name}</h3>
+      <p style="opacity:0.7;">${d.desc}</p>
+
+      <a class="download-btn" href="${d.link}" target="_blank">
+        Download
+      </a>
+    </div>
+  `;
 });
 
-async function load(){
-  const res=await fetch("./downloads.json?cache="+Date.now());
-  data=await res.json();
-  renderFilters();
-  render();
-}
+/* ================= LOG ================= */
 
-setInterval(load,6000);
-
-function renderFilters(){
-  const set=new Set();
-  data.forEach(i=>set.add(i.category));
-
-  const box=document.getElementById("filters");
-
-  box.innerHTML=`<div class="filter-btn" onclick="setFilter('all')">All</div>`;
-
-  set.forEach(c=>{
-    box.innerHTML+=`<div class="filter-btn" onclick="setFilter('${c}')">${c}</div>`;
-  });
-}
-
-function setFilter(c){active=c;render();}
-
-function render(){
-  const grid=document.getElementById("grid");
-  const search=document.getElementById("search").value.toLowerCase();
-
-  grid.innerHTML="";
-
-  data.forEach((item,i)=>{
-    if((active==="all"||item.category===active)&&item.name.toLowerCase().includes(search)){
-      grid.innerHTML+=`
-        <div class="card">
-          ${i===0?`<div style="position:absolute;top:10px;right:10px;background:#a855f7;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold;"</div>`:""}
-          <h3>${item.name}</h3>
-          <div>${item.type} • ${item.size}</div>
-          <a class="download" href="${item.file}" target="_blank">Download</a>
-        </div>`;
-    }
-  });
-}
-
-document.getElementById("search").addEventListener("input",render);
+console.log(
+  "%cVOIDUI DOWNLOADS LOADED",
+  "color:#a855f7;font-weight:bold;"
+);
 
 </script>
 
