@@ -147,7 +147,7 @@ footer a:hover{
   <a class="back" href="/">← Back Home</a>
 </div>
 
-<!-- ART GRID -->
+<!-- GRID -->
 <div class="grid" id="grid"></div>
 
 <!-- FOOTER -->
@@ -160,33 +160,33 @@ footer a:hover{
 
 <script>
 
-/* ================= ENTER TRANSITION ================= */
+/* ================= ENTER FIX (IMPORTANT) ================= */
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
   document.body.classList.add("void-enter");
   loadArt();
 });
 
-/* ================= EXIT TRANSITION ================= */
+/* ================= EXIT FIX (GLOBAL SAFE) ================= */
 
-document.querySelectorAll("a").forEach(a => {
-  a.addEventListener("click", (e) => {
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("a");
 
-    if (a.target === "_blank") return;
+  if (!link) return;
+  if (link.target === "_blank") return;
+  if (link.href.includes("#")) return;
 
-    e.preventDefault();
+  e.preventDefault();
 
-    document.body.classList.remove("void-enter");
-    document.body.classList.add("void-exit");
+  document.body.classList.remove("void-enter");
+  document.body.classList.add("void-exit");
 
-    setTimeout(() => {
-      window.location.href = a.href;
-    }, 550);
-
-  });
+  setTimeout(() => {
+    window.location.href = link.href;
+  }, 520);
 });
 
-/* ================= ART DATA (TEMP STATIC) ================= */
+/* ================= ART DATA ================= */
 
 const art = [
   {
@@ -214,11 +214,11 @@ function loadArt(){
   });
 }
 
-/* ================= CONSOLE WARNING ================= */
+/* ================= SAFETY LOG ================= */
 
 console.log(
-  "%cSTOP! DO NOT INSERT ANYTHING HERE! IT COULD BREAK THE SITE!",
-  "color:#fff;background:#a855f7;padding:6px;border-radius:6px;"
+  "%cVOIDUI ART LOADED",
+  "color:#a855f7;font-weight:bold;"
 );
 
 </script>
