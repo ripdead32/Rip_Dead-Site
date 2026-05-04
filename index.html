@@ -75,7 +75,7 @@ body::after{
 }
 
 /* =========================================================
-   NAVBAR (VOIDUI INTEGRATED)
+   NAVBAR (UPDATED - SUPPORT REMOVED)
 ========================================================= */
 
 .navbar{
@@ -112,9 +112,7 @@ body::after{
   color:#fff;
   text-decoration:none;
   font-weight:500;
-
   transition:0.25s;
-  position:relative;
 }
 
 .nav-links a:hover{
@@ -275,7 +273,7 @@ footer{
 
 <div class="void-glow"></div>
 
-<!-- ================= NAVBAR ================= -->
+<!-- NAVBAR -->
 <div class="navbar">
 
   <a class="nav-logo" href="/">Rip_Dead Site</a>
@@ -284,19 +282,18 @@ footer{
     <a href="/">Home</a>
     <a href="/art/">Art</a>
     <a href="/downloads/">Downloads</a>
-    <a href="/support/">Support</a>
     <a href="/blogs/">Blogs</a>
   </div>
 
 </div>
 
-<!-- ================= HERO ================= -->
+<!-- HERO -->
 <div class="hero">
   <h1>Welcome to Rip_Dead Site</h1>
   <p>Explore the vast creations of Rip_Dead and his Socials!</p>
 </div>
 
-<!-- ================= SOCIAL CARD ================= -->
+<!-- SOCIAL CARD -->
 <div class="container">
   <div class="card">
 
@@ -311,7 +308,7 @@ footer{
   </div>
 </div>
 
-<!-- ================= FOOTER ================= -->
+<!-- FOOTER -->
 <footer>
   © 2026 Rip_Dead Studios™ — 
   <a class="open-source" href="https://github.com/ripdead32/Rip_Dead-Site" target="_blank">
@@ -326,7 +323,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("void-enter");
 });
 
-/* EXIT TRANSITION */
+/* PAGE TRANSITION */
 document.addEventListener("click", (e) => {
   const link = e.target.closest("a");
 
