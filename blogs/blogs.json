@@ -1,4 +1,11 @@
 [
+  {
+    "title": "Information regarding Rip_Dead Site",
+    "date": "2026-05-23",
+    "pinned": true,
+    "content": "This site is OPEN source, so you can fork the repository and make edits. If you want to contribute, please do so! (Do NOT forget to credit me, and make sure to follow the license, which is MIT)"
+  },
+
     {
     "title": "Updated Domain",
     "date": "2026-05-04",
@@ -8,7 +15,7 @@
   {
     "title": "Rip_Dead Site migrated to VoidUI 1.0",
     "date": "2026-05-04",
-    "pinned": true,
+    "pinned": false,
     "content": "The site has been fully upgraded to VoidUI 1.0. This includes animated transitions, glow UI, JSON-based systems, and a modular structure that removes the need for editing multiple HTML pages manually. Everything is now centralized into a scalable engine. This site has also became open-source so that people can fork the repository and make edits (Do NOT forget to credit me)"
   }
 ]
