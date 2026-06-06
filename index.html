@@ -271,7 +271,7 @@ footer a:hover{
     <h2>Socials</h2>
 
     <div class="buttons">
-      <a class="btn" href="https://x.com/rip_dead32">X (Twitter)</a>
+      <a class="btn" href="https://x.com/rip_dead32">"Twitter</a>
       <a class="btn" href="https://www.youtube.com/@ripdeadYT">YouTube</a>
       <a class="btn" href="https://www.reddit.com/u/rip_dead32/">Reddit</a>
     </div>
@@ -318,7 +318,6 @@ function setActiveNav(){
 
   document.querySelectorAll(".nav-links a").forEach(a=>{
     if(path === "/" && a.dataset.page === "home") a.classList.add("active");
-    if(path.includes("/art") && a.dataset.page === "art") a.classList.add("active");
     if(path.includes("/downloads") && a.dataset.page === "downloads") a.classList.add("active");
     if(path.includes("/blogs") && a.dataset.page === "blogs") a.classList.add("active");
   });
