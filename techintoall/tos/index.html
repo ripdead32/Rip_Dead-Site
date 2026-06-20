@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rip_Dead Site - TechIntoAll Terms of Service</title>
+<link rel="icon" href="/favicon.ico">
+
+<style>
+
+/* SAME VOIDUI SYSTEM */
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+  min-height:100vh;
+  background:#04040a;
+
+  opacity:0;
+  transform:translateY(60px);
+  transition:0.6s ease;
+}
+
+body.void-enter{opacity:1;transform:translateY(0);}
+body.void-exit{opacity:0;transform:translateY(80px);}
+
+/* BACKGROUND */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background:radial-gradient(circle at 50% 40%,rgba(0,255,200,0.18),rgba(0,0,0,0.9),#000);
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 20% 60%,rgba(168,85,247,0.2),transparent 60%),
+    radial-gradient(circle at 80% 30%,rgba(0,200,255,0.12),transparent 60%);
+  filter:blur(50px);
+}
+
+/* HEADER */
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+}
+
+.title{font-size:22px;font-weight:bold;}
+
+.back{
+  padding:10px 14px;
+  border-radius:10px;
+  background:#a855f7;
+  color:#000;
+  text-decoration:none;
+  font-weight:bold;
+  transition:0.25s;
+}
+
+.back:hover{
+  background:#c084fc;
+  box-shadow:0 0 15px rgba(168,85,247,0.6);
+}
+
+/* CONTENT */
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.card{
+  background:rgba(20,20,20,0.55);
+  border-radius:14px;
+  padding:20px;
+  border:1px solid rgba(255,255,255,0.06);
+  margin-bottom:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <div class="title">📜 Terms of Service</div>
+  <a class="back" href="/techintoall/">← Back Home</a>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Rules of the Server</h2>
+    <ul>
+      <li>Respect all members</li>
+      <li>No harassment or discrimination</li>
+      <li>No spamming or flooding chats</li>
+      <li>Follow Discord Terms of Service</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Enforcement</h2>
+    <p>
+      Staff may warn, mute, kick, or ban users depending on rule violations.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Liability</h2>
+    <p>
+      We are not responsible for user-generated content inside the Discord server.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Changes</h2>
+    <p>
+      These terms may change at any time without notice.
+    </p>
+  </div>
+
+</div>
+
+<script>
+window.addEventListener("load",()=>document.body.classList.add("void-enter"));
+
+document.addEventListener("click",(e)=>{
+  const link=e.target.closest("a");
+  if(!link||link.target==="_blank"||link.href.includes("#"))return;
+
+  e.preventDefault();
+  document.body.classList.replace("void-enter","void-exit");
+
+  setTimeout(()=>location.href=link.href,520);
+});
+</script>
+
+</body>
+</html>
