@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rip_Dead Site - TechIntoAll</title>
+<link rel="icon" href="/favicon.ico">
+
+<style>
+
+/* ================= VOIDUI TRANSITIONS ================= */
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+  min-height:100vh;
+  background:#04040a;
+
+  opacity:0;
+  transform:translateY(60px);
+  transition:0.6s ease;
+}
+
+body.void-enter{
+  opacity:1;
+  transform:translateY(0);
+}
+
+body.void-exit{
+  opacity:0;
+  transform:translateY(80px);
+}
+
+/* ================= VOID BACKGROUND ================= */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background:
+    radial-gradient(circle at 50% 40%,rgba(0,255,200,0.18),rgba(0,0,0,0.9),#000);
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 20% 60%,rgba(168,85,247,0.2),transparent 60%),
+    radial-gradient(circle at 80% 30%,rgba(0,200,255,0.12),transparent 60%);
+  filter:blur(50px);
+}
+
+/* ================= HEADER ================= */
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+}
+
+.title{
+  font-size:24px;
+  font-weight:bold;
+}
+
+/* PURPLE BACK BUTTON (FIXED) */
+.back{
+  padding:10px 14px;
+  border-radius:10px;
+  background:#a855f7;
+  color:#000;
+  text-decoration:none;
+  font-weight:bold;
+  transition:0.25s;
+}
+
+.back:hover{
+  background:#c084fc;
+  box-shadow:0 0 15px rgba(168,85,247,0.6);
+}
+
+/* ================= CARDS ================= */
+
+.container{
+  padding:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:15px;
+}
+
+.card{
+  background:rgba(20,20,20,0.55);
+  border-radius:14px;
+  padding:15px;
+  border:1px solid rgba(255,255,255,0.06);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 25px rgba(0,255,200,0.2);
+}
+
+/* ================= BUTTON ================= */
+
+.btn{
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 14px;
+  background:#5865F2;
+  color:#fff;
+  text-decoration:none;
+  border-radius:10px;
+  font-weight:bold;
+  transition:0.25s;
+}
+
+.btn:hover{
+  background:#4752c4;
+  transform:scale(1.05);
+}
+
+/* ================= ROLES ================= */
+
+.role{
+  padding:8px 10px;
+  margin-top:6px;
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;
+  border-left:3px solid #00ffd0;
+  font-size:14px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  text-align:center;
+  padding:25px;
+  margin-top:80px;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,0.05);
+  font-size:14px;
+  opacity:0.85;
+}
+
+footer a{
+  color:#00ffd0;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+footer a:hover{
+  color:#66ffe6;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="top">
+  <div class="title">🖥️ TechIntoAll</div>
+  <a class="back" href="/">← Back Home</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <!-- ABOUT -->
+  <div class="card">
+    <h2>👋 Welcome to the future of tech</h2>
+
+    <p>
+      TechIntoAll is a Discord server where you can talk about tech,
+      discuss tech, play games, and even do coding!
+    </p>
+
+    <p>
+      Wanna enjoy your stay? It's okay! We strictly follow rules!
+    </p>
+
+    <p>
+      Wanna support the server? Give us a Server Boost, free with Nitro!
+    </p>
+
+    <a class="btn" href="https://discord.gg/HWr9n4YQmS" target="_blank">
+      Discord Server
+    </a>
+  </div>
+
+  <!-- ROLES -->
+  <div class="card">
+    <h2>👑 Roles of People</h2>
+
+    <h3>🔧 MANUFACTURERS</h3>
+    <div class="role">r̲i̲p̲3̲2̲ — OWNER</div>
+    <div class="role">rip32 alt ッ — OWNER (ALT ACCOUNT)</div>
+    <div class="role">Livissi — CO-OWNER / TRUSTED</div>
+
+    <h3>🛡️ STAFF</h3>
+    <div class="role">✦ 𝔞𝔱𝔩𝔞𝔰 ✦ — TRUSTED STAFF</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2026 Rip_Dead Site — This Project Is Open Source
+</footer>
+
+<script>
+
+/* ================= ENTER ================= */
+
+window.addEventListener("load", () => {
+  document.body.classList.add("void-enter");
+});
+
+/* ================= EXIT SYSTEM ================= */
+
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("a");
+
+  if (!link) return;
+  if (link.target === "_blank") return;
+  if (link.href.includes("#")) return;
+
+  e.preventDefault();
+
+  document.body.classList.remove("void-enter");
+  document.body.classList.add("void-exit");
+
+  setTimeout(() => {
+    window.location.href = link.href;
+  }, 520);
+});
+
+</script>
+
+</body>
+</html>
