@@ -27,10 +27,8 @@ html,
 body{
   width:100%;
   height:100%;
-
   margin:0;
   padding:0;
-
   overflow:hidden;
 }
 
@@ -41,11 +39,9 @@ html{
 body{
   font-family:'Segoe UI',sans-serif;
   color:#fff;
-
   background:#04040a;
 
   opacity:0;
-
   transform:translateY(60px);
 
   transition:
@@ -74,7 +70,6 @@ body::before{
   inset:0;
 
   z-index:-3;
-
   pointer-events:none;
 
   background:
@@ -93,7 +88,6 @@ body::after{
   inset:0;
 
   z-index:-2;
-
   pointer-events:none;
 
   background:
@@ -121,7 +115,6 @@ body::after{
   height:65vh;
 
   z-index:-1;
-
   pointer-events:none;
 
   background:
@@ -439,7 +432,7 @@ body::after{
 }
 
 /* =========================================================
-   STATUS
+   VERIFICATION STATUS
 ========================================================= */
 
 .verify-status{
@@ -587,36 +580,62 @@ body::after{
 }
 
 /* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content{
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  box-sizing:border-box;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:
+    100px 20px
+    80px;
+
+  text-align:center;
+}
+
+/* =========================================================
    HERO
 ========================================================= */
 
 .hero{
-  position:absolute;
+  width:100%;
 
-  top:50%;
-  left:50%;
-
-  transform:
-    translate(-50%,-65%);
-
-  width:90%;
+  margin:0;
 
   text-align:center;
 }
 
 .hero h1{
+  margin:0;
+
   font-size:
     clamp(30px,5vw,42px);
 
-  margin:0;
+  line-height:1.15;
 }
 
 .hero p{
+  margin:12px 0 0;
+
   font-size:18px;
 
   opacity:.8;
-
-  margin-top:10px;
 }
 
 /* =========================================================
@@ -624,20 +643,13 @@ body::after{
 ========================================================= */
 
 .container{
-  position:absolute;
-
-  left:50%;
-
-  top:58%;
-
-  transform:
-    translateX(-50%);
-
   width:100%;
 
   display:flex;
 
   justify-content:center;
+
+  margin-top:35px;
 }
 
 .card{
@@ -676,7 +688,8 @@ body::after{
 }
 
 .card h2{
-  margin-top:0;
+  margin:
+    0 0 20px;
 }
 
 .buttons{
@@ -685,8 +698,6 @@ body::after{
   flex-direction:column;
 
   gap:12px;
-
-  margin-top:20px;
 }
 
 .btn{
@@ -771,10 +782,10 @@ footer a:hover{
   .navbar{
     flex-direction:column;
 
-    gap:10px;
+    gap:8px;
 
     padding:
-      12px 14px;
+      10px 12px;
   }
 
   .nav-links{
@@ -791,12 +802,10 @@ footer a:hover{
     font-size:14px;
   }
 
-  .hero{
-    top:40%;
-  }
-
-  .container{
-    top:52%;
+  .main-content{
+    padding:
+      125px 15px
+      70px;
   }
 
 }
@@ -818,6 +827,10 @@ footer a:hover{
     font-size:15px;
   }
 
+  .card{
+    padding:22px;
+  }
+
 }
 
 /* =========================================================
@@ -826,8 +839,10 @@ footer a:hover{
 
 @media(max-height:650px){
 
-  .hero{
-    top:38%;
+  .main-content{
+    padding:
+      105px 15px
+      55px;
   }
 
   .hero h1{
@@ -839,17 +854,19 @@ footer a:hover{
   }
 
   .container{
-    top:50%;
+    margin-top:20px;
   }
 
   .card{
-    padding:18px;
+    padding:16px;
+  }
+
+  .card h2{
+    margin-bottom:12px;
   }
 
   .buttons{
     gap:7px;
-
-    margin-top:12px;
   }
 
   .btn{
@@ -857,7 +874,7 @@ footer a:hover{
   }
 
   footer{
-    padding:10px 15px;
+    padding:9px 15px;
 
     font-size:12px;
   }
@@ -981,64 +998,72 @@ footer a:hover{
 </div>
 
 <!-- =======================================================
-     HERO
+     MAIN CONTENT
 ======================================================= -->
 
-<div class="hero">
+<main class="main-content">
 
-  <h1>
-    Welcome to Rip_Dead Site
-  </h1>
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
 
-  <p>
-    Explore the vast creations of Rip_Dead and his Socials!
-  </p>
+  <section class="hero">
 
-</div>
+    <h1>
+      Welcome to Rip_Dead Site
+    </h1>
 
-<!-- =======================================================
-     SOCIALS
-======================================================= -->
+    <p>
+      Explore the vast creations of Rip_Dead and his Socials!
+    </p>
 
-<div class="container">
+  </section>
 
-  <div class="card">
+  <!-- =====================================================
+       SOCIALS
+  ====================================================== -->
 
-    <h2>
-      Socials
-    </h2>
+  <div class="container">
 
-    <div class="buttons">
+    <div class="card">
 
-      <a
-        class="btn"
-        href="https://x.com/rip_dead32">
+      <h2>
+        Socials
+      </h2>
 
-        X (Twitter)
+      <div class="buttons">
 
-      </a>
+        <a
+          class="btn"
+          href="https://x.com/rip_dead32">
 
-      <a
-        class="btn"
-        href="https://youtube.com/@rip_deadd">
+          X (Twitter)
 
-        YouTube
+        </a>
 
-      </a>
+        <a
+          class="btn"
+          href="https://youtube.com/@rip_deadd">
 
-      <a
-        class="btn"
-        href="https://www.reddit.com/u/rip_dead32/">
+          YouTube
 
-        Reddit
+        </a>
 
-      </a>
+        <a
+          class="btn"
+          href="https://www.reddit.com/u/rip_dead32/">
+
+          Reddit
+
+        </a>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
+</main>
 
 <!-- =======================================================
      FOOTER
@@ -1255,16 +1280,14 @@ function setActiveNav(){
    SMART NAVBAR
 ========================================================= */
 
-let lastScroll = 0;
-
 const navbar =
   document.getElementById("navbar");
 
 window.addEventListener("scroll",()=>{
 
   /*
-     The homepage is intentionally
-     non-scrollable.
+     Homepage is intentionally non-scrollable.
+     Nothing needs to happen here.
   */
 
   return;
