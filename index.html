@@ -241,7 +241,7 @@ body::after{
 }
 
 /* =========================================================
-   VOIDUI VERIFICATION ICON
+   VERIFICATION ICON
 ========================================================= */
 
 .verify-icon{
@@ -432,7 +432,7 @@ body::after{
 }
 
 /* =========================================================
-   VERIFICATION STATUS
+   STATUS
 ========================================================= */
 
 .verify-status{
@@ -1003,10 +1003,6 @@ footer a:hover{
 
 <main class="main-content">
 
-  <!-- =====================================================
-       HERO
-  ====================================================== -->
-
   <section class="hero">
 
     <h1>
@@ -1018,10 +1014,6 @@ footer a:hover{
     </p>
 
   </section>
-
-  <!-- =====================================================
-       SOCIALS
-  ====================================================== -->
 
   <div class="container">
 
@@ -1091,16 +1083,61 @@ footer a:hover{
 <script>
 
 /* =========================================================
+   VERIFICATION STATE
+========================================================= */
+
+const VERIFIED_KEY =
+  "ripdead_turnstile_verified";
+
+const verification =
+  document.getElementById("verification");
+
+const verifyStatus =
+  document.getElementById("verifyStatus");
+
+/* =========================================================
+   CHECK EXISTING VERIFICATION
+========================================================= */
+
+function checkVerification(){
+
+  if(
+    sessionStorage.getItem(VERIFIED_KEY)
+    ===
+    "true"
+  ){
+
+    verification.style.display =
+      "none";
+
+    verification.classList.add(
+      "hidden"
+    );
+
+    return true;
+  }
+
+  return false;
+}
+
+/* =========================================================
    PAGE ENTER
 ========================================================= */
 
-window.addEventListener("DOMContentLoaded",()=>{
+window.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
 
-  document.body.classList.add("void-enter");
+    document.body.classList.add(
+      "void-enter"
+    );
 
-  setActiveNav();
+    setActiveNav();
 
-});
+    checkVerification();
+
+  }
+);
 
 /* =========================================================
    TURNSTILE SUCCESS
@@ -1113,22 +1150,33 @@ function verificationSuccess(token){
     "color:#00ffd5;font-weight:bold;"
   );
 
-  const verification =
-    document.getElementById("verification");
+  /*
+     Remember that the visitor passed
+     verification during this browser
+     session.
+  */
 
-  const status =
-    document.getElementById("verifyStatus");
+  sessionStorage.setItem(
+    VERIFIED_KEY,
+    "true"
+  );
 
-  status.textContent =
+  verifyStatus.textContent =
     "Verification successful! Welcome.";
 
-  status.classList.remove("error");
+  verifyStatus.classList.remove(
+    "error"
+  );
 
-  status.classList.add("success");
+  verifyStatus.classList.add(
+    "success"
+  );
 
   setTimeout(()=>{
 
-    verification.classList.add("hidden");
+    verification.classList.add(
+      "hidden"
+    );
 
     setTimeout(()=>{
 
@@ -1147,13 +1195,16 @@ function verificationSuccess(token){
 
 function verificationExpired(){
 
-  const status =
-    document.getElementById("verifyStatus");
+  sessionStorage.removeItem(
+    VERIFIED_KEY
+  );
 
-  status.textContent =
+  verifyStatus.textContent =
     "Verification expired. Please wait for it to retry.";
 
-  status.classList.remove("success");
+  verifyStatus.classList.remove(
+    "success"
+  );
 
 }
 
@@ -1163,15 +1214,20 @@ function verificationExpired(){
 
 function verificationError(){
 
-  const status =
-    document.getElementById("verifyStatus");
+  sessionStorage.removeItem(
+    VERIFIED_KEY
+  );
 
-  status.textContent =
+  verifyStatus.textContent =
     "Verification encountered an error. Please refresh.";
 
-  status.classList.remove("success");
+  verifyStatus.classList.remove(
+    "success"
+  );
 
-  status.classList.add("error");
+  verifyStatus.classList.add(
+    "error"
+  );
 
   console.error(
     "Cloudflare Turnstile verification error."
@@ -1183,43 +1239,52 @@ function verificationError(){
    PAGE TRANSITIONS
 ========================================================= */
 
-document.querySelectorAll("a").forEach(a=>{
+document.querySelectorAll("a").forEach(
+  a=>{
 
-  a.addEventListener("click",(e)=>{
+    a.addEventListener(
+      "click",
+      e=>{
 
-    if(a.target === "_blank"){
-      return;
-    }
+        if(a.target === "_blank"){
+          return;
+        }
 
-    const destination =
-      new URL(
-        a.href,
-        window.location.href
-      );
+        const destination =
+          new URL(
+            a.href,
+            window.location.href
+          );
 
-    if(
-      destination.origin !==
-      window.location.origin
-    ){
-      return;
-    }
+        /*
+           Don't animate external links.
+        */
 
-    e.preventDefault();
+        if(
+          destination.origin !==
+          window.location.origin
+        ){
+          return;
+        }
 
-    document.body.classList.add(
-      "void-exit"
+        e.preventDefault();
+
+        document.body.classList.add(
+          "void-exit"
+        );
+
+        setTimeout(()=>{
+
+          window.location.href =
+            destination.href;
+
+        },500);
+
+      }
     );
 
-    setTimeout(()=>{
-
-      window.location.href =
-        destination.href;
-
-    },500);
-
-  });
-
-});
+  }
+);
 
 /* =========================================================
    ACTIVE NAV
@@ -1241,58 +1306,60 @@ function setActiveNav(){
         path === "/" &&
         page === "home"
       ){
-        a.classList.add("active");
+
+        a.classList.add(
+          "active"
+        );
+
       }
 
       if(
         path.includes("/art") &&
         page === "art"
       ){
-        a.classList.add("active");
+
+        a.classList.add(
+          "active"
+        );
+
       }
 
       if(
         path.includes("/downloads") &&
         page === "downloads"
       ){
-        a.classList.add("active");
+
+        a.classList.add(
+          "active"
+        );
+
       }
 
       if(
         path.includes("/blogs") &&
         page === "blogs"
       ){
-        a.classList.add("active");
+
+        a.classList.add(
+          "active"
+        );
+
       }
 
       if(
         path.includes("/techintoall") &&
         page === "techintoall"
       ){
-        a.classList.add("active");
+
+        a.classList.add(
+          "active"
+        );
+
       }
 
     });
 
 }
-
-/* =========================================================
-   SMART NAVBAR
-========================================================= */
-
-const navbar =
-  document.getElementById("navbar");
-
-window.addEventListener("scroll",()=>{
-
-  /*
-     Homepage is intentionally non-scrollable.
-     Nothing needs to happen here.
-  */
-
-  return;
-
-});
 
 /* =========================================================
    CONSOLE WARNING
