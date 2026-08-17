@@ -7,9 +7,21 @@
 <title>Rip_Dead Site</title>
 <link rel="icon" href="/favicon.ico">
 
+<!-- =========================================================
+     CLOUDFLARE TURNSTILE
+========================================================= -->
+
+<script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer>
+</script>
+
 <style>
 
-/* ================= VOIDUI TRANSITIONS ================= */
+/* =========================================================
+   VOIDUI TRANSITIONS
+========================================================= */
 
 body{
   margin:0;
@@ -20,7 +32,12 @@ body{
 
   opacity:0;
   transform:translateY(60px);
-  transition:0.6s ease;
+
+  transition:
+    opacity .6s ease,
+    transform .6s ease;
+
+  overflow-x:hidden;
 }
 
 body.void-enter{
@@ -33,62 +50,385 @@ body.void-exit{
   transform:translateY(80px);
 }
 
-/* ================= VOID BACKGROUND ================= */
+/* =========================================================
+   VOID BACKGROUND
+========================================================= */
 
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  z-index:-2;
+  z-index:-3;
+
   background:
-    radial-gradient(circle at 50% 40%,rgba(150,0,255,0.30),rgba(0,0,0,0.9),#000);
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(150,0,255,.30),
+      rgba(10,0,25,.85) 55%,
+      #000 100%
+    );
 }
 
 body::after{
   content:"";
   position:fixed;
   inset:0;
-  z-index:-1;
+  z-index:-2;
+
   background:
-    radial-gradient(circle at 20% 60%,rgba(168,85,247,0.2),transparent 60%),
-    radial-gradient(circle at 80% 30%,rgba(0,255,200,0.1),transparent 60%);
+    radial-gradient(
+      circle at 20% 60%,
+      rgba(168,85,247,.20),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(0,255,200,.10),
+      transparent 60%
+    );
+
   filter:blur(50px);
 }
 
-/* ================= NAVBAR v2 ================= */
+.void-glow{
+  position:fixed;
+
+  left:-10%;
+  bottom:-30%;
+
+  width:120%;
+  height:65vh;
+
+  z-index:-1;
+
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(0,255,200,.10),
+      transparent 65%
+    );
+
+  filter:blur(80px);
+
+  animation:
+    voidGlow 10s ease-in-out infinite alternate;
+}
+
+@keyframes voidGlow{
+
+  from{
+    transform:translateY(0) scale(1);
+  }
+
+  to{
+    transform:translateY(-25px) scale(1.05);
+  }
+
+}
+
+/* =========================================================
+   VERIFICATION OVERLAY
+========================================================= */
+
+#verification{
+  position:fixed;
+
+  inset:0;
+
+  z-index:9000;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(168,85,247,.14),
+      transparent 55%
+    ),
+    rgba(2,2,7,.96);
+
+  backdrop-filter:blur(10px);
+
+  transition:
+    opacity .7s ease,
+    transform .7s ease;
+}
+
+#verification.hidden{
+  opacity:0;
+
+  transform:
+    translateY(80px);
+
+  pointer-events:none;
+}
+
+.verify-card{
+  width:min(500px,92vw);
+
+  padding:42px 32px;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25,20,35,.76),
+      rgba(10,10,16,.66)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.07);
+
+  border-radius:22px;
+
+  backdrop-filter:blur(22px);
+
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.5),
+    0 0 45px rgba(168,85,247,.08);
+
+  animation:
+    verifyFloat 5s ease-in-out infinite;
+}
+
+@keyframes verifyFloat{
+
+  0%,
+  100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+
+}
+
+/* =========================================================
+   VERIFICATION ICON
+========================================================= */
+
+.verify-icon{
+  width:78px;
+  height:78px;
+
+  margin:0 auto 24px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:20px;
+
+  font-size:36px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(168,85,247,.22),
+      rgba(0,255,213,.08)
+    );
+
+  border:
+    1px solid
+    rgba(168,85,247,.25);
+
+  box-shadow:
+    0 0 35px
+    rgba(168,85,247,.16);
+
+  animation:
+    verifyPulse 3s ease-in-out infinite;
+}
+
+@keyframes verifyPulse{
+
+  0%,
+  100%{
+    box-shadow:
+      0 0 25px
+      rgba(168,85,247,.12);
+  }
+
+  50%{
+    box-shadow:
+      0 0 42px
+      rgba(168,85,247,.28);
+  }
+
+}
+
+/* =========================================================
+   VERIFICATION TEXT
+========================================================= */
+
+.verify-card h1{
+  margin:0;
+
+  font-size:
+    clamp(28px,5vw,40px);
+
+  line-height:1.15;
+}
+
+.verify-card > p{
+  margin:
+    14px auto 0;
+
+  max-width:410px;
+
+  color:
+    rgba(255,255,255,.68);
+
+  font-size:16px;
+
+  line-height:1.6;
+}
+
+/* =========================================================
+   CLOUDFLARE AREA
+========================================================= */
+
+.cloudflare-area{
+  margin-top:30px;
+
+  padding:18px;
+
+  border-radius:16px;
+
+  background:
+    rgba(0,0,0,.25);
+
+  border:
+    1px solid
+    rgba(255,255,255,.055);
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+}
+
+.cloudflare-title{
+  margin-bottom:14px;
+
+  color:
+    rgba(255,255,255,.45);
+
+  font-size:12px;
+
+  text-transform:uppercase;
+
+  letter-spacing:1.4px;
+}
+
+.cloudflare-box{
+  width:100%;
+
+  min-height:70px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  overflow:hidden;
+}
+
+/* =========================================================
+   VERIFICATION STATUS
+========================================================= */
+
+.verify-status{
+  margin-top:18px !important;
+
+  font-size:13px !important;
+
+  color:
+    rgba(255,255,255,.42) !important;
+
+  transition:
+    color .3s ease,
+    text-shadow .3s ease;
+}
+
+.verify-status.success{
+  color:#00ffd5 !important;
+
+  text-shadow:
+    0 0 12px
+    rgba(0,255,213,.35);
+}
+
+.verify-status.error{
+  color:#ff6b8a !important;
+}
+
+/* =========================================================
+   NAVBAR v2
+========================================================= */
 
 .navbar{
   position:sticky;
+
   top:0;
+
   z-index:1000;
 
   display:flex;
+
   justify-content:space-between;
   align-items:center;
 
   padding:14px 28px;
 
-  background:rgba(0,0,0,0.55);
+  background:
+    rgba(0,0,0,.55);
+
   backdrop-filter:blur(14px);
 
-  border-bottom:1px solid rgba(255,255,255,0.05);
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.05);
 
-  transition:0.3s ease;
+  transition:
+    transform .3s ease;
 }
 
 .navbar.hidden{
-  transform:translateY(-100%);
+  transform:
+    translateY(-100%);
 }
 
 .nav-logo{
   font-weight:bold;
+
   font-size:18px;
+
   color:#fff;
+
   text-decoration:none;
 }
 
 .nav-links{
   display:flex;
+
   gap:8px;
 }
 
@@ -96,58 +436,72 @@ body::after{
   position:relative;
 
   display:inline-flex;
+
   align-items:center;
   justify-content:center;
 
   padding:10px 14px;
+
   border-radius:10px;
 
   color:#fff;
+
   text-decoration:none;
+
   font-weight:500;
 
-  transition:0.25s;
+  transition:.25s;
+
   overflow:hidden;
 }
 
 .nav-links a:hover{
-  background:rgba(168,85,247,0.15);
+  background:
+    rgba(168,85,247,.15);
+
   color:#c084fc;
 }
 
 .nav-links a.active{
-  background:rgba(168,85,247,0.25);
-  box-shadow:0 0 12px rgba(168,85,247,0.4);
+  background:
+    rgba(168,85,247,.25);
+
+  box-shadow:
+    0 0 12px
+    rgba(168,85,247,.4);
 }
 
-/* underline glow */
 .nav-links a::after{
   content:"";
+
   position:absolute;
+
   bottom:4px;
   left:50%;
+
   width:0%;
+
   height:2px;
+
   background:#a855f7;
-  transition:0.3s ease;
-  transform:translateX(-50%);
+
+  transition:.3s ease;
+
+  transform:
+    translateX(-50%);
 }
 
 .nav-links a:hover::after{
   width:70%;
 }
 
-@media(max-width:700px){
-  .nav-links{
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-}
-
-/* ================= HERO ================= */
+/* =========================================================
+   HERO
+========================================================= */
 
 .hero{
   text-align:center;
+
   margin-top:120px;
 }
 
@@ -157,86 +511,186 @@ body::after{
 
 .hero p{
   font-size:18px;
-  opacity:0.8;
+
+  opacity:.8;
+
   margin-top:10px;
 }
 
-/* ================= SOCIAL CARDS ================= */
+/* =========================================================
+   SOCIAL CARDS
+========================================================= */
 
 .container{
   display:flex;
+
   justify-content:center;
+
   margin-top:50px;
 }
 
 .card{
   width:360px;
+
   padding:30px;
 
-  background:rgba(20,20,20,0.55);
+  background:
+    rgba(20,20,20,.55);
+
   backdrop-filter:blur(14px);
 
   border-radius:16px;
+
   text-align:center;
 
-  border:1px solid rgba(255,255,255,0.06);
+  border:
+    1px solid
+    rgba(255,255,255,.06);
 
-  transition:0.3s;
+  transition:.3s;
 }
 
 .card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 0 35px rgba(168,85,247,0.25);
+  transform:
+    translateY(-8px);
+
+  box-shadow:
+    0 0 35px
+    rgba(168,85,247,.25);
 }
 
 .buttons{
   display:flex;
+
   flex-direction:column;
+
   gap:12px;
+
   margin-top:20px;
 }
 
 .btn{
   padding:12px;
+
   border-radius:10px;
 
   background:#a855f7;
+
   color:#000;
+
   font-weight:bold;
+
   text-decoration:none;
 
-  transition:0.25s;
+  transition:.25s;
 }
 
 .btn:hover{
   background:#c084fc;
-  box-shadow:0 0 18px rgba(168,85,247,0.6);
+
+  box-shadow:
+    0 0 18px
+    rgba(168,85,247,.6);
 }
 
-/* ================= FOOTER ================= */
+/* =========================================================
+   FOOTER
+========================================================= */
 
 footer{
   text-align:center;
+
   padding:25px;
+
   margin-top:80px;
 
-  background:rgba(0,0,0,0.35);
+  background:
+    rgba(0,0,0,.35);
+
   backdrop-filter:blur(12px);
 
-  border-top:1px solid rgba(255,255,255,0.05);
+  border-top:
+    1px solid
+    rgba(255,255,255,.05);
 
   font-size:14px;
-  opacity:0.85;
+
+  opacity:.85;
 }
 
 footer a{
   color:#a855f7;
+
   text-decoration:none;
+
   font-weight:bold;
 }
 
 footer a:hover{
   color:#c084fc;
+
+  text-shadow:
+    0 0 12px
+    rgba(168,85,247,.5);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+  .navbar{
+    flex-direction:column;
+
+    gap:10px;
+  }
+
+  .nav-links{
+    flex-wrap:wrap;
+
+    justify-content:center;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .verify-card{
+    padding:32px 20px;
+
+    border-radius:20px;
+  }
+
+  .verify-icon{
+    width:68px;
+    height:68px;
+
+    font-size:32px;
+  }
+
+  .verify-card > p{
+    font-size:15px;
+  }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+
+    animation-iteration-count:1 !important;
+
+    transition-duration:.01ms !important;
+  }
+
 }
 
 </style>
@@ -244,107 +698,411 @@ footer a:hover{
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+<!-- =======================================================
+     AMBIENT VOID GLOW
+======================================================= -->
+
+<div class="void-glow"></div>
+
+<!-- =======================================================
+     CLOUDFLARE VERIFICATION
+======================================================= -->
+
+<section id="verification">
+
+  <div class="verify-card">
+
+    <div class="verify-icon">
+      🌌
+    </div>
+
+    <h1>
+      Welcome to Rip_Dead Site!
+    </h1>
+
+    <p>
+      Let's verify you're not a robot first!
+    </p>
+
+    <div class="cloudflare-area">
+
+      <div class="cloudflare-title">
+        Security Verification
+      </div>
+
+      <div class="cloudflare-box">
+
+        <div
+          class="cf-turnstile"
+          data-sitekey="0x4AAAAAAESdqDX7nBnR1ig7"
+          data-theme="dark"
+          data-callback="verificationSuccess"
+          data-expired-callback="verificationExpired"
+          data-error-callback="verificationError">
+        </div>
+
+      </div>
+
+    </div>
+
+    <p
+      class="verify-status"
+      id="verifyStatus">
+
+      Verifying your connection...
+
+    </p>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     NAVBAR
+======================================================= -->
+
 <div class="navbar" id="navbar">
 
-  <a class="nav-logo" href="/">Rip_Dead Site</a>
+  <a class="nav-logo" href="/">
+    Rip_Dead Site
+  </a>
 
   <div class="nav-links">
-    <a href="/" data-page="home">Home</a>
-    <a href="/art/" data-page="art">Art</a>
-    <a href="/downloads/" data-page="downloads">Downloads</a>
-    <a href="/blogs/" data-page="blogs">Blogs</a>
-    <a href="/techintoall/" data-page="techintoall">TechIntoAll</a>
+
+    <a href="/" data-page="home">
+      Home
+    </a>
+
+    <a href="/art/" data-page="art">
+      Art
+    </a>
+
+    <a href="/downloads/" data-page="downloads">
+      Downloads
+    </a>
+
+    <a href="/blogs/" data-page="blogs">
+      Blogs
+    </a>
+
+    <a href="/techintoall/" data-page="techintoall">
+      TechIntoAll
+    </a>
+
   </div>
 
 </div>
 
-<!-- ================= HERO ================= -->
+<!-- =======================================================
+     HERO
+======================================================= -->
+
 <div class="hero">
-  <h1>Welcome to Rip_Dead Site</h1>
-  <p>Explore the vast creations of Rip_Dead and his Socials!</p>
+
+  <h1>
+    Welcome to Rip_Dead Site
+  </h1>
+
+  <p>
+    Explore the vast creations of Rip_Dead and his Socials!
+  </p>
+
 </div>
 
-<!-- ================= SOCIALS ================= -->
+<!-- =======================================================
+     SOCIALS
+======================================================= -->
+
 <div class="container">
+
   <div class="card">
 
-    <h2>Socials</h2>
+    <h2>
+      Socials
+    </h2>
 
     <div class="buttons">
-      <a class="btn" href="https://x.com/rip_dead32">X (Twitter)</a>
-      <a class="btn" href="https://youtube.com/@rip_deadd">YouTube</a>
-      <a class="btn" href="https://www.reddit.com/u/rip_dead32/">Reddit</a>
+
+      <a
+        class="btn"
+        href="https://x.com/rip_dead32">
+
+        X (Twitter)
+
+      </a>
+
+      <a
+        class="btn"
+        href="https://youtube.com/@rip_deadd">
+
+        YouTube
+
+      </a>
+
+      <a
+        class="btn"
+        href="https://www.reddit.com/u/rip_dead32/">
+
+        Reddit
+
+      </a>
+
     </div>
 
   </div>
+
 </div>
 
-<!-- ================= FOOTER ================= -->
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
 <footer>
+
   © 2026 Rip_Dead Studios™ —
-  <a href="https://github.com/ripdead32/Rip_Dead-Site" target="_blank">
-    <u><strong>This project is open source</strong></u>
+
+  <a
+    href="https://github.com/ripdead32/Rip_Dead-Site"
+    target="_blank"
+    rel="noopener noreferrer">
+
+    <u>
+      <strong>
+        This project is open source
+      </strong>
+    </u>
+
   </a>
+
 </footer>
 
 <script>
 
-/* ENTER */
+/* =========================================================
+   PAGE ENTER
+========================================================= */
+
 window.addEventListener("DOMContentLoaded",()=>{
+
   document.body.classList.add("void-enter");
+
   setActiveNav();
+
 });
 
-/* EXIT TRANSITIONS */
+/* =========================================================
+   TURNSTILE SUCCESS
+========================================================= */
+
+function verificationSuccess(token){
+
+  console.log(
+    "%cCloudflare verification successful.",
+    "color:#00ffd5;font-weight:bold;"
+  );
+
+  const verification =
+    document.getElementById("verification");
+
+  const status =
+    document.getElementById("verifyStatus");
+
+  status.textContent =
+    "Verification successful! Welcome.";
+
+  status.classList.add("success");
+
+  setTimeout(()=>{
+
+    verification.classList.add("hidden");
+
+    setTimeout(()=>{
+
+      verification.style.display =
+        "none";
+
+    },700);
+
+  },650);
+
+}
+
+/* =========================================================
+   TURNSTILE EXPIRED
+========================================================= */
+
+function verificationExpired(){
+
+  const status =
+    document.getElementById("verifyStatus");
+
+  status.textContent =
+    "Verification expired. Please wait for it to retry.";
+
+  status.classList.remove("success");
+
+}
+
+/* =========================================================
+   TURNSTILE ERROR
+========================================================= */
+
+function verificationError(){
+
+  const status =
+    document.getElementById("verifyStatus");
+
+  status.textContent =
+    "Verification encountered an error. Please refresh.";
+
+  status.classList.add("error");
+
+  console.error(
+    "Cloudflare Turnstile verification error."
+  );
+
+}
+
+/* =========================================================
+   PAGE TRANSITIONS
+========================================================= */
+
 document.querySelectorAll("a").forEach(a=>{
+
   a.addEventListener("click",(e)=>{
 
-    if(a.target==="_blank") return;
+    if(a.target === "_blank"){
+      return;
+    }
+
+    const destination =
+      new URL(
+        a.href,
+        window.location.href
+      );
+
+    if(
+      destination.origin !==
+      window.location.origin
+    ){
+      return;
+    }
 
     e.preventDefault();
 
-    document.body.classList.add("void-exit");
+    document.body.classList.add(
+      "void-exit"
+    );
 
     setTimeout(()=>{
-      window.location=a.href;
+
+      window.location.href =
+        destination.href;
+
     },500);
 
   });
+
 });
 
-/* ACTIVE NAV DETECTION */
-function setActiveNav(){
-  const path = window.location.pathname;
+/* =========================================================
+   ACTIVE NAV
+========================================================= */
 
-  document.querySelectorAll(".nav-links a").forEach(a=>{
-    if(path === "/" && a.dataset.page === "home") a.classList.add("active");
-    if(path.includes("/art") && a.dataset.page === "art") a.classList.add("active");
-    if(path.includes("/downloads") && a.dataset.page === "downloads") a.classList.add("active");
-    if(path.includes("/blogs") && a.dataset.page === "blogs") a.classList.add("active");
-  });
+function setActiveNav(){
+
+  const path =
+    window.location.pathname;
+
+  document
+    .querySelectorAll(".nav-links a")
+    .forEach(a=>{
+
+      const page =
+        a.dataset.page;
+
+      if(
+        path === "/" &&
+        page === "home"
+      ){
+        a.classList.add("active");
+      }
+
+      if(
+        path.includes("/art") &&
+        page === "art"
+      ){
+        a.classList.add("active");
+      }
+
+      if(
+        path.includes("/downloads") &&
+        page === "downloads"
+      ){
+        a.classList.add("active");
+      }
+
+      if(
+        path.includes("/blogs") &&
+        page === "blogs"
+      ){
+        a.classList.add("active");
+      }
+
+      if(
+        path.includes("/techintoall") &&
+        page === "techintoall"
+      ){
+        a.classList.add("active");
+      }
+
+    });
+
 }
 
-/* SCROLL HIDE NAVBAR */
+/* =========================================================
+   SCROLL HIDE NAVBAR
+========================================================= */
+
 let lastScroll = 0;
-const navbar = document.getElementById("navbar");
+
+const navbar =
+  document.getElementById("navbar");
 
 window.addEventListener("scroll",()=>{
-  const current = window.pageYOffset;
 
-  if(current > lastScroll && current > 80){
+  const current =
+    window.pageYOffset;
+
+  if(
+    current > lastScroll &&
+    current > 80
+  ){
+
     navbar.classList.add("hidden");
-  } else {
+
+  }else{
+
     navbar.classList.remove("hidden");
+
   }
 
   lastScroll = current;
+
 });
 
-/* CONSOLE WARNING */
+/* =========================================================
+   CONSOLE WARNING
+========================================================= */
+
 console.log(
   "%cSTOP! DO NOT INSERT ANYTHING HERE! IT COULD BREAK THE SITE!",
   "color:#fff;background:#a855f7;padding:6px;border-radius:6px;"
+);
+
+console.log(
+  "%cRip_Dead Site • VoidUI",
+  "color:#a855f7;font-weight:bold;font-size:15px;"
 );
 
 </script>
