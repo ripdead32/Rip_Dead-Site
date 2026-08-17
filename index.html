@@ -27,8 +27,10 @@ html,
 body{
   width:100%;
   height:100%;
+
   margin:0;
   padding:0;
+
   overflow:hidden;
 }
 
@@ -38,10 +40,13 @@ html{
 
 body{
   font-family:'Segoe UI',sans-serif;
+
   color:#fff;
+
   background:#04040a;
 
   opacity:0;
+
   transform:translateY(60px);
 
   transition:
@@ -70,6 +75,7 @@ body::before{
   inset:0;
 
   z-index:-3;
+
   pointer-events:none;
 
   background:
@@ -88,6 +94,7 @@ body::after{
   inset:0;
 
   z-index:-2;
+
   pointer-events:none;
 
   background:
@@ -115,6 +122,7 @@ body::after{
   height:65vh;
 
   z-index:-1;
+
   pointer-events:none;
 
   background:
@@ -133,17 +141,21 @@ body::after{
 @keyframes voidGlow{
 
   from{
-    transform:translateY(0) scale(1);
+    transform:
+      translateY(0)
+      scale(1);
   }
 
   to{
-    transform:translateY(-25px) scale(1.05);
+    transform:
+      translateY(-25px)
+      scale(1.05);
   }
 
 }
 
 /* =========================================================
-   VERIFICATION OVERLAY
+   CLOUDFLARE VERIFICATION
 ========================================================= */
 
 #verification{
@@ -185,7 +197,8 @@ body::after{
 #verification.hidden{
   opacity:0;
 
-  transform:translateY(80px);
+  transform:
+    translateY(80px);
 
   pointer-events:none;
 }
@@ -376,7 +389,7 @@ body::after{
 }
 
 /* =========================================================
-   CLOUDFLARE AREA
+   TURNSTILE AREA
 ========================================================= */
 
 .cloudflare-area{
@@ -432,7 +445,7 @@ body::after{
 }
 
 /* =========================================================
-   STATUS
+   VERIFICATION STATUS
 ========================================================= */
 
 .verify-status{
@@ -604,7 +617,7 @@ body::after{
 
   padding:
     100px 20px
-    80px;
+    85px;
 
   text-align:center;
 }
@@ -639,7 +652,7 @@ body::after{
 }
 
 /* =========================================================
-   SOCIAL CARD
+   CARDS CONTAINER
 ========================================================= */
 
 .container{
@@ -647,10 +660,18 @@ body::after{
 
   display:flex;
 
-  justify-content:center;
+  flex-direction:column;
 
-  margin-top:35px;
+  align-items:center;
+
+  gap:18px;
+
+  margin-top:30px;
 }
+
+/* =========================================================
+   GENERAL CARD
+========================================================= */
 
 .card{
   width:360px;
@@ -658,7 +679,7 @@ body::after{
   max-width:
     calc(100vw - 40px);
 
-  padding:30px;
+  padding:26px 30px;
 
   box-sizing:border-box;
 
@@ -689,19 +710,23 @@ body::after{
 
 .card h2{
   margin:
-    0 0 20px;
+    0 0 18px;
 }
+
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .buttons{
   display:flex;
 
   flex-direction:column;
 
-  gap:12px;
+  gap:10px;
 }
 
 .btn{
-  padding:12px;
+  padding:11px;
 
   border-radius:10px;
 
@@ -722,6 +747,48 @@ body::after{
   box-shadow:
     0 0 18px
     rgba(168,85,247,.6);
+}
+
+/* =========================================================
+   DISCORD CARD
+========================================================= */
+
+.discord-description{
+  margin:
+    -4px 0 0;
+
+  opacity:.8;
+
+  font-size:16px;
+}
+
+.discord-members{
+  margin-top:14px;
+
+  margin-bottom:16px;
+
+  font-size:14px;
+
+  color:
+    rgba(255,255,255,.6);
+}
+
+.discord-members strong{
+  color:#fff;
+}
+
+.discord-btn{
+  background:#5865F2;
+
+  color:#fff;
+}
+
+.discord-btn:hover{
+  background:#7289da;
+
+  box-shadow:
+    0 0 20px
+    rgba(88,101,242,.55);
 }
 
 /* =========================================================
@@ -782,10 +849,10 @@ footer a:hover{
   .navbar{
     flex-direction:column;
 
-    gap:8px;
+    gap:7px;
 
     padding:
-      10px 12px;
+      9px 12px;
   }
 
   .nav-links{
@@ -793,76 +860,46 @@ footer a:hover{
 
     justify-content:center;
 
-    gap:4px;
+    gap:3px;
   }
 
   .nav-links a{
-    padding:8px 10px;
+    padding:7px 9px;
 
-    font-size:14px;
+    font-size:13px;
   }
 
   .main-content{
     padding:
-      125px 15px
-      70px;
-  }
-
-}
-
-@media(max-width:600px){
-
-  .verify-card{
-    padding:32px 20px;
-
-    border-radius:20px;
-  }
-
-  .verify-icon{
-    width:64px;
-    height:64px;
-  }
-
-  .verify-card > p{
-    font-size:15px;
-  }
-
-  .card{
-    padding:22px;
-  }
-
-}
-
-/* =========================================================
-   SMALL HEIGHT SCREENS
-========================================================= */
-
-@media(max-height:650px){
-
-  .main-content{
-    padding:
-      105px 15px
-      55px;
+      118px 15px
+      68px;
   }
 
   .hero h1{
-    font-size:28px;
+    font-size:29px;
   }
 
   .hero p{
     font-size:14px;
+
+    margin-top:7px;
   }
 
   .container{
-    margin-top:20px;
+    gap:10px;
+
+    margin-top:18px;
   }
 
   .card{
-    padding:16px;
+    width:340px;
+
+    padding:
+      16px 22px;
   }
 
   .card h2{
-    margin-bottom:12px;
+    margin-bottom:10px;
   }
 
   .buttons{
@@ -873,10 +910,76 @@ footer a:hover{
     padding:8px;
   }
 
+  .discord-members{
+    margin-top:8px;
+
+    margin-bottom:9px;
+  }
+
   footer{
-    padding:9px 15px;
+    padding:
+      9px 15px;
 
     font-size:12px;
+  }
+
+}
+
+/* =========================================================
+   VERY SMALL HEIGHT
+========================================================= */
+
+@media(max-height:700px){
+
+  .main-content{
+    padding:
+      92px 15px
+      58px;
+  }
+
+  .hero h1{
+    font-size:28px;
+  }
+
+  .hero p{
+    font-size:13px;
+
+    margin-top:5px;
+  }
+
+  .container{
+    margin-top:12px;
+
+    gap:7px;
+  }
+
+  .card{
+    padding:
+      12px 20px;
+  }
+
+  .card h2{
+    margin-bottom:7px;
+  }
+
+  .buttons{
+    gap:5px;
+  }
+
+  .btn{
+    padding:7px;
+  }
+
+  .discord-members{
+    margin-top:5px;
+
+    margin-bottom:6px;
+  }
+
+  footer{
+    padding:7px 12px;
+
+    font-size:11px;
   }
 
 }
@@ -973,23 +1076,33 @@ footer a:hover{
 
   <div class="nav-links">
 
-    <a href="/" data-page="home">
+    <a
+      href="/"
+      data-page="home">
       Home
     </a>
 
-    <a href="/art/" data-page="art">
+    <a
+      href="/art/"
+      data-page="art">
       Art
     </a>
 
-    <a href="/downloads/" data-page="downloads">
+    <a
+      href="/downloads/"
+      data-page="downloads">
       Downloads
     </a>
 
-    <a href="/blogs/" data-page="blogs">
+    <a
+      href="/blogs/"
+      data-page="blogs">
       Blogs
     </a>
 
-    <a href="/techintoall/" data-page="techintoall">
+    <a
+      href="/techintoall/"
+      data-page="techintoall">
       TechIntoAll
     </a>
 
@@ -1003,6 +1116,10 @@ footer a:hover{
 
 <main class="main-content">
 
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
   <section class="hero">
 
     <h1>
@@ -1015,7 +1132,16 @@ footer a:hover{
 
   </section>
 
+
+  <!-- =====================================================
+       CARDS
+  ====================================================== -->
+
   <div class="container">
+
+    <!-- ===================================================
+         SOCIALS CARD
+    ==================================================== -->
 
     <div class="card">
 
@@ -1035,7 +1161,7 @@ footer a:hover{
 
         <a
           class="btn"
-          href="https://youtube.com/@rip_deadd">
+          href="https://www.youtube.com/@im_rip32">
 
           YouTube
 
@@ -1046,6 +1172,47 @@ footer a:hover{
           href="https://www.reddit.com/u/rip_dead32/">
 
           Reddit
+
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         DISCORD CARD
+    ==================================================== -->
+
+    <div class="card discord-card">
+
+      <h2>
+        Discord Server
+      </h2>
+
+      <p class="discord-description">
+        Visit Rip_Dead Club!
+      </p>
+
+      <div class="discord-members">
+
+        Active members:
+
+        <strong id="discordMemberCount">
+          Loading...
+        </strong>
+
+      </div>
+
+      <div class="buttons">
+
+        <a
+          class="btn discord-btn"
+          href="https://discord.gg/A9Ap8Tp2jb"
+          target="_blank"
+          rel="noopener noreferrer">
+
+          Join Discord Server
 
         </a>
 
@@ -1090,10 +1257,14 @@ const VERIFIED_KEY =
   "ripdead_turnstile_verified";
 
 const verification =
-  document.getElementById("verification");
+  document.getElementById(
+    "verification"
+  );
 
 const verifyStatus =
-  document.getElementById("verifyStatus");
+  document.getElementById(
+    "verifyStatus"
+  );
 
 /* =========================================================
    CHECK EXISTING VERIFICATION
@@ -1102,9 +1273,9 @@ const verifyStatus =
 function checkVerification(){
 
   if(
-    sessionStorage.getItem(VERIFIED_KEY)
-    ===
-    "true"
+    sessionStorage.getItem(
+      VERIFIED_KEY
+    ) === "true"
   ){
 
     verification.style.display =
@@ -1136,6 +1307,8 @@ window.addEventListener(
 
     checkVerification();
 
+    loadDiscordMembers();
+
   }
 );
 
@@ -1149,12 +1322,6 @@ function verificationSuccess(token){
     "%cCloudflare verification successful.",
     "color:#00ffd5;font-weight:bold;"
   );
-
-  /*
-     Remember that the visitor passed
-     verification during this browser
-     session.
-  */
 
   sessionStorage.setItem(
     VERIFIED_KEY,
@@ -1236,17 +1403,84 @@ function verificationError(){
 }
 
 /* =========================================================
+   DISCORD MEMBER COUNT
+========================================================= */
+
+async function loadDiscordMembers(){
+
+  const memberCount =
+    document.getElementById(
+      "discordMemberCount"
+    );
+
+  try{
+
+    const response =
+      await fetch(
+        "https://discord.com/api/v10/invites/A9Ap8Tp2jb?with_counts=true"
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        "Discord invite request failed"
+      );
+
+    }
+
+    const data =
+      await response.json();
+
+    const count =
+      data.approximate_presence_count;
+
+    if(
+      typeof count === "number"
+    ){
+
+      memberCount.textContent =
+        count.toLocaleString();
+
+    }else{
+
+      memberCount.textContent =
+        "Unavailable";
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Could not load Discord member count:",
+      error
+    );
+
+    memberCount.textContent =
+      "Unavailable";
+
+  }
+
+}
+
+/* =========================================================
    PAGE TRANSITIONS
 ========================================================= */
 
-document.querySelectorAll("a").forEach(
-  a=>{
+document
+  .querySelectorAll("a")
+  .forEach(a=>{
 
     a.addEventListener(
       "click",
       e=>{
 
-        if(a.target === "_blank"){
+        /*
+           External links open normally.
+        */
+
+        if(
+          a.target === "_blank"
+        ){
           return;
         }
 
@@ -1257,7 +1491,8 @@ document.querySelectorAll("a").forEach(
           );
 
         /*
-           Don't animate external links.
+           Don't transition to external
+           websites.
         */
 
         if(
@@ -1283,8 +1518,7 @@ document.querySelectorAll("a").forEach(
       }
     );
 
-  }
-);
+  });
 
 /* =========================================================
    ACTIVE NAV
@@ -1296,7 +1530,9 @@ function setActiveNav(){
     window.location.pathname;
 
   document
-    .querySelectorAll(".nav-links a")
+    .querySelectorAll(
+      ".nav-links a"
+    )
     .forEach(a=>{
 
       const page =
