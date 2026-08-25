@@ -1,0 +1,3443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/x-icon" href="icons/windows.ico">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Windows 98: Dumb Edition</title>
+
+<style>
+/* =========================================================
+   WINDOWS 98: DUMB EDITION
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    background: #008080;
+    color: #000;
+    font-family:
+        "MS Sans Serif",
+        "Microsoft Sans Serif",
+        Tahoma,
+        Arial,
+        sans-serif;
+    font-size: 11px;
+    cursor: url("icons/cursors/arrow.cur"), default;
+    user-select: none;
+}
+
+/* =========================================================
+   BOOT SCREEN
+   ========================================================= */
+
+#bootScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: #000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#bootVideo {
+    width: 100vw;
+    height: 100vh;
+    object-fit: fill;
+    background: #000;
+}
+
+#bootFallback {
+    display: none;
+    position: absolute;
+    color: #fff;
+    font-family: monospace;
+    font-size: 18px;
+}
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+#desktop {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #008080;
+    overflow: hidden;
+    display: none;
+}
+
+/* =========================================================
+   DESKTOP ICONS
+   ========================================================= */
+
+.desktop-icon {
+    position: absolute;
+    width: 82px;
+    min-height: 72px;
+    padding: 4px;
+    text-align: center;
+    color: white;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+.desktop-icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 4px auto;
+}
+
+.desktop-icon span {
+    display: inline;
+    line-height: 14px;
+    padding: 1px 2px;
+}
+
+.desktop-icon.selected span {
+    background: #000080;
+}
+
+/* =========================================================
+   WINDOWS
+   ========================================================= */
+
+.window {
+    position: absolute;
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+    box-shadow: 1px 1px 0 #808080;
+    min-width: 220px;
+    min-height: 100px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+.window.active {
+    z-index: 10000;
+}
+
+/* =========================================================
+   TITLE BAR
+   ========================================================= */
+
+.titlebar {
+    height: 20px;
+    flex-shrink: 0;
+    padding: 2px 3px;
+    display: flex;
+    align-items: center;
+    color: white;
+    background:
+        linear-gradient(
+            to right,
+            #000080 0%,
+            #000080 75%,
+            #1084d0 100%
+        );
+    font-weight: bold;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+.window:not(.active) .titlebar {
+    background:
+        linear-gradient(
+            to right,
+            #808080,
+            #b0b0b0
+        );
+}
+
+.title-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    object-fit: contain;
+}
+
+.title-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.window-buttons {
+    display: flex;
+    gap: 2px;
+    margin-left: 4px;
+}
+
+/* =========================================================
+   TITLE BAR BUTTONS
+   ========================================================= */
+
+.win-button {
+    box-sizing: border-box;
+    width: 16px;
+    min-width: 16px;
+    height: 14px;
+    min-height: 14px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #c0c0c0;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    color: #000;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 10px;
+    text-align: center;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+.win-button:hover {
+    background: #c0c0c0;
+}
+
+.win-button:active {
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    padding-top: 1px;
+    padding-left: 1px;
+}
+
+/* =========================================================
+   WINDOW CONTENT
+   ========================================================= */
+
+.window-content {
+    flex: 1;
+    padding: 8px;
+    overflow: auto;
+    background: #c0c0c0;
+}
+
+/* =========================================================
+   MENUS
+   ========================================================= */
+
+.menu-bar {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    background: #c0c0c0;
+    border-bottom: 1px solid #808080;
+}
+
+.menu-item {
+    height: 18px;
+    padding: 2px 7px;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+.menu-item:hover {
+    background: #000080;
+    color: white;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button,
+input,
+select {
+    font-family:
+        "MS Sans Serif",
+        "Microsoft Sans Serif",
+        Tahoma,
+        Arial,
+        sans-serif;
+    font-size: 11px;
+}
+
+button {
+    min-width: 75px;
+    min-height: 22px;
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+    padding: 2px 8px;
+    color: #000;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+button:active {
+    border-top: 2px solid #000;
+    border-left: 2px solid #000;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    padding-top: 3px;
+    padding-left: 9px;
+}
+
+/* =========================================================
+   ERROR DIALOG
+   ========================================================= */
+
+.error-dialog {
+    width: 380px;
+    min-height: 150px;
+}
+
+.error-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+}
+
+.error-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.error-message {
+    flex: 1;
+    line-height: 16px;
+}
+
+.error-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 0 12px;
+}
+
+/* =========================================================
+   TASKBAR
+   ========================================================= */
+
+#taskbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 28px;
+    z-index: 50000;
+    display: flex;
+    align-items: center;
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+}
+
+#startButton {
+    height: 24px;
+    min-height: 24px;
+    margin-left: 2px;
+    min-width: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-weight: bold;
+}
+
+#startButton img {
+    width: 16px;
+    height: 16px;
+}
+
+#taskButtons {
+    flex: 1;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding-left: 4px;
+    overflow: hidden;
+}
+
+.task-button {
+    height: 22px;
+    min-height: 22px;
+    min-width: 120px;
+    max-width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+/* =========================================================
+   CLOCK
+   ========================================================= */
+
+#clock {
+    height: 22px;
+    min-width: 70px;
+    margin-right: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+}
+
+/* =========================================================
+   START MENU
+   ========================================================= */
+
+#startMenu {
+    position: absolute;
+    left: 2px;
+    bottom: 28px;
+    width: 250px;
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+    z-index: 100000;
+    display: none;
+}
+
+.start-header {
+    width: 30px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #808080;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 6px 3px;
+    text-align: center;
+}
+
+.start-header span {
+    color: #d0d0d0;
+}
+
+.start-items {
+    margin-left: 30px;
+}
+
+.start-item {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    gap: 8px;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+.start-item:hover {
+    background: #000080;
+    color: white;
+}
+
+.start-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.start-item.shutdown-item {
+    margin-top: 4px;
+    border-top: 1px solid #808080;
+}
+
+/* =========================================================
+   FILE EXPLORER
+   ========================================================= */
+
+.file-list {
+    background: white;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    height: 100%;
+    overflow: auto;
+    padding: 8px;
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fill, minmax(100px, 1fr));
+    align-content: start;
+    gap: 8px;
+}
+
+.file-entry {
+    min-height: 70px;
+    text-align: center;
+    padding: 4px;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+.file-entry:hover {
+    background: #000080;
+    color: white;
+}
+
+.file-entry img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: block;
+    margin: auto;
+}
+
+.file-name {
+    display: block;
+    margin-top: 4px;
+    word-break: break-word;
+}
+
+/* =========================================================
+   MY COMPUTER
+   ========================================================= */
+
+.computer-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 18px;
+    background: white;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    padding: 15px;
+    height: 100%;
+}
+
+.computer-item {
+    width: 90px;
+    text-align: center;
+    padding: 6px;
+    cursor: url("icons/cursors/arrow.cur"), default;
+}
+
+.computer-item:hover {
+    background: #000080;
+    color: white;
+}
+
+.computer-item img {
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin: 0 auto 5px;
+}
+
+/* =========================================================
+   NOTEPAD
+   ========================================================= */
+
+.notepad-text {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    background: white;
+    user-select: text;
+    padding: 4px;
+}
+
+/* =========================================================
+   FATAL ERROR
+   ========================================================= */
+
+#fatalOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    color: #fff;
+    z-index: 9999999;
+    font-family: monospace;
+    padding: 30px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+    .desktop-icon {
+        width: 70px;
+    }
+
+    .window {
+        left: 2vw !important;
+        top: 2vh !important;
+        width: 96vw !important;
+        height: calc(100vh - 34px) !important;
+    }
+
+    .error-dialog {
+        width: 94vw !important;
+        min-height: 150px;
+    }
+
+    #startMenu {
+        width: 90vw;
+    }
+
+    .task-button {
+        min-width: 90px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ======================================================
+     BOOT
+     ====================================================== -->
+
+<div id="bootScreen">
+
+    <video
+        id="bootVideo"
+        playsinline
+        preload="auto">
+
+        <source
+            src="windows98boot.mp4"
+            type="video/mp4">
+
+    </video>
+
+    <div id="bootFallback">
+        Starting Windows 98: Dumb Edition...
+    </div>
+
+</div>
+
+<!-- ======================================================
+     DESKTOP
+     ====================================================== -->
+
+<div id="desktop">
+
+    <!-- My Computer -->
+
+    <div
+        class="desktop-icon"
+        style="left: 20px; top: 20px;"
+        ondblclick="openMyComputer()">
+
+        <img src="icons/computer.ico">
+
+        <span>
+            My Computer
+        </span>
+
+    </div>
+
+
+    <!-- C: -->
+
+    <div
+        class="desktop-icon"
+        style="left: 20px; top: 105px;"
+        ondblclick="openExplorer()">
+
+        <img src="icons/directory_closed.ico">
+
+        <span>
+            C:\
+        </span>
+
+    </div>
+
+
+    <!-- Notepad -->
+
+    <div
+        class="desktop-icon"
+        style="left: 20px; top: 190px;"
+        ondblclick="openNotepad()">
+
+        <img src="icons/notepad.ico">
+
+        <span>
+            Notepad
+        </span>
+
+    </div>
+
+
+    <!-- Error -->
+
+    <div
+        class="desktop-icon"
+        style="left: 20px; top: 275px;"
+        ondblclick="triggerRandomError()">
+
+        <img src="icons/msg_error.ico">
+
+        <span>
+            Definitely Not An Error
+        </span>
+
+    </div>
+
+
+    <!-- ==================================================
+         TASKBAR
+         ================================================== -->
+
+    <div id="taskbar">
+
+        <button
+            id="startButton"
+            onclick="toggleStartMenu()">
+
+            <img src="icons/windows.ico">
+
+            Start
+
+        </button>
+
+
+        <div id="taskButtons"></div>
+
+
+        <div id="clock">
+            12:00 PM
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         START MENU
+         ================================================== -->
+
+    <div id="startMenu">
+
+        <div class="start-header">
+            Windows
+            <span>98</span>
+        </div>
+
+
+        <div class="start-items">
+
+            <!-- My Computer -->
+
+            <div
+                class="start-item"
+                onclick="
+                    openMyComputer();
+                    closeStartMenu();
+                ">
+
+                <img src="icons/computer.ico">
+
+                <span>
+                    My Computer
+                </span>
+
+            </div>
+
+
+            <!-- C: -->
+
+            <div
+                class="start-item"
+                onclick="
+                    openExplorer();
+                    closeStartMenu();
+                ">
+
+                <img src="icons/directory_explorer.ico">
+
+                <span>
+                    C:\
+                </span>
+
+            </div>
+
+
+            <!-- Notepad -->
+
+            <div
+                class="start-item"
+                onclick="
+                    openNotepad();
+                    closeStartMenu();
+                ">
+
+                <img src="icons/notepad.ico">
+
+                <span>
+                    Notepad
+                </span>
+
+            </div>
+
+
+            <!-- Random Error -->
+
+            <div
+                class="start-item"
+                onclick="
+                    triggerRandomError();
+                    closeStartMenu();
+                ">
+
+                <img src="icons/msg_error.ico">
+
+                <span>
+                    Random Error
+                </span>
+
+            </div>
+
+
+            <!-- About -->
+
+            <div
+                class="start-item"
+                onclick="
+                    showAbout();
+                    closeStartMenu();
+                ">
+
+                <img src="icons/help_question_mark.ico">
+
+                <span>
+                    About Windows 98: Dumb Edition
+                </span>
+
+            </div>
+
+
+            <!-- Return -->
+
+            <div
+                class="start-item shutdown-item"
+                onclick="returnToRipDead()">
+
+                <img src="icons/computer.ico">
+
+                <span>
+                    Return to Rip_Dead Site
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ======================================================
+     FATAL ERROR
+     ====================================================== -->
+
+<div id="fatalOverlay">
+
+    <h1>
+        Windows 98: Dumb Edition has encountered a problem.
+    </h1>
+
+    <p>
+        Please wait while absolutely nothing happens.
+    </p>
+
+</div>
+
+<!-- ======================================================
+     AUDIO
+     ====================================================== -->
+
+<audio
+    id="errorSound"
+    src="win98error.mp3"
+    preload="auto">
+</audio>
+
+<audio
+    id="startupSound"
+    src="win98startup.mp3"
+    preload="auto">
+</audio>
+
+
+<script>
+"use strict";
+
+/* =========================================================
+   GLOBAL STATE
+   ========================================================= */
+
+const desktop =
+    document.getElementById("desktop");
+
+const bootScreen =
+    document.getElementById("bootScreen");
+
+const bootVideo =
+    document.getElementById("bootVideo");
+
+const errorSound =
+    document.getElementById("errorSound");
+
+const startupSound =
+    document.getElementById("startupSound");
+
+const taskButtons =
+    document.getElementById("taskButtons");
+
+const startMenu =
+    document.getElementById("startMenu");
+
+let zIndex = 100;
+let windowCounter = 0;
+let files = [];
+
+const windows = new Map();
+
+
+/* =========================================================
+   AUDIO STATE
+   ========================================================= */
+
+let audioUnlocked = false;
+let startupPlayed = false;
+
+
+/* =========================================================
+   AUDIO UNLOCK
+   ========================================================= */
+
+function unlockAudio() {
+
+    if (audioUnlocked) {
+        return;
+    }
+
+    /*
+        Browsers generally block audible autoplay.
+
+        This function runs from the first user interaction
+        and unlocks the audio elements.
+    */
+
+    audioUnlocked = true;
+
+    errorSound.volume = 1;
+    startupSound.volume = 1;
+
+
+    /*
+        Unlock error sound.
+    */
+
+    try {
+
+        errorSound.currentTime = 0;
+
+        const errorPromise =
+            errorSound.play();
+
+        if (errorPromise) {
+
+            errorPromise
+                .then(() => {
+
+                    errorSound.pause();
+                    errorSound.currentTime = 0;
+
+                })
+                .catch(() => {});
+
+        }
+
+    } catch {}
+
+
+    /*
+        Unlock startup sound.
+
+        We immediately pause it after the browser accepts
+        playback so it doesn't randomly play in the middle
+        of the desktop.
+    */
+
+    try {
+
+        startupSound.currentTime = 0;
+
+        const startupPromise =
+            startupSound.play();
+
+        if (startupPromise) {
+
+            startupPromise
+                .then(() => {
+
+                    startupSound.pause();
+                    startupSound.currentTime = 0;
+
+                    /*
+                        If the boot sequence has already
+                        finished, play the startup sound now.
+                    */
+
+                    if (
+                        !startupPlayed &&
+                        desktop.style.display === "block"
+                    ) {
+                        playStartupSound();
+                    }
+
+                })
+                .catch(() => {
+
+                    console.warn(
+                        "[Windows 98: Dumb Edition] Startup audio is still blocked."
+                    );
+
+                });
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "[Windows 98: Dumb Edition] Startup audio unlock failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   STARTUP SOUND
+   ========================================================= */
+
+function playStartupSound() {
+
+    if (startupPlayed) {
+        return;
+    }
+
+    startupPlayed = true;
+
+    try {
+
+        startupSound.currentTime = 0;
+        startupSound.volume = 1;
+
+        const promise =
+            startupSound.play();
+
+        if (promise) {
+
+            promise.catch(error => {
+
+                console.warn(
+                    "[Windows 98: Dumb Edition] Startup audio failed:",
+                    error
+                );
+
+                startupPlayed = false;
+
+            });
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "[Windows 98: Dumb Edition] Startup audio failed:",
+            error
+        );
+
+        startupPlayed = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   ERROR SOUND
+   ========================================================= */
+
+function playErrorSound() {
+
+    if (!audioUnlocked) {
+
+        console.warn(
+            "[Windows 98: Dumb Edition] Error audio waiting for user interaction."
+        );
+
+        return;
+    }
+
+    try {
+
+        errorSound.currentTime = 0;
+        errorSound.volume = 1;
+
+        const promise =
+            errorSound.play();
+
+        if (promise) {
+
+            promise.catch(error => {
+
+                console.warn(
+                    "[Windows 98: Dumb Edition] Error audio failed:",
+                    error
+                );
+
+            });
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "[Windows 98: Dumb Edition] Error audio failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AUDIO UNLOCK EVENTS
+   ========================================================= */
+
+document.addEventListener(
+    "pointerdown",
+    unlockAudio,
+    {
+        once: true
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    unlockAudio,
+    {
+        once: true
+    }
+);
+
+
+/* =========================================================
+   PATH HELPERS
+   ========================================================= */
+
+function normalizePath(path) {
+
+    return path
+        .trim()
+        .replaceAll("\\", "/")
+        .replace(/^\/+/, "");
+
+}
+
+
+/* =========================================================
+   FILE LIST
+   ========================================================= */
+
+async function loadFileList() {
+
+    try {
+
+        const response =
+            await fetch(
+                "filenames.txt",
+                {
+                    cache: "no-store"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Could not load filenames.txt"
+            );
+
+        }
+
+        const text =
+            await response.text();
+
+
+        files = text
+            .split(/\r?\n/)
+            .map(normalizePath)
+
+            /* Remove empty lines */
+
+            .filter(Boolean)
+
+            /* Ignore filenames.txt */
+
+            .filter(
+                path =>
+                    path.toLowerCase() !==
+                    "filenames.txt"
+            )
+
+            /* Ignore index.html */
+
+            .filter(
+                path =>
+                    path.toLowerCase() !==
+                    "index.html"
+            )
+
+            /* Ignore ./index.html */
+
+            .filter(
+                path =>
+                    path.toLowerCase() !==
+                    "./index.html"
+            );
+
+
+        console.log(
+            "[Windows 98: Dumb Edition] Found",
+            files.length,
+            "C:/ entries."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "[Windows 98: Dumb Edition] Failed to load filenames.txt:",
+            error
+        );
+
+        files = [];
+
+    }
+
+}
+
+
+/* =========================================================
+   FOLDER DETECTION
+   ========================================================= */
+
+function isFolder(path) {
+
+    return (
+        path.endsWith("/") ||
+        path.endsWith("\\")
+    );
+
+}
+
+
+/* =========================================================
+   DISPLAY NAME
+   ========================================================= */
+
+function getDisplayName(path) {
+
+    let clean =
+        path
+            .replace(/\\/g, "/")
+            .replace(/\/+$/, "");
+
+
+    if (!clean) {
+        return "C:\\";
+    }
+
+
+    const parts =
+        clean.split("/");
+
+    return parts[parts.length - 1];
+
+}
+
+
+/* =========================================================
+   IMAGE DETECTION
+   ========================================================= */
+
+function isImageFile(path) {
+
+    return /\.(ico|png|jpg|jpeg|gif|webp)$/i
+        .test(path);
+
+}
+
+
+/* =========================================================
+   ICON DETECTION
+   ========================================================= */
+
+function getIconForFile(path) {
+
+    const lower =
+        path.toLowerCase();
+
+
+    /* FOLDER */
+
+    if (isFolder(path)) {
+
+        return "icons/directory_closed.ico";
+
+    }
+
+
+    /* IMAGE */
+
+    if (
+        lower.endsWith(".ico") ||
+        lower.endsWith(".png") ||
+        lower.endsWith(".jpg") ||
+        lower.endsWith(".jpeg") ||
+        lower.endsWith(".gif") ||
+        lower.endsWith(".webp")
+    ) {
+
+        return path;
+
+    }
+
+
+    /* AUDIO */
+
+    if (lower.endsWith(".mp3")) {
+
+        return "icons/media_player.ico";
+
+    }
+
+
+    /* VIDEO */
+
+    if (lower.endsWith(".mp4")) {
+
+        return "icons/video_.ico";
+
+    }
+
+
+    /* TEXT */
+
+    if (lower.endsWith(".txt")) {
+
+        return "icons/document.ico";
+
+    }
+
+
+    /* HTML */
+
+    if (lower.endsWith(".html")) {
+
+        return "icons/html.ico";
+
+    }
+
+
+    /* DEFAULT */
+
+    return "icons/document.ico";
+
+}
+
+
+/* =========================================================
+   ICON ERROR FALLBACK
+   ========================================================= */
+
+function setupIconFallback(img, path) {
+
+    img.onerror = () => {
+
+        /*
+            Important:
+            There is deliberately NO directory.ico here.
+        */
+
+        img.onerror = null;
+
+        if (isFolder(path)) {
+
+            img.src =
+                "icons/directory_closed.ico";
+
+        } else {
+
+            img.src =
+                "icons/document.ico";
+
+        }
+
+    };
+
+}
+
+
+/* =========================================================
+   OPEN EXPLORER
+   ========================================================= */
+
+function openExplorer() {
+
+    const win =
+        createWindow(
+            "C:\\",
+            "icons/directory_explorer.ico",
+            700,
+            500
+        );
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "window-content";
+
+
+    const list =
+        document.createElement("div");
+
+    list.className =
+        "file-list";
+
+
+    const entries =
+        new Map();
+
+
+    files.forEach(path => {
+
+        const clean =
+            path
+                .replace(/\\/g, "/")
+                .replace(/^\/+/, "");
+
+
+        if (!clean) {
+            return;
+        }
+
+
+        const slash =
+            clean.indexOf("/");
+
+
+        if (slash === -1) {
+
+            entries.set(
+                clean,
+                path
+            );
+
+            return;
+
+        }
+
+
+        const folder =
+            clean.substring(
+                0,
+                slash + 1
+            );
+
+
+        entries.set(
+            folder,
+            folder
+        );
+
+    });
+
+
+    const displayEntries =
+        [...entries.values()];
+
+
+    if (displayEntries.length === 0) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.style.padding =
+            "20px";
+
+        empty.textContent =
+            "C:\\ is empty.";
+
+        list.appendChild(empty);
+
+    }
+
+
+    displayEntries.forEach(path => {
+
+        const entry =
+            document.createElement("div");
+
+        entry.className =
+            "file-entry";
+
+
+        const img =
+            document.createElement("img");
+
+
+        img.src =
+            getIconForFile(path);
+
+        setupIconFallback(img, path);
+
+
+        const name =
+            document.createElement("span");
+
+        name.className =
+            "file-name";
+
+        name.textContent =
+            getDisplayName(path);
+
+
+        entry.appendChild(img);
+        entry.appendChild(name);
+
+
+        if (isFolder(path)) {
+
+            entry.ondblclick =
+                () => openFolder(path);
+
+        } else {
+
+            entry.ondblclick =
+                () => openFile(path);
+
+        }
+
+
+        list.appendChild(entry);
+
+    });
+
+
+    content.appendChild(list);
+
+    win.content.appendChild(content);
+
+}
+
+
+/* =========================================================
+   OPEN FOLDER
+   ========================================================= */
+
+function openFolder(folderPath) {
+
+    const cleanFolder =
+        folderPath
+            .replace(/\\/g, "/")
+            .replace(/^\/+/, "")
+            .replace(/\/+$/, "");
+
+
+    const title =
+        "C:\\" +
+        cleanFolder;
+
+
+    const win =
+        createWindow(
+            title,
+            "icons/directory_closed.ico",
+            700,
+            500
+        );
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "window-content";
+
+
+    const list =
+        document.createElement("div");
+
+    list.className =
+        "file-list";
+
+
+    const prefix =
+        cleanFolder + "/";
+
+
+    const folderEntries =
+        new Map();
+
+
+    files.forEach(path => {
+
+        const clean =
+            path
+                .replace(/\\/g, "/")
+                .replace(/^\/+/, "");
+
+
+        if (!clean.startsWith(prefix)) {
+            return;
+        }
+
+
+        const remainder =
+            clean.substring(
+                prefix.length
+            );
+
+
+        if (!remainder) {
+            return;
+        }
+
+
+        const slash =
+            remainder.indexOf("/");
+
+
+        if (slash === -1) {
+
+            folderEntries.set(
+                remainder,
+                path
+            );
+
+        } else {
+
+            const childFolder =
+                remainder.substring(
+                    0,
+                    slash + 1
+                );
+
+
+            folderEntries.set(
+                childFolder,
+                prefix + childFolder
+            );
+
+        }
+
+    });
+
+
+    if (folderEntries.size === 0) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.style.padding =
+            "20px";
+
+        empty.textContent =
+            "This folder is empty.";
+
+        list.appendChild(empty);
+
+    }
+
+
+    folderEntries.forEach(
+        (path) => {
+
+            const entry =
+                document.createElement("div");
+
+            entry.className =
+                "file-entry";
+
+
+            const img =
+                document.createElement("img");
+
+
+            img.src =
+                getIconForFile(path);
+
+            setupIconFallback(img, path);
+
+
+            const label =
+                document.createElement("span");
+
+            label.className =
+                "file-name";
+
+            label.textContent =
+                getDisplayName(path);
+
+
+            entry.appendChild(img);
+            entry.appendChild(label);
+
+
+            if (isFolder(path)) {
+
+                entry.ondblclick =
+                    () => openFolder(path);
+
+            } else {
+
+                entry.ondblclick =
+                    () => openFile(path);
+
+            }
+
+
+            list.appendChild(entry);
+
+        }
+    );
+
+
+    content.appendChild(list);
+
+    win.content.appendChild(content);
+
+}
+
+
+/* =========================================================
+   OPEN FILE
+   ========================================================= */
+
+function openFile(path) {
+
+    const lower =
+        path.toLowerCase();
+
+
+    /* HTML */
+
+    if (lower.endsWith(".html")) {
+
+        window.open(
+            path,
+            "_blank"
+        );
+
+        return;
+
+    }
+
+
+    /* MP3 */
+
+    if (lower.endsWith(".mp3")) {
+
+        const audio =
+            new Audio(path);
+
+        audio.play().catch(
+            () => {}
+        );
+
+        return;
+
+    }
+
+
+    /* MP4 */
+
+    if (lower.endsWith(".mp4")) {
+
+        const win =
+            createWindow(
+                getDisplayName(path),
+                "icons/video_.ico",
+                640,
+                420
+            );
+
+
+        const video =
+            document.createElement("video");
+
+
+        video.src =
+            path;
+
+        video.controls =
+            true;
+
+        video.autoplay =
+            true;
+
+        video.style.width =
+            "100%";
+
+        video.style.height =
+            "100%";
+
+        video.style.objectFit =
+            "fill";
+
+
+        win.content.style.padding =
+            "0";
+
+
+        win.content.appendChild(video);
+
+        return;
+
+    }
+
+
+    /* TXT */
+
+    if (lower.endsWith(".txt")) {
+
+        openTextFile(path);
+
+        return;
+
+    }
+
+
+    /* IMAGE */
+
+    if (isImageFile(path)) {
+
+        const win =
+            createWindow(
+                getDisplayName(path),
+                getIconForFile(path),
+                400,
+                350
+            );
+
+
+        const image =
+            document.createElement("img");
+
+
+        image.src =
+            path;
+
+
+        image.style.maxWidth =
+            "100%";
+
+        image.style.maxHeight =
+            "100%";
+
+        image.style.objectFit =
+            "contain";
+
+
+        win.content.style.textAlign =
+            "center";
+
+
+        win.content.appendChild(image);
+
+        return;
+
+    }
+
+
+    /* UNKNOWN */
+
+    triggerError(
+        "Cannot open this file.",
+        "Windows 98: Dumb Edition doesn't know what the hell this file is."
+    );
+
+}
+
+
+/* =========================================================
+   TEXT FILE
+   ========================================================= */
+
+async function openTextFile(path) {
+
+    try {
+
+        const response =
+            await fetch(path);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Could not read file."
+            );
+
+        }
+
+
+        const text =
+            await response.text();
+
+
+        const win =
+            createWindow(
+                getDisplayName(path),
+                "icons/notepad.ico",
+                600,
+                450
+            );
+
+
+        const textarea =
+            document.createElement("textarea");
+
+
+        textarea.className =
+            "notepad-text";
+
+        textarea.value =
+            text;
+
+        textarea.readOnly =
+            true;
+
+
+        win.content.style.padding =
+            "0";
+
+
+        win.content.appendChild(
+            textarea
+        );
+
+    } catch {
+
+        triggerError(
+            "File could not be opened.",
+            "Windows 98: Dumb Edition was unable to read this file."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MY COMPUTER
+   ========================================================= */
+
+function openMyComputer() {
+
+    const win =
+        createWindow(
+            "My Computer",
+            "icons/computer.ico",
+            600,
+            400
+        );
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "window-content computer-content";
+
+
+    const items = [
+
+        [
+            "icons/hard_disk_drive.ico",
+            "Local Disk (C:)",
+            openExplorer
+        ],
+
+        [
+            "icons/cd_drive.ico",
+            "CD Drive",
+            null
+        ],
+
+        [
+            "icons/control_panel.ico",
+            "Control Panel",
+            null
+        ],
+
+        [
+            "icons/printer.ico",
+            "Printers",
+            null
+        ],
+
+        [
+            "icons/network.ico",
+            "Network",
+            null
+        ]
+
+    ];
+
+
+    items.forEach(item => {
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "computer-item";
+
+
+        const img =
+            document.createElement("img");
+
+
+        img.src =
+            item[0];
+
+
+        img.onerror =
+            () => {
+
+                img.onerror = null;
+
+                if (
+                    item[1] ===
+                    "Control Panel"
+                ) {
+
+                    img.src =
+                        "icons/directory_control_panel.ico";
+
+                } else {
+
+                    img.src =
+                        "icons/computer.ico";
+
+                }
+
+            };
+
+
+        const label =
+            document.createElement("div");
+
+        label.textContent =
+            item[1];
+
+
+        div.appendChild(img);
+        div.appendChild(label);
+
+
+        if (item[2]) {
+
+            div.ondblclick =
+                item[2];
+
+        }
+
+
+        content.appendChild(div);
+
+    });
+
+
+    win.content.appendChild(content);
+
+}
+
+
+/* =========================================================
+   NOTEPAD
+   ========================================================= */
+
+function openNotepad() {
+
+    const win =
+        createWindow(
+            "Untitled - Notepad",
+            "icons/notepad.ico",
+            600,
+            420
+        );
+
+
+    const textarea =
+        document.createElement("textarea");
+
+
+    textarea.className =
+        "notepad-text";
+
+    textarea.placeholder =
+        "Type something stupid...";
+
+    textarea.readOnly =
+        false;
+
+
+    win.content.style.padding =
+        "0";
+
+
+    win.content.appendChild(
+        textarea
+    );
+
+}
+
+
+/* =========================================================
+   CREATE WINDOW
+   ========================================================= */
+
+function createWindow(
+    title,
+    icon,
+    width = 500,
+    height = 350
+) {
+
+    windowCounter++;
+
+
+    const id =
+        "window-" +
+        windowCounter;
+
+
+    const win =
+        document.createElement("div");
+
+
+    win.className =
+        "window active";
+
+    win.id =
+        id;
+
+
+    win.style.width =
+        width + "px";
+
+    win.style.height =
+        height + "px";
+
+
+    const offset =
+        (windowCounter * 25) % 220;
+
+
+    win.style.left =
+        (120 + offset) + "px";
+
+
+    win.style.top =
+        (50 + offset / 2) + "px";
+
+
+    win.style.zIndex =
+        ++zIndex;
+
+
+    /* =====================================================
+       TITLE BAR
+       ===================================================== */
+
+    const titlebar =
+        document.createElement("div");
+
+    titlebar.className =
+        "titlebar";
+
+
+    const titleIcon =
+        document.createElement("img");
+
+    titleIcon.className =
+        "title-icon";
+
+    titleIcon.src =
+        icon ||
+        "icons/windows.ico";
+
+
+    titleIcon.onerror =
+        () => {
+
+            titleIcon.onerror = null;
+
+            titleIcon.src =
+                "icons/windows.ico";
+
+        };
+
+
+    const titleText =
+        document.createElement("span");
+
+    titleText.className =
+        "title-text";
+
+    titleText.textContent =
+        title;
+
+
+    const buttons =
+        document.createElement("div");
+
+    buttons.className =
+        "window-buttons";
+
+
+    /* MINIMIZE */
+
+    const minimize =
+        document.createElement("button");
+
+    minimize.className =
+        "win-button";
+
+    minimize.type =
+        "button";
+
+    minimize.title =
+        "Minimize";
+
+    minimize.textContent =
+        "_";
+
+
+    /* MAXIMIZE */
+
+    const maximize =
+        document.createElement("button");
+
+    maximize.className =
+        "win-button";
+
+    maximize.type =
+        "button";
+
+    maximize.title =
+        "Maximize";
+
+    maximize.textContent =
+        "□";
+
+
+    /* CLOSE */
+
+    const close =
+        document.createElement("button");
+
+    close.className =
+        "win-button";
+
+    close.type =
+        "button";
+
+    close.title =
+        "Close";
+
+    close.textContent =
+        "×";
+
+
+    buttons.appendChild(minimize);
+    buttons.appendChild(maximize);
+    buttons.appendChild(close);
+
+
+    titlebar.appendChild(titleIcon);
+    titlebar.appendChild(titleText);
+    titlebar.appendChild(buttons);
+
+
+    /* =====================================================
+       CONTENT
+       ===================================================== */
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "window-content";
+
+
+    win.appendChild(titlebar);
+    win.appendChild(content);
+
+
+    desktop.appendChild(win);
+
+
+    /* =====================================================
+       ACTIVATE
+       ===================================================== */
+
+    function activate() {
+
+        document
+            .querySelectorAll(".window")
+            .forEach(w => {
+
+                w.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+        win.classList.add(
+            "active"
+        );
+
+
+        win.style.zIndex =
+            ++zIndex;
+
+    }
+
+
+    win.addEventListener(
+        "mousedown",
+        activate
+    );
+
+
+    /* =====================================================
+       CLOSE
+       ===================================================== */
+
+    close.onclick =
+        event => {
+
+            event.stopPropagation();
+
+
+            win.remove();
+
+            windows.delete(id);
+
+            updateTaskbar();
+
+        };
+
+
+    /* =====================================================
+       MINIMIZE
+       ===================================================== */
+
+    minimize.onclick =
+        event => {
+
+            event.stopPropagation();
+
+
+            win.style.display =
+                "none";
+
+
+            updateTaskbar();
+
+        };
+
+
+    /* =====================================================
+       MAXIMIZE
+       ===================================================== */
+
+    let maximized =
+        false;
+
+    let oldRect =
+        null;
+
+
+    maximize.onclick =
+        event => {
+
+            event.stopPropagation();
+
+
+            if (!maximized) {
+
+                oldRect = {
+
+                    left:
+                        win.style.left,
+
+                    top:
+                        win.style.top,
+
+                    width:
+                        win.style.width,
+
+                    height:
+                        win.style.height
+
+                };
+
+
+                win.style.left =
+                    "0";
+
+                win.style.top =
+                    "0";
+
+                win.style.width =
+                    "100vw";
+
+                win.style.height =
+                    "calc(100vh - 28px)";
+
+
+                maximized =
+                    true;
+
+            } else {
+
+                win.style.left =
+                    oldRect.left;
+
+                win.style.top =
+                    oldRect.top;
+
+                win.style.width =
+                    oldRect.width;
+
+                win.style.height =
+                    oldRect.height;
+
+
+                maximized =
+                    false;
+
+            }
+
+        };
+
+
+    /* =====================================================
+       DRAGGING
+       ===================================================== */
+
+    let dragging =
+        false;
+
+    let dragX =
+        0;
+
+    let dragY =
+        0;
+
+
+    titlebar.addEventListener(
+        "mousedown",
+        event => {
+
+            if (
+                event.target.closest(
+                    ".win-button"
+                )
+            ) {
+                return;
+            }
+
+
+            activate();
+
+
+            dragging =
+                true;
+
+
+            dragX =
+                event.clientX -
+                win.offsetLeft;
+
+
+            dragY =
+                event.clientY -
+                win.offsetTop;
+
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    document.addEventListener(
+        "mousemove",
+        event => {
+
+            if (
+                !dragging ||
+                maximized
+            ) {
+                return;
+            }
+
+
+            let x =
+                event.clientX -
+                dragX;
+
+
+            let y =
+                event.clientY -
+                dragY;
+
+
+            x =
+                Math.max(
+                    0,
+                    Math.min(
+                        window.innerWidth -
+                        win.offsetWidth,
+                        x
+                    )
+                );
+
+
+            y =
+                Math.max(
+                    0,
+                    Math.min(
+                        window.innerHeight -
+                        50,
+                        y
+                    )
+                );
+
+
+            win.style.left =
+                x + "px";
+
+            win.style.top =
+                y + "px";
+
+        }
+    );
+
+
+    document.addEventListener(
+        "mouseup",
+        () => {
+
+            dragging =
+                false;
+
+        }
+    );
+
+
+    windows.set(
+        id,
+        {
+            element: win,
+            title,
+            icon
+        }
+    );
+
+
+    updateTaskbar();
+
+
+    return {
+        element: win,
+        content,
+        id
+    };
+
+}
+
+
+/* =========================================================
+   TASKBAR
+   ========================================================= */
+
+function updateTaskbar() {
+
+    taskButtons.innerHTML =
+        "";
+
+
+    windows.forEach(
+        (data) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "task-button";
+
+
+            button.textContent =
+                data.title;
+
+
+            button.onclick =
+                () => {
+
+                    const win =
+                        data.element;
+
+
+                    if (
+                        win.style.display ===
+                        "none"
+                    ) {
+
+                        win.style.display =
+                            "flex";
+
+
+                        win.style.zIndex =
+                            ++zIndex;
+
+
+                        win.classList.add(
+                            "active"
+                        );
+
+                    } else {
+
+                        const highest =
+                            [
+                                ...document.querySelectorAll(
+                                    ".window"
+                                )
+                            ]
+                            .sort(
+                                (a, b) =>
+                                    Number(
+                                        b.style.zIndex ||
+                                        0
+                                    ) -
+                                    Number(
+                                        a.style.zIndex ||
+                                        0
+                                    )
+                            )[0];
+
+
+                        if (
+                            highest ===
+                            win
+                        ) {
+
+                            win.style.display =
+                                "none";
+
+                        } else {
+
+                            win.style.zIndex =
+                                ++zIndex;
+
+                            win.style.display =
+                                "flex";
+
+                        }
+
+                    }
+
+                };
+
+
+            taskButtons.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   START MENU
+   ========================================================= */
+
+function toggleStartMenu() {
+
+    startMenu.style.display =
+        startMenu.style.display ===
+        "block"
+            ? "none"
+            : "block";
+
+}
+
+
+function closeStartMenu() {
+
+    startMenu.style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   RETURN TO RIP_DEAD SITE
+   ========================================================= */
+
+function returnToRipDead() {
+
+    closeStartMenu();
+
+    window.location.href = "/";
+
+}
+
+
+/* =========================================================
+   CLOSE START MENU ELSEWHERE
+   ========================================================= */
+
+document.addEventListener(
+    "mousedown",
+    event => {
+
+        if (
+            !event.target.closest(
+                "#startMenu"
+            ) &&
+            !event.target.closest(
+                "#startButton"
+            )
+        ) {
+
+            closeStartMenu();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ERROR SYSTEM
+   ========================================================= */
+
+const errorMessages = [
+
+    [
+        "Illegal operation.",
+        "Windows 98: Dumb Edition has performed an illegal operation and will now continue anyway."
+    ],
+
+    [
+        "This program has stopped responding.",
+        "The program was doing absolutely nothing."
+    ],
+
+    [
+        "Explorer.exe has exploded.",
+        "Windows recommends restarting Windows 98: Dumb Edition."
+    ],
+
+    [
+        "General protection fault.",
+        "Something went horribly wrong. Nobody knows what."
+    ],
+
+    [
+        "Not enough memory.",
+        "Please remove some RAM from your computer."
+    ],
+
+    [
+        "A problem has occurred.",
+        "The problem is that Windows 98: Dumb Edition exists."
+    ],
+
+    [
+        "Cannot find SYSTEM.INI.",
+        "Windows looked everywhere. It found nothing."
+    ],
+
+    [
+        "Unknown error.",
+        "Even Windows 98: Dumb Edition doesn't know what happened."
+    ],
+
+    [
+        "Fatal exception 0E.",
+        "Please sacrifice a floppy disk to continue."
+    ],
+
+    [
+        "Windows has detected Windows.",
+        "This is not supposed to happen."
+    ],
+
+    [
+        "Internet Explorer has discovered the Internet.",
+        "This was a terrible idea."
+    ],
+
+    [
+        "Critical system stupidity.",
+        "The operating system has become too dumb to continue."
+    ],
+
+    [
+        "404: Brain not found.",
+        "Windows has misplaced its remaining intelligence."
+    ]
+
+];
+
+
+/* =========================================================
+   TRIGGER ERROR
+   ========================================================= */
+
+function triggerError(
+    title,
+    message
+) {
+
+    playErrorSound();
+
+
+    const win =
+        createWindow(
+            title,
+            "icons/msg_error.ico",
+            390,
+            170
+        );
+
+
+    win.element.classList.add(
+        "error-dialog"
+    );
+
+
+    win.content.innerHTML =
+        "";
+
+
+    const body =
+        document.createElement(
+            "div"
+        );
+
+    body.className =
+        "error-body";
+
+
+    const icon =
+        document.createElement(
+            "img"
+        );
+
+    icon.className =
+        "error-icon";
+
+    icon.src =
+        "icons/msg_error.ico";
+
+
+    icon.onerror =
+        () => {
+
+            icon.onerror = null;
+
+            icon.src =
+                "icons/msg_error.ico";
+
+        };
+
+
+    const msg =
+        document.createElement(
+            "div"
+        );
+
+    msg.className =
+        "error-message";
+
+    msg.textContent =
+        message;
+
+
+    body.appendChild(icon);
+    body.appendChild(msg);
+
+
+    const buttons =
+        document.createElement(
+            "div"
+        );
+
+    buttons.className =
+        "error-buttons";
+
+
+    const ok =
+        document.createElement(
+            "button"
+        );
+
+    ok.textContent =
+        "OK";
+
+
+    ok.onclick =
+        () => {
+
+            win.element.remove();
+
+            windows.delete(
+                win.id
+            );
+
+            updateTaskbar();
+
+        };
+
+
+    buttons.appendChild(ok);
+
+
+    win.content.appendChild(
+        body
+    );
+
+    win.content.appendChild(
+        buttons
+    );
+
+}
+
+
+/* =========================================================
+   RANDOM ERROR
+   ========================================================= */
+
+function triggerRandomError() {
+
+    const error =
+        errorMessages[
+            Math.floor(
+                Math.random() *
+                errorMessages.length
+            )
+        ];
+
+
+    triggerError(
+        error[0],
+        error[1]
+    );
+
+}
+
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+
+function showAbout() {
+
+    const win =
+        createWindow(
+            "About Windows 98: Dumb Edition",
+            "icons/computer.ico",
+            440,
+            250
+        );
+
+
+    win.content.innerHTML = `
+
+        <div style="
+            display:flex;
+            gap:15px;
+            align-items:flex-start;
+        ">
+
+            <img
+                src="icons/computer.ico"
+                style="
+                    width:48px;
+                    height:48px;
+                "
+            >
+
+            <div>
+
+                <b>
+                    Windows 98: Dumb Edition
+                </b>
+
+                <p>
+                    The world's least necessary
+                    Windows 98 simulator.
+                </p>
+
+                <p>
+                    Built for the Rip_Dead Site.
+                </p>
+
+                <p>
+                    Version 98.0.0.0.0.1
+                </p>
+
+                <p>
+                    Yes, this is actually a website.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            text-align:center;
+            margin-top:20px;
+        ">
+
+            <button
+                onclick="
+                    this.closest('.window').remove();
+                    updateTaskbar();
+                "
+            >
+                OK
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   CLOCK
+   ========================================================= */
+
+function updateClock() {
+
+    const now =
+        new Date();
+
+
+    let hours =
+        now.getHours();
+
+
+    const minutes =
+        String(
+            now.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const suffix =
+        hours >= 12
+            ? "PM"
+            : "AM";
+
+
+    hours =
+        hours % 12 ||
+        12;
+
+
+    document.getElementById(
+        "clock"
+    ).textContent =
+        `${hours}:${minutes} ${suffix}`;
+
+}
+
+
+setInterval(
+    updateClock,
+    1000
+);
+
+updateClock();
+
+
+/* =========================================================
+   DESKTOP ICON SELECTION
+   ========================================================= */
+
+document
+    .querySelectorAll(
+        ".desktop-icon"
+    )
+    .forEach(icon => {
+
+        icon.addEventListener(
+            "click",
+            event => {
+
+                document
+                    .querySelectorAll(
+                        ".desktop-icon"
+                    )
+                    .forEach(
+                        other =>
+                            other.classList.remove(
+                                "selected"
+                            )
+                    );
+
+
+                icon.classList.add(
+                    "selected"
+                );
+
+
+                event.stopPropagation();
+
+            }
+        );
+
+    });
+
+
+desktop.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            desktop
+        ) {
+
+            document
+                .querySelectorAll(
+                    ".desktop-icon"
+                )
+                .forEach(
+                    icon =>
+                        icon.classList.remove(
+                            "selected"
+                        )
+                );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+
+function startBoot() {
+
+    bootScreen.style.display =
+        "flex";
+
+
+    bootVideo.currentTime =
+        0;
+
+
+    /*
+        Boot video stays muted so it can autoplay.
+    */
+
+    bootVideo.muted =
+        true;
+
+    bootVideo.volume =
+        0;
+
+
+    const playPromise =
+        bootVideo.play();
+
+
+    if (playPromise) {
+
+        playPromise.catch(
+            () => {
+
+                document.getElementById(
+                    "bootFallback"
+                ).style.display =
+                    "block";
+
+            }
+        );
+
+    }
+
+
+    bootVideo.addEventListener(
+        "ended",
+        finishBoot,
+        {
+            once: true
+        }
+    );
+
+
+    bootVideo.addEventListener(
+        "error",
+        () => {
+
+            setTimeout(
+                finishBoot,
+                1500
+            );
+
+        },
+        {
+            once: true
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FINISH BOOT
+   ========================================================= */
+
+function finishBoot() {
+
+    bootScreen.style.display =
+        "none";
+
+
+    desktop.style.display =
+        "block";
+
+
+    /*
+        If audio was already unlocked,
+        play the startup sound now.
+
+        Otherwise the first click/key press
+        will unlock it and play it.
+    */
+
+    if (audioUnlocked) {
+
+        playStartupSound();
+
+    }
+
+
+    /*
+        Welcome error because obviously
+        the computer cannot behave normally.
+    */
+
+    setTimeout(
+        () => {
+
+            triggerError(
+                "Windows 98: Dumb Edition",
+                "Welcome to Windows 98: Dumb Edition. Something has already gone wrong."
+            );
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================================================
+   RANDOM ERROR CHAOS
+   ========================================================= */
+
+let chaosTimer =
+    null;
+
+
+function startChaos() {
+
+    if (chaosTimer) {
+
+        clearInterval(
+            chaosTimer
+        );
+
+    }
+
+
+    chaosTimer =
+        setInterval(
+            () => {
+
+                if (
+                    Math.random() <
+                    0.12
+                ) {
+
+                    triggerRandomError();
+
+                }
+
+            },
+            12000
+        );
+
+}
+
+
+startChaos();
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeStartMenu();
+
+        }
+
+
+        if (
+            event.key ===
+            "F1"
+        ) {
+
+            event.preventDefault();
+
+            triggerRandomError();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CONTEXT MENU
+   ========================================================= */
+
+document.addEventListener(
+    "contextmenu",
+    event => {
+
+        event.preventDefault();
+
+
+        triggerError(
+            "Windows 98: Dumb Edition",
+            "Right-click functionality has been removed for absolutely no reason."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LAUNCH
+   ========================================================= */
+
+async function startWindows98() {
+
+    /*
+        Read virtual C:/ file list.
+    */
+
+    await loadFileList();
+
+
+    /*
+        Start Windows 98.
+    */
+
+    startBoot();
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+startWindows98();
+
+</script>
+
+</body>
+</html>
