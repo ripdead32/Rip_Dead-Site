@@ -19,5 +19,12 @@
     "size": "120 MB",
     "category": "mods",
     "file": "https://cdn-ripdead.kozow.com/apis/libraries/zip/tut-rem-v1.zip"
+  },
+  {
+    "name": "Windows 98 Simulator",
+    "type": "Installer",
+    "size": "91 MB",
+    "category": "simulators",
+    "file": "https://github.com/ripdead32/win98simu/releases/download/1.0.0/Windows.98.Simulator.Setup.1.0.0.exe"
   }
 ]
