@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -17,7 +16,6 @@
     >
 
     <style>
-
         /* =========================================================
            GLOBAL
         ========================================================== */
@@ -58,7 +56,6 @@
             opacity: 0;
             transform: translateY(80px);
         }
-
 
         /* =========================================================
            VOID BACKGROUND
@@ -108,7 +105,6 @@
             bottom: -30%;
             width: 120%;
             height: 65vh;
-
             z-index: -1;
             pointer-events: none;
 
@@ -130,7 +126,6 @@
         }
 
         @keyframes voidGlow {
-
             from {
                 transform:
                     translateY(0)
@@ -142,9 +137,7 @@
                     translateY(-25px)
                     scale(1.05);
             }
-
         }
-
 
         /* =========================================================
            NAVBAR
@@ -152,11 +145,9 @@
 
         .navbar {
             position: fixed;
-
             top: 0;
             left: 0;
             right: 0;
-
             z-index: 1000;
 
             display: flex;
@@ -164,7 +155,6 @@
             align-items: center;
 
             padding: 14px 28px;
-
             box-sizing: border-box;
 
             background:
@@ -189,9 +179,7 @@
         .nav-logo {
             font-weight: bold;
             font-size: 18px;
-
             color: #fff;
-
             text-decoration: none;
         }
 
@@ -205,22 +193,17 @@
             position: relative;
 
             display: inline-flex;
-
             align-items: center;
             justify-content: center;
 
             padding: 10px 14px;
-
             border-radius: 10px;
 
             color: #fff;
-
             text-decoration: none;
-
             font-weight: 500;
 
             transition: .25s;
-
             overflow: hidden;
         }
 
@@ -245,7 +228,6 @@
             content: "";
 
             position: absolute;
-
             bottom: 4px;
             left: 50%;
 
@@ -266,6 +248,15 @@
             width: 70%;
         }
 
+        /* =========================================================
+           ACCOUNT CONTROLS
+        ========================================================== */
+
+        .account-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
 
         /* =========================================================
            RIP_DEAD ACCOUNT NAVBAR
@@ -273,14 +264,12 @@
 
         .account-nav {
             display: inline-flex;
-
             align-items: center;
             justify-content: center;
 
             gap: 9px;
 
             min-height: 40px;
-
             padding: 6px 12px;
 
             box-sizing: border-box;
@@ -288,7 +277,6 @@
             border-radius: 12px;
 
             color: #fff;
-
             text-decoration: none;
 
             font-size: 14px;
@@ -340,12 +328,9 @@
         .account-avatar {
             width: 30px;
             height: 30px;
-
-            flex:
-                0 0 30px;
+            flex: 0 0 30px;
 
             border-radius: 50%;
-
             overflow: hidden;
 
             background:
@@ -364,7 +349,6 @@
                 rgba(168, 85, 247, .16);
 
             display: flex;
-
             align-items: center;
             justify-content: center;
         }
@@ -404,12 +388,73 @@
             max-width: 150px;
 
             overflow: hidden;
-
             text-overflow: ellipsis;
-
             white-space: nowrap;
         }
 
+        /* =========================================================
+           LOGOUT BUTTON
+        ========================================================== */
+
+        .account-logout {
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 40px;
+            padding: 6px 12px;
+
+            box-sizing: border-box;
+
+            border-radius: 12px;
+
+            color: #fff;
+            background:
+                rgba(255, 70, 100, .08);
+
+            border:
+                1px solid
+                rgba(255, 90, 120, .18);
+
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background .25s ease,
+                border-color .25s ease,
+                box-shadow .25s ease,
+                transform .25s ease,
+                opacity .25s ease;
+        }
+
+        .account-logout.visible {
+            display: inline-flex;
+        }
+
+        .account-logout:hover {
+            background:
+                rgba(255, 70, 100, .16);
+
+            border-color:
+                rgba(255, 90, 120, .35);
+
+            box-shadow:
+                0 0 20px
+                rgba(255, 70, 100, .14);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .account-logout:disabled {
+            opacity: .6;
+            cursor: wait;
+            transform: none;
+        }
 
         /* =========================================================
            MAIN
@@ -425,7 +470,6 @@
 
             display: flex;
             flex-direction: column;
-
             align-items: center;
 
             padding:
@@ -434,14 +478,12 @@
             text-align: center;
         }
 
-
         /* =========================================================
            HERO
         ========================================================== */
 
         .hero {
             width: 100%;
-
             text-align: center;
         }
 
@@ -466,7 +508,6 @@
                 .8;
         }
 
-
         /* =========================================================
            CARDS
         ========================================================== */
@@ -475,9 +516,7 @@
             width: 100%;
 
             display: flex;
-
             flex-direction: column;
-
             align-items: center;
 
             gap: 18px;
@@ -487,7 +526,6 @@
 
         .card {
             width: 360px;
-
             max-width:
                 calc(100vw - 40px);
 
@@ -573,7 +611,6 @@
                 rgba(168, 85, 247, .6);
         }
 
-
         /* =========================================================
            PROJECTS
         ========================================================== */
@@ -596,7 +633,6 @@
                 1.5;
         }
 
-
         /* =========================================================
            COMMUNITY
         ========================================================== */
@@ -605,9 +641,7 @@
             width: 100%;
 
             display: flex;
-
             align-items: center;
-
             justify-content: center;
 
             gap:
@@ -672,7 +706,6 @@
                 rgba(255, 255, 255, .5);
         }
 
-
         /* =========================================================
            DISCORD
         ========================================================== */
@@ -694,7 +727,6 @@
                 rgba(88, 101, 242, .55);
         }
 
-
         /* =========================================================
            FLUXER
         ========================================================== */
@@ -715,7 +747,6 @@
                 0 0 20px
                 rgba(59, 130, 246, .55);
         }
-
 
         /* =========================================================
            FOOTER
@@ -774,13 +805,11 @@
                 rgba(168, 85, 247, .5);
         }
 
-
         /* =========================================================
            RESPONSIVE
         ========================================================== */
 
         @media (max-width: 900px) {
-
             .community-section {
                 gap:
                     10px;
@@ -790,11 +819,9 @@
                 width:
                     310px;
             }
-
         }
 
         @media (max-width: 700px) {
-
             .navbar {
                 flex-direction:
                     column;
@@ -823,6 +850,11 @@
 
                 font-size:
                     13px;
+            }
+
+            .account-controls {
+                gap:
+                    4px;
             }
 
             .account-nav {
@@ -855,6 +887,17 @@
             .account-name {
                 max-width:
                     120px;
+            }
+
+            .account-logout {
+                min-height:
+                    34px;
+
+                padding:
+                    5px 9px;
+
+                font-size:
+                    12px;
             }
 
             .main-content {
@@ -913,11 +956,9 @@
                 font-size:
                     12px;
             }
-
         }
 
         @media (max-width: 650px) {
-
             .community-section {
                 flex-direction:
                     column;
@@ -938,11 +979,9 @@
                 max-width:
                     calc(100vw - 40px);
             }
-
         }
 
         @media (max-height: 700px) {
-
             .main-content {
                 padding:
                     92px 15px 58px;
@@ -1004,15 +1043,12 @@
                 font-size:
                     11px;
             }
-
         }
 
         @media (prefers-reduced-motion: reduce) {
-
             *,
             *::before,
             *::after {
-
                 animation-duration:
                     .01ms !important;
 
@@ -1022,17 +1058,13 @@
                 transition-duration:
                     .01ms !important;
             }
-
         }
-
     </style>
-
 </head>
 
 <body>
 
     <div class="void-glow"></div>
-
 
     <!-- =======================================================
          NAVBAR
@@ -1049,7 +1081,6 @@
         >
             Rip_Dead Site
         </a>
-
 
         <div class="nav-links">
 
@@ -1095,27 +1126,36 @@
                 Among Us Club
             </a>
 
-
             <!-- =================================================
                  RIP_DEAD ACCOUNT
             ================================================== -->
 
-            <a
-                id="accountNav"
-                class="account-nav sign-in"
-                href="https://account.ripdead.de5.net/login/"
-            >
+            <div class="account-controls">
 
-                <span id="accountNavText">
-                    Sign in into a Rip_Dead Account
-                </span>
+                <a
+                    id="accountNav"
+                    class="account-nav sign-in"
+                    href="https://account.ripdead.de5.net/login/"
+                >
+                    <span id="accountNavText">
+                        Sign in into a Rip_Dead Account
+                    </span>
+                </a>
 
-            </a>
+                <button
+                    id="accountLogout"
+                    class="account-logout"
+                    type="button"
+                    aria-label="Log out of Rip_Dead Account"
+                >
+                    Log Out
+                </button>
+
+            </div>
 
         </div>
 
     </div>
-
 
     <!-- =======================================================
          MAIN
@@ -1135,9 +1175,7 @@
 
         </section>
 
-
         <div class="container">
-
 
             <!-- ===================================================
                  SOCIALS
@@ -1182,7 +1220,6 @@
 
             </div>
 
-
             <!-- ===================================================
                  PROJECTS
             ==================================================== -->
@@ -1211,13 +1248,11 @@
 
             </div>
 
-
             <!-- ===================================================
                  DISCORD / FLUXER
             ==================================================== -->
 
             <div class="community-section">
-
 
                 <!-- DISCORD -->
 
@@ -1232,13 +1267,11 @@
                     </p>
 
                     <div class="community-members">
-
                         Active members:
 
                         <strong id="discordMemberCount">
                             Loading...
                         </strong>
-
                     </div>
 
                     <div class="buttons">
@@ -1256,13 +1289,11 @@
 
                 </div>
 
-
                 <!-- OR -->
 
                 <div class="community-or">
                     OR
                 </div>
-
 
                 <!-- FLUXER -->
 
@@ -1277,13 +1308,11 @@
                     </p>
 
                     <div class="community-members">
-
                         Active Members:
 
                         <strong id="fluxerMemberCount">
                             Unavailable
                         </strong>
-
                     </div>
 
                     <div class="buttons">
@@ -1307,7 +1336,6 @@
 
     </main>
 
-
     <!-- =======================================================
          FOOTER
     ======================================================== -->
@@ -1330,7 +1358,6 @@
 
     </footer>
 
-
     <script>
 
         /* =========================================================
@@ -1346,6 +1373,9 @@
         const SITE_SESSION_FUNCTION =
             "https://vcwfgyikbvfzgqiljmry.supabase.co/functions/v1/site-session";
 
+        const SITE_SESSION_LOGOUT_FUNCTION =
+            "https://vcwfgyikbvfzgqiljmry.supabase.co/functions/v1/site-session-logout";
+
 
         /* =========================================================
            ACCOUNT NAV
@@ -1356,9 +1386,9 @@
                 "accountNav"
             );
 
-        const accountNavText =
+        const accountLogout =
             document.getElementById(
-                "accountNavText"
+                "accountLogout"
             );
 
 
@@ -1366,9 +1396,7 @@
            CREATE NAVBAR AVATAR
         ========================================================== */
 
-        function createNavbarAvatar(
-            profile
-        ) {
+        function createNavbarAvatar(profile) {
 
             const avatar =
                 document.createElement(
@@ -1377,7 +1405,6 @@
 
             avatar.className =
                 "account-avatar empty";
-
 
             if (
                 profile &&
@@ -1405,7 +1432,6 @@
                     image
                 );
             }
-
 
             return avatar;
         }
@@ -1438,11 +1464,9 @@
                     SITE_SESSION_KEY
                 );
 
-
             if (!token) {
                 return null;
             }
-
 
             /*
              * Check local expiration first.
@@ -1453,14 +1477,12 @@
                     SITE_SESSION_EXPIRES_KEY
                 );
 
-
             if (storedExpiration) {
 
                 const expiration =
                     new Date(
                         storedExpiration
                     ).getTime();
-
 
                 if (
                     Number.isFinite(expiration) &&
@@ -1471,9 +1493,7 @@
 
                     return null;
                 }
-
             }
-
 
             /*
              * Validate the session
@@ -1500,21 +1520,14 @@
                         }
                     );
 
-
                 let result = null;
 
-
                 try {
-
                     result =
                         await response.json();
-
                 } catch {
-
                     result = null;
-
                 }
-
 
                 if (
                     !response.ok ||
@@ -1527,7 +1540,6 @@
                     return null;
                 }
 
-
                 /*
                  * Keep expiration synchronized.
                  */
@@ -1538,9 +1550,7 @@
                         SITE_SESSION_EXPIRES_KEY,
                         result.expires_at
                     );
-
                 }
-
 
                 return result;
 
@@ -1558,7 +1568,6 @@
 
                 return null;
             }
-
         }
 
 
@@ -1570,7 +1579,6 @@
 
             const params =
                 new URLSearchParams({
-
                     client_id:
                         "ripdead-site",
 
@@ -1585,9 +1593,7 @@
 
                     state:
                         crypto.randomUUID()
-
                 });
-
 
             return (
                 "https://account.ripdead.de5.net/authorize/?" +
@@ -1597,20 +1603,10 @@
 
 
         /* =========================================================
-           ACCOUNT NAVBAR
+           RESET ACCOUNT NAV
         ========================================================== */
 
-        async function loadAccountNavbar() {
-
-            if (!accountNav) {
-                return;
-            }
-
-
-            /*
-             * Always make sure the sign-in button
-             * exists immediately.
-             */
+        function resetAccountNavbar() {
 
             accountNav.classList.remove(
                 "logged-in"
@@ -1625,19 +1621,125 @@
 
             accountNav.innerHTML = "";
 
-
-            const initialText =
+            const text =
                 document.createElement(
                     "span"
                 );
 
-            initialText.textContent =
+            text.textContent =
                 "Sign in into a Rip_Dead Account";
 
             accountNav.appendChild(
-                initialText
+                text
             );
 
+            accountLogout.classList.remove(
+                "visible"
+            );
+
+            accountLogout.disabled = false;
+
+            accountLogout.textContent =
+                "Log Out";
+        }
+
+
+        /* =========================================================
+           LOG OUT OF RIP_DEAD SITE
+        ========================================================== */
+
+        async function logoutSiteSession() {
+
+            if (
+                accountLogout.disabled
+            ) {
+                return;
+            }
+
+            const token =
+                localStorage.getItem(
+                    SITE_SESSION_KEY
+                );
+
+            accountLogout.disabled = true;
+
+            accountLogout.textContent =
+                "Logging out...";
+
+            try {
+
+                if (token) {
+
+                    const response =
+                        await fetch(
+                            SITE_SESSION_LOGOUT_FUNCTION,
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        token
+                                    })
+                            }
+                        );
+
+                    if (!response.ok) {
+
+                        console.warn(
+                            "[Rip_Dead Site] Logout endpoint returned:",
+                            response.status
+                        );
+                    }
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "[Rip_Dead Site] Logout request failed:",
+                    error
+                );
+
+            } finally {
+
+                /*
+                 * Always clear the local session.
+                 *
+                 * Even if the network request fails,
+                 * the browser should no longer consider
+                 * itself logged in.
+                 */
+
+                clearSiteSession();
+
+                resetAccountNavbar();
+
+                /*
+                 * Return to the normal signed-out
+                 * state without requiring a full page
+                 * navigation.
+                 */
+
+                window.location.reload();
+            }
+        }
+
+
+        /* =========================================================
+           ACCOUNT NAVBAR
+        ========================================================== */
+
+        async function loadAccountNavbar() {
+
+            if (!accountNav) {
+                return;
+            }
+
+            resetAccountNavbar();
 
             /*
              * Now check whether the user has
@@ -1647,11 +1749,9 @@
             const session =
                 await getRipDeadSiteSession();
 
-
             if (!session) {
                 return;
             }
-
 
             /*
              * Logged in.
@@ -1660,12 +1760,10 @@
             const profile =
                 session.profile || null;
 
-
             const displayName =
                 profile?.display_name ||
                 profile?.username ||
                 "Rip_Dead Account";
-
 
             accountNav.classList.remove(
                 "sign-in"
@@ -1675,19 +1773,15 @@
                 "logged-in"
             );
 
-
             accountNav.href =
                 "https://account.ripdead.de5.net/account/";
 
-
             accountNav.innerHTML = "";
-
 
             const avatar =
                 createNavbarAvatar(
                     profile
                 );
-
 
             const name =
                 document.createElement(
@@ -1700,7 +1794,6 @@
             name.textContent =
                 displayName;
 
-
             accountNav.appendChild(
                 avatar
             );
@@ -1709,6 +1802,13 @@
                 name
             );
 
+            /*
+             * Show logout button.
+             */
+
+            accountLogout.classList.add(
+                "visible"
+            );
         }
 
 
@@ -1723,11 +1823,9 @@
                     "discordMemberCount"
                 );
 
-
             if (!memberCount) {
                 return;
             }
-
 
             try {
 
@@ -1736,23 +1834,18 @@
                         "https://discord.com/api/v10/invites/A9Ap8Tp2jb?with_counts=true"
                     );
 
-
                 if (!response.ok) {
 
                     throw new Error(
                         "Discord invite request failed"
                     );
-
                 }
-
 
                 const data =
                     await response.json();
 
-
                 const count =
                     data.approximate_presence_count;
-
 
                 if (
                     typeof count === "number"
@@ -1765,7 +1858,6 @@
 
                     memberCount.textContent =
                         "Unavailable";
-
                 }
 
             } catch (error) {
@@ -1778,7 +1870,6 @@
                 memberCount.textContent =
                     "Unavailable";
             }
-
         }
 
 
@@ -1801,13 +1892,11 @@
                                 return;
                             }
 
-
                             const destination =
                                 new URL(
                                     a.href,
                                     window.location.href
                                 );
-
 
                             /*
                              * External links should
@@ -1821,9 +1910,9 @@
                                 return;
                             }
 
-
                             /*
-                             * Don't animate hash links.
+                             * Don't animate links that
+                             * point to the current page.
                              */
 
                             if (
@@ -1833,14 +1922,11 @@
                                 return;
                             }
 
-
                             e.preventDefault();
-
 
                             document.body.classList.add(
                                 "void-exit"
                             );
-
 
                             setTimeout(
                                 () => {
@@ -1851,12 +1937,23 @@
                                 },
                                 500
                             );
-
                         }
                     );
-
                 }
             );
+
+
+        /* =========================================================
+           LOGOUT BUTTON EVENT
+        ========================================================== */
+
+        if (accountLogout) {
+
+            accountLogout.addEventListener(
+                "click",
+                logoutSiteSession
+            );
+        }
 
 
         /* =========================================================
@@ -1868,7 +1965,6 @@
             const path =
                 window.location.pathname;
 
-
             document
                 .querySelectorAll(
                     ".nav-links a[data-page]"
@@ -1879,7 +1975,6 @@
                         const page =
                             a.dataset.page;
 
-
                         if (
                             path === "/" &&
                             page === "home"
@@ -1888,9 +1983,7 @@
                             a.classList.add(
                                 "active"
                             );
-
                         }
-
 
                         if (
                             path.includes("/art") &&
@@ -1900,9 +1993,7 @@
                             a.classList.add(
                                 "active"
                             );
-
                         }
-
 
                         if (
                             path.includes("/downloads") &&
@@ -1912,9 +2003,7 @@
                             a.classList.add(
                                 "active"
                             );
-
                         }
-
 
                         if (
                             path.includes("/blogs") &&
@@ -1924,9 +2013,7 @@
                             a.classList.add(
                                 "active"
                             );
-
                         }
-
 
                         if (
                             path.includes("/techintoall") &&
@@ -1936,9 +2023,7 @@
                             a.classList.add(
                                 "active"
                             );
-
                         }
-
 
                         if (
                             path.includes("/auclub") &&
@@ -1948,12 +2033,9 @@
                             a.classList.add(
                                 "active"
                             );
-
                         }
-
                     }
                 );
-
         }
 
 
@@ -1968,14 +2050,12 @@
                 "navbar"
             );
 
-
         window.addEventListener(
             "scroll",
             () => {
 
                 const current =
                     window.pageYOffset;
-
 
                 if (
                     current > lastScroll &&
@@ -1991,13 +2071,10 @@
                     navbar.classList.remove(
                         "hidden"
                     );
-
                 }
-
 
                 lastScroll =
                     current;
-
             }
         );
 
@@ -2019,7 +2096,6 @@
                 loadDiscordMembers();
 
                 loadAccountNavbar();
-
             }
         );
 
