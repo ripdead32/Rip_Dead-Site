@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -23,18 +24,24 @@
 
         body {
             min-height: 100vh;
+
             background:
                 radial-gradient(
                     circle at 15% 20%,
-                    rgba(123, 63, 255, 0.20),
+                    rgba(125, 70, 255, 0.24),
                     transparent 35%
                 ),
                 radial-gradient(
                     circle at 85% 75%,
-                    rgba(0, 220, 255, 0.12),
+                    rgba(0, 220, 255, 0.15),
                     transparent 35%
                 ),
-                #04040a;
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(90, 40, 255, 0.12),
+                    transparent 40%
+                ),
+                #05050b;
 
             color: #ffffff;
 
@@ -51,6 +58,7 @@
 
         body::before {
             content: "";
+
             position: fixed;
             inset: 0;
 
@@ -62,12 +70,35 @@
                 );
 
             pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: "";
+
+            position: fixed;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    transparent 0%,
+                    rgba(0,0,0,0.18) 70%,
+                    rgba(0,0,0,0.4) 100%
+                );
+
+            pointer-events: none;
+            z-index: 0;
         }
 
         a {
             color: inherit;
             text-decoration: none;
         }
+
+        /* =========================
+           ANIMATIONS
+        ========================= */
 
         .void-enter {
             animation:
@@ -109,8 +140,32 @@
             }
         }
 
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 0.65;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
         .navbar {
             position: fixed;
+
             top: 16px;
             left: 50%;
 
@@ -146,13 +201,16 @@
 
         .brand {
             font-weight: 800;
+
             letter-spacing: -0.03em;
+
             white-space: nowrap;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
+
             gap: 18px;
 
             color:
@@ -171,7 +229,14 @@
             color: #ffffff;
         }
 
+        /* =========================
+           MAIN
+        ========================= */
+
         .main {
+            position: relative;
+            z-index: 1;
+
             min-height: 100vh;
 
             display: flex;
@@ -185,10 +250,12 @@
         }
 
         .card {
-            width: 100%;
-            max-width: 560px;
+            position: relative;
 
-            padding: 42px;
+            width: 100%;
+            max-width: 620px;
+
+            padding: 44px;
 
             border:
                 1px solid
@@ -199,8 +266,8 @@
             background:
                 linear-gradient(
                     145deg,
-                    rgba(20,20,32,0.82),
-                    rgba(8,8,15,0.78)
+                    rgba(20,20,35,0.84),
+                    rgba(7,7,15,0.80)
                 );
 
             backdrop-filter: blur(24px);
@@ -208,14 +275,67 @@
 
             box-shadow:
                 0 30px 90px
-                rgba(0,0,0,0.45);
+                rgba(0,0,0,0.45),
+
+                0 0 80px
+                rgba(100,60,255,0.08);
 
             text-align: center;
+
+            overflow: hidden;
         }
 
+        .card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 15%;
+            right: 15%;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(150,100,255,0.65),
+                    rgba(0,220,255,0.5),
+                    transparent
+                );
+        }
+
+        .card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            top: -160px;
+            right: -120px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(120,70,255,0.16),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+        }
+
+        /* =========================
+           ICON
+        ========================= */
+
         .icon {
-            width: 76px;
-            height: 76px;
+            width: 78px;
+            height: 78px;
 
             margin:
                 0
@@ -231,16 +351,30 @@
             background:
                 linear-gradient(
                     135deg,
-                    rgba(125,70,255,0.35),
-                    rgba(0,210,255,0.20)
+                    rgba(125,70,255,0.32),
+                    rgba(0,210,255,0.18)
                 );
 
             border:
                 1px solid
                 rgba(255,255,255,0.10);
 
+            box-shadow:
+                0 0 35px
+                rgba(110,70,255,0.12);
+
             font-size: 34px;
+
+            animation:
+                pulse
+                3s
+                ease-in-out
+                infinite;
         }
+
+        /* =========================
+           TEXT
+        ========================= */
 
         h1 {
             margin:
@@ -248,17 +382,18 @@
                 0
                 10px;
 
-            font-size: 30px;
-            letter-spacing: -0.04em;
+            font-size: 32px;
+
+            letter-spacing: -0.045em;
         }
 
         .description {
             margin:
                 0
                 auto
-                28px;
+                30px;
 
-            max-width: 440px;
+            max-width: 460px;
 
             color:
                 rgba(255,255,255,0.62);
@@ -266,8 +401,12 @@
             line-height: 1.6;
         }
 
+        /* =========================
+           STATUS
+        ========================= */
+
         .status {
-            min-height: 60px;
+            min-height: 62px;
 
             display: flex;
             align-items: center;
@@ -279,6 +418,8 @@
                 rgba(255,255,255,0.78);
 
             line-height: 1.5;
+
+            font-size: 14px;
         }
 
         .status.success {
@@ -294,6 +435,8 @@
             height: 26px;
 
             margin-right: 12px;
+
+            flex-shrink: 0;
 
             border:
                 3px solid
@@ -311,14 +454,13 @@
                 infinite;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        /* =========================
+           BUTTON
+        ========================= */
 
         .button {
             display: inline-flex;
+
             align-items: center;
             justify-content: center;
 
@@ -326,7 +468,7 @@
 
             padding:
                 0
-                20px;
+                22px;
 
             border-radius: 14px;
 
@@ -335,7 +477,11 @@
                 rgba(255,255,255,0.10);
 
             background:
-                rgba(255,255,255,0.06);
+                linear-gradient(
+                    135deg,
+                    rgba(125,70,255,0.22),
+                    rgba(0,210,255,0.10)
+                );
 
             color: #ffffff;
 
@@ -346,25 +492,49 @@
 
             transition:
                 transform 0.2s ease,
-                background 0.2s ease;
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
 
         .button:hover {
             transform: translateY(-2px);
 
             background:
-                rgba(255,255,255,0.10);
+                linear-gradient(
+                    135deg,
+                    rgba(125,70,255,0.32),
+                    rgba(0,210,255,0.16)
+                );
+
+            border-color:
+                rgba(255,255,255,0.18);
+
+            box-shadow:
+                0 10px 30px
+                rgba(80,50,255,0.16);
+        }
+
+        .button:active {
+            transform: translateY(0);
         }
 
         .button.hidden {
             display: none;
         }
 
+        /* =========================
+           FOOTER
+        ========================= */
+
         footer {
             position: fixed;
+
             bottom: 18px;
             left: 0;
             right: 0;
+
+            z-index: 10;
 
             text-align: center;
 
@@ -376,13 +546,47 @@
             pointer-events: none;
         }
 
+        /* =========================
+           MOBILE
+        ========================= */
+
         @media (max-width: 800px) {
             .nav-links {
                 display: none;
             }
 
+            .navbar {
+                top: 12px;
+
+                width:
+                    calc(100% - 24px);
+            }
+
+            .main {
+                padding:
+                    100px
+                    14px
+                    80px;
+            }
+
             .card {
-                padding: 30px 22px;
+                padding:
+                    32px
+                    22px;
+
+                border-radius: 24px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .void-enter,
+            .void-exit,
+            .icon {
+                animation: none;
             }
         }
     </style>
@@ -390,7 +594,12 @@
 
 <body>
 
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
     <nav class="navbar void-enter">
+
         <a
             class="brand"
             href="https://ripdead.de5.net/"
@@ -399,23 +608,39 @@
         </a>
 
         <div class="nav-links">
-            <a href="https://ripdead.de5.net/">
+
+            <a
+                href="https://ripdead.de5.net/"
+            >
                 Home
             </a>
 
-            <a href="https://ripdead.de5.net/art/">
+            <a
+                href="https://ripdead.de5.net/art/"
+            >
                 Art
             </a>
 
-            <a href="https://ripdead.de5.net/downloads/">
+            <a
+                href="https://ripdead.de5.net/downloads/"
+            >
                 Downloads
             </a>
 
-            <a href="https://ripdead.de5.net/blogs/">
+            <a
+                href="https://ripdead.de5.net/blogs/"
+            >
                 Blogs
             </a>
+
         </div>
+
     </nav>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
 
     <main class="main">
 
@@ -440,10 +665,13 @@
                 class="status"
                 id="status"
             >
+
                 <div class="spinner"></div>
+
                 <span>
                     Authenticating...
                 </span>
+
             </div>
 
             <button
@@ -458,11 +686,18 @@
 
     </main>
 
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
     <footer>
-        © Rip_Dead — All rights reserved.
+        © 2026 Rip_Dead Studios™ — This project is open source
     </footer>
 
+
     <script>
+
         const OAUTH_EXCHANGE_URL =
             "https://vcwfgyikbvfzgqiljmry.supabase.co/functions/v1/oauth-exchange";
 
@@ -480,6 +715,7 @@
 
         const returnButton =
             document.getElementById("returnButton");
+
 
         function showStatus(
             message,
@@ -503,9 +739,8 @@
             statusElement.appendChild(text);
         }
 
-        function showLoading(
-            message
-        ) {
+
+        function showLoading(message) {
             statusElement.className =
                 "status";
 
@@ -519,29 +754,37 @@
                 .textContent = message;
         }
 
+
         function showReturnButton() {
             returnButton.classList.remove(
                 "hidden"
             );
         }
 
+
         function goHome() {
+
             document.body.classList.add(
                 "void-exit"
             );
 
             setTimeout(() => {
+
                 window.location.href =
                     "https://ripdead.de5.net/";
+
             }, 450);
         }
+
 
         returnButton.addEventListener(
             "click",
             goHome
         );
 
+
         async function handleCallback() {
+
             const params =
                 new URLSearchParams(
                     window.location.search
@@ -561,10 +804,13 @@
                     "error_description"
                 );
 
+
             /*
              * OAuth provider denied access.
              */
+
             if (error) {
+
                 showStatus(
                     errorDescription ||
                     "Authorization was denied.",
@@ -579,10 +825,13 @@
                 return;
             }
 
+
             /*
              * No authorization code.
              */
+
             if (!code) {
+
                 showStatus(
                     "No authorization code was provided.",
                     "error"
@@ -596,11 +845,14 @@
                 return;
             }
 
+
             showLoading(
                 "Exchanging authorization code..."
             );
 
+
             try {
+
                 const response =
                     await fetch(
                         OAUTH_EXCHANGE_URL,
@@ -614,6 +866,7 @@
 
                             body:
                                 JSON.stringify({
+
                                     code:
                                         code,
 
@@ -625,29 +878,39 @@
 
                                     state:
                                         state
+
                                 })
                         }
                     );
 
+
                 let result;
 
                 try {
+
                     result =
                         await response.json();
+
                 } catch {
+
                     result = null;
+
                 }
+
 
                 if (
                     !response.ok ||
                     !result ||
                     !result.success
                 ) {
+
                     throw new Error(
                         result?.error ||
                         "Authentication exchange failed."
                     );
+
                 }
+
 
                 /*
                  * The Edge Function gives us a random,
@@ -655,54 +918,71 @@
                  *
                  * It is NOT a Supabase service key.
                  */
+
                 if (
                     !result.session_token
                 ) {
+
                     throw new Error(
                         "The authentication server did not return a session."
                     );
+
                 }
+
 
                 localStorage.setItem(
                     SITE_SESSION_KEY,
                     result.session_token
                 );
 
+
                 if (
                     result.expires_at
                 ) {
+
                     localStorage.setItem(
                         SITE_SESSION_EXPIRES_KEY,
                         result.expires_at
                     );
+
                 }
+
 
                 /*
                  * Remove ?code=... from browser history.
                  */
+
                 window.history.replaceState(
                     {},
                     document.title,
                     "/auth/callback/"
                 );
 
+
                 showStatus(
                     "Authentication successful!",
                     "success"
                 );
 
+
                 descriptionElement.textContent =
                     "You are now signed in with your Rip_Dead Account.";
 
+
                 setTimeout(() => {
+
                     goHome();
+
                 }, 900);
 
+
             } catch (error) {
+
                 console.error(
                     "[OAuth Callback]",
                     error
                 );
+
 
                 localStorage.removeItem(
                     SITE_SESSION_KEY
@@ -712,20 +992,27 @@
                     SITE_SESSION_EXPIRES_KEY
                 );
 
+
                 showStatus(
                     error.message ||
                     "Authentication failed.",
                     "error"
                 );
 
+
                 descriptionElement.textContent =
                     "We couldn't complete the Rip_Dead Account sign-in.";
 
+
                 showReturnButton();
+
             }
+
         }
 
+
         handleCallback();
+
     </script>
 
 </body>
