@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,264 +11,397 @@
 
     <title>Rip_Dead Site</title>
 
-    <meta
-        name="description"
-        content="Rip_Dead Site, the hub for Rip_Dead Applications, Mods, and Socials!"
-    >
-
     <link
         rel="icon"
         href="/favicon.ico"
     >
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        /* =========================================================
+           GLOBAL
+        ========================================================== */
 
+        html,
         body {
+            width: 100%;
+            height: 100%;
             margin: 0;
-            min-height: 100vh;
-
-            background:
-                radial-gradient(
-                    circle at 10% 20%,
-                    rgba(128, 0, 255, 0.18),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at 90% 75%,
-                    rgba(0, 220, 255, 0.12),
-                    transparent 32%
-                ),
-                #04040a;
-
-            color: #ffffff;
-
-            font-family:
-                Inter,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
+            padding: 0;
             overflow-x: hidden;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
+        html {
+            background: #04040a;
         }
 
-        .void-enter {
+        body {
+            font-family: "Segoe UI", sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            background: #04040a;
+
+            opacity: 0;
+            transform: translateY(60px);
+
+            transition:
+                opacity .6s ease,
+                transform .6s ease;
+        }
+
+        body.void-enter {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.void-exit {
+            opacity: 0;
+            transform: translateY(80px);
+        }
+
+
+        /* =========================================================
+           VOID BACKGROUND
+        ========================================================== */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            pointer-events: none;
+
+            background:
+                radial-gradient(
+                    circle at 50% 40%,
+                    rgba(150, 0, 255, .30),
+                    rgba(10, 0, 25, .85) 55%,
+                    #000 100%
+                );
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+
+            background:
+                radial-gradient(
+                    circle at 20% 60%,
+                    rgba(168, 85, 247, .20),
+                    transparent 60%
+                ),
+                radial-gradient(
+                    circle at 80% 30%,
+                    rgba(0, 255, 200, .10),
+                    transparent 60%
+                );
+
+            filter: blur(50px);
+        }
+
+        .void-glow {
+            position: fixed;
+            left: -10%;
+            bottom: -30%;
+            width: 120%;
+            height: 65vh;
+
+            z-index: -1;
+            pointer-events: none;
+
+            background:
+                radial-gradient(
+                    ellipse,
+                    rgba(0, 255, 200, .10),
+                    transparent 65%
+                );
+
+            filter: blur(80px);
+
             animation:
-                voidEnter
-                0.7s
-                ease
-                both;
+                voidGlow
+                10s
+                ease-in-out
+                infinite
+                alternate;
         }
 
-        .void-exit {
-            animation:
-                voidExit
-                0.5s
-                ease
-                both;
-        }
+        @keyframes voidGlow {
 
-        @keyframes voidEnter {
             from {
-                opacity: 0;
-                transform: translateY(35px);
+                transform:
+                    translateY(0)
+                    scale(1);
             }
 
             to {
-                opacity: 1;
-                transform: translateY(0);
+                transform:
+                    translateY(-25px)
+                    scale(1.05);
             }
+
         }
 
-        @keyframes voidExit {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
 
-            to {
-                opacity: 0;
-                transform: translateY(35px);
-            }
-        }
-
-        /* =========================
+        /* =========================================================
            NAVBAR
-        ========================= */
+        ========================================================== */
 
         .navbar {
             position: fixed;
 
-            top: 16px;
-            left: 50%;
-
-            transform:
-                translateX(-50%);
-
-            width:
-                calc(100% - 32px);
-
-            max-width:
-                1300px;
+            top: 0;
+            left: 0;
+            right: 0;
 
             z-index: 1000;
 
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 18px;
 
-            padding:
-                12px 16px;
+            padding: 14px 28px;
 
-            border:
-                1px solid
-                rgba(255,255,255,0.08);
-
-            border-radius:
-                18px;
+            box-sizing: border-box;
 
             background:
-                rgba(10,10,18,0.72);
+                rgba(0, 0, 0, .55);
 
             backdrop-filter:
-                blur(20px);
+                blur(14px);
 
-            -webkit-backdrop-filter:
-                blur(20px);
-
-            box-shadow:
-                0 12px 50px
-                rgba(0,0,0,0.35);
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, .05);
 
             transition:
-                transform 0.3s ease,
-                opacity 0.3s ease;
+                transform .3s ease;
         }
 
         .navbar.hidden {
-            opacity: 0;
-
             transform:
-                translate(-50%, -130%);
+                translateY(-100%);
         }
 
-        .brand {
-            font-weight: 900;
+        .nav-logo {
+            font-weight: bold;
+            font-size: 18px;
 
-            letter-spacing:
-                -0.04em;
+            color: #fff;
 
-            white-space: nowrap;
+            text-decoration: none;
         }
 
         .nav-links {
             display: flex;
-
+            gap: 8px;
             align-items: center;
-
-            gap: 18px;
-
-            flex: 1;
-
-            color:
-                rgba(255,255,255,0.70);
-
-            font-size: 14px;
         }
 
         .nav-links a {
-            transition:
-                color 0.2s ease,
-                opacity 0.2s ease;
+            position: relative;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px 14px;
+
+            border-radius: 10px;
+
+            color: #fff;
+
+            text-decoration: none;
+
+            font-weight: 500;
+
+            transition: .25s;
+
+            overflow: hidden;
         }
 
-        .nav-links a:hover,
+        .nav-links a:hover {
+            background:
+                rgba(168, 85, 247, .15);
+
+            color:
+                #c084fc;
+        }
+
         .nav-links a.active {
-            color: #ffffff;
+            background:
+                rgba(168, 85, 247, .25);
+
+            box-shadow:
+                0 0 12px
+                rgba(168, 85, 247, .4);
         }
 
-        /* =========================
-           ACCOUNT NAV
-        ========================= */
+        .nav-links a::after {
+            content: "";
+
+            position: absolute;
+
+            bottom: 4px;
+            left: 50%;
+
+            width: 0%;
+            height: 2px;
+
+            background:
+                #a855f7;
+
+            transition:
+                .3s ease;
+
+            transform:
+                translateX(-50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 70%;
+        }
+
+
+        /* =========================================================
+           RIP_DEAD ACCOUNT NAVBAR
+        ========================================================== */
 
         .account-nav {
             display: inline-flex;
 
             align-items: center;
+            justify-content: center;
 
             gap: 9px;
 
-            padding:
-                7px 11px;
+            min-height: 40px;
 
-            border-radius:
-                12px;
+            padding: 6px 12px;
+
+            box-sizing: border-box;
+
+            border-radius: 12px;
+
+            color: #fff;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            background:
+                rgba(168, 85, 247, .10);
 
             border:
                 1px solid
-                rgba(255,255,255,0.09);
+                rgba(168, 85, 247, .18);
 
-            background:
-                rgba(255,255,255,0.045);
-
-            color: #ffffff;
-
-            font-weight: 700;
-
-            font-size: 13px;
-
-            white-space: nowrap;
+            box-shadow:
+                0 0 18px
+                rgba(168, 85, 247, .04);
 
             transition:
-                background 0.2s ease,
-                transform 0.2s ease;
+                background .25s ease,
+                border-color .25s ease,
+                box-shadow .25s ease,
+                transform .25s ease;
         }
 
         .account-nav:hover {
             background:
-                rgba(255,255,255,0.09);
+                rgba(168, 85, 247, .18);
+
+            border-color:
+                rgba(168, 85, 247, .35);
+
+            box-shadow:
+                0 0 22px
+                rgba(168, 85, 247, .18);
 
             transform:
                 translateY(-1px);
         }
 
-        .account-avatar {
-            width: 28px;
-            height: 28px;
+        .account-nav.sign-in {
+            color:
+                #c084fc;
+        }
 
-            min-width: 28px;
-            min-height: 28px;
+        .account-nav.logged-in {
+            padding:
+                5px 11px 5px 6px;
+        }
+
+        .account-avatar {
+            width: 30px;
+            height: 30px;
+
+            flex:
+                0 0 30px;
 
             border-radius: 50%;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(168, 85, 247, .35),
+                    rgba(0, 255, 213, .12)
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, .10);
+
+            box-shadow:
+                0 0 14px
+                rgba(168, 85, 247, .16);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .account-avatar img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            max-width: 100%;
+            max-height: 100%;
 
             object-fit: cover;
             object-position: center;
 
-            display: block;
+            border-radius: 50%;
+        }
 
-            border:
-                1px solid
-                rgba(255,255,255,0.12);
+        .account-avatar.empty::before {
+            content: "";
+
+            width: 11px;
+            height: 11px;
+
+            border-radius: 50%;
 
             background:
-                rgba(255,255,255,0.08);
+                rgba(255, 255, 255, .75);
+
+            box-shadow:
+                0 10px 0 5px
+                rgba(255, 255, 255, .35);
         }
 
         .account-name {
-            max-width: 170px;
+            max-width: 150px;
 
             overflow: hidden;
 
@@ -276,588 +410,932 @@
             white-space: nowrap;
         }
 
-        /* =========================
-           HERO
-        ========================= */
 
-        .hero {
+        /* =========================================================
+           MAIN
+        ========================================================== */
+
+        .main-content {
+            position: relative;
+
+            width: 100%;
             min-height: 100vh;
 
+            box-sizing: border-box;
+
             display: flex;
+            flex-direction: column;
 
             align-items: center;
 
-            justify-content: center;
-
             padding:
-                140px
-                24px
-                110px;
+                110px 20px 90px;
 
             text-align: center;
         }
 
-        .hero-content {
+
+        /* =========================================================
+           HERO
+        ========================================================== */
+
+        .hero {
             width: 100%;
 
-            max-width: 950px;
+            text-align: center;
         }
 
         .hero h1 {
-            margin:
-                0
-                0
-                16px;
+            margin: 0;
 
             font-size:
-                clamp(42px, 8vw, 86px);
+                clamp(30px, 5vw, 42px);
 
             line-height:
-                0.95;
-
-            letter-spacing:
-                -0.065em;
-        }
-
-        .hero h1 span {
-            background:
-                linear-gradient(
-                    90deg,
-                    #ffffff,
-                    #b87cff,
-                    #5ce8ff
-                );
-
-            -webkit-background-clip:
-                text;
-
-            background-clip:
-                text;
-
-            color:
-                transparent;
+                1.15;
         }
 
         .hero p {
-            max-width: 720px;
-
             margin:
-                0
-                auto
-                32px;
-
-            color:
-                rgba(255,255,255,0.60);
+                12px 0 0;
 
             font-size:
-                clamp(16px, 2vw, 20px);
+                18px;
 
-            line-height:
-                1.6;
+            opacity:
+                .8;
         }
 
-        .hero-buttons {
+
+        /* =========================================================
+           CARDS
+        ========================================================== */
+
+        .container {
+            width: 100%;
+
             display: flex;
 
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 12px;
-        }
-
-        .button {
-            display: inline-flex;
+            flex-direction: column;
 
             align-items: center;
 
-            justify-content: center;
-
-            min-height: 46px;
-
-            padding:
-                0 20px;
-
-            border-radius:
-                14px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.09);
-
-            background:
-                rgba(255,255,255,0.055);
-
-            color: #ffffff;
-
-            font-weight: 800;
-
-            font-size: 14px;
-
-            transition:
-                transform 0.2s ease,
-                background 0.2s ease;
-        }
-
-        .button:hover {
-            transform:
-                translateY(-2px);
-
-            background:
-                rgba(255,255,255,0.10);
-        }
-
-        .button.primary {
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(124,67,255,0.70),
-                    rgba(0,205,255,0.32)
-                );
-        }
-
-        /* =========================
-           SECTIONS
-        ========================= */
-
-        .section {
-            width: 100%;
-
-            max-width: 1200px;
-
-            margin:
-                0 auto;
-
-            padding:
-                80px 24px;
-        }
-
-        .section-title {
-            margin:
-                0 0 12px;
-
-            font-size: 34px;
-
-            letter-spacing:
-                -0.04em;
-        }
-
-        .section-description {
-            margin:
-                0 0 30px;
-
-            color:
-                rgba(255,255,255,0.55);
-
-            line-height:
-                1.6;
-        }
-
-        .cards {
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(240px, 1fr)
-                );
-
             gap: 18px;
+
+            margin-top: 30px;
         }
 
         .card {
-            padding: 24px;
+            width: 360px;
+
+            max-width:
+                calc(100vw - 40px);
+
+            padding:
+                26px 30px;
+
+            box-sizing: border-box;
+
+            background:
+                rgba(20, 20, 20, .55);
+
+            backdrop-filter:
+                blur(14px);
+
+            border-radius:
+                16px;
+
+            text-align:
+                center;
 
             border:
                 1px solid
-                rgba(255,255,255,0.08);
-
-            border-radius:
-                22px;
-
-            background:
-                rgba(255,255,255,0.035);
-
-            backdrop-filter:
-                blur(15px);
-
-            -webkit-backdrop-filter:
-                blur(15px);
+                rgba(255, 255, 255, .06);
 
             transition:
-                transform 0.25s ease,
-                background 0.25s ease;
+                .3s;
         }
 
         .card:hover {
             transform:
-                translateY(-5px);
+                translateY(-8px);
 
-            background:
-                rgba(255,255,255,0.055);
+            box-shadow:
+                0 0 35px
+                rgba(168, 85, 247, .25);
         }
 
-        .card h3 {
+        .card h2 {
             margin:
-                0 0 9px;
-
-            font-size: 19px;
+                0 0 18px;
         }
 
-        .card p {
-            margin: 0;
+        .buttons {
+            display:
+                flex;
 
-            color:
-                rgba(255,255,255,0.55);
+            flex-direction:
+                column;
 
-            line-height:
-                1.6;
+            gap:
+                10px;
         }
 
-        /* =========================
-           SOCIALS
-        ========================= */
-
-        .socials {
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-        }
-
-        .social {
+        .btn {
             padding:
-                11px 15px;
+                11px;
 
             border-radius:
-                12px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.08);
+                10px;
 
             background:
-                rgba(255,255,255,0.035);
+                #a855f7;
 
             color:
-                rgba(255,255,255,0.75);
+                #000;
 
-            font-size: 14px;
+            font-weight:
+                bold;
+
+            text-decoration:
+                none;
 
             transition:
-                transform 0.2s ease,
-                background 0.2s ease;
+                .25s;
         }
 
-        .social:hover {
-            transform:
-                translateY(-2px);
-
+        .btn:hover {
             background:
-                rgba(255,255,255,0.08);
+                #c084fc;
+
+            box-shadow:
+                0 0 18px
+                rgba(168, 85, 247, .6);
         }
 
-        /* =========================
+
+        /* =========================================================
+           PROJECTS
+        ========================================================== */
+
+        .project-card {
+            position: relative;
+        }
+
+        .project-description {
+            margin:
+                -6px 0 18px;
+
+            color:
+                rgba(255, 255, 255, .65);
+
+            font-size:
+                14px;
+
+            line-height:
+                1.5;
+        }
+
+
+        /* =========================================================
+           COMMUNITY
+        ========================================================== */
+
+        .community-section {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap:
+                18px;
+        }
+
+        .community-card {
+            width:
+                340px;
+        }
+
+        .community-description {
+            margin:
+                -4px 0 0;
+
+            opacity:
+                .8;
+
+            font-size:
+                16px;
+        }
+
+        .community-members {
+            margin-top:
+                14px;
+
+            margin-bottom:
+                16px;
+
+            font-size:
+                14px;
+
+            color:
+                rgba(255, 255, 255, .6);
+        }
+
+        .community-members strong {
+            color:
+                #fff;
+        }
+
+        .community-or {
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-size:
+                13px;
+
+            font-weight:
+                bold;
+
+            letter-spacing:
+                1px;
+
+            color:
+                rgba(255, 255, 255, .5);
+        }
+
+
+        /* =========================================================
+           DISCORD
+        ========================================================== */
+
+        .discord-btn {
+            background:
+                #5865F2;
+
+            color:
+                #fff;
+        }
+
+        .discord-btn:hover {
+            background:
+                #7289da;
+
+            box-shadow:
+                0 0 20px
+                rgba(88, 101, 242, .55);
+        }
+
+
+        /* =========================================================
+           FLUXER
+        ========================================================== */
+
+        .fluxer-btn {
+            background:
+                #3b82f6;
+
+            color:
+                #fff;
+        }
+
+        .fluxer-btn:hover {
+            background:
+                #60a5fa;
+
+            box-shadow:
+                0 0 20px
+                rgba(59, 130, 246, .55);
+        }
+
+
+        /* =========================================================
            FOOTER
-        ========================= */
+        ========================================================== */
 
         footer {
-            padding:
-                40px 24px 35px;
+            position: fixed;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: 500;
+
+            box-sizing: border-box;
 
             text-align: center;
 
-            color:
-                rgba(255,255,255,0.35);
+            padding:
+                18px 25px;
 
-            font-size: 13px;
+            background:
+                rgba(0, 0, 0, .35);
+
+            backdrop-filter:
+                blur(12px);
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, .05);
+
+            font-size:
+                14px;
+
+            opacity:
+                .85;
         }
 
-        /* =========================
-           MOBILE
-        ========================= */
+        footer a {
+            color:
+                #a855f7;
+
+            text-decoration:
+                none;
+
+            font-weight:
+                bold;
+        }
+
+        footer a:hover {
+            color:
+                #c084fc;
+
+            text-shadow:
+                0 0 12px
+                rgba(168, 85, 247, .5);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================== */
 
         @media (max-width: 900px) {
 
-            .nav-links {
-                display: none;
+            .community-section {
+                gap:
+                    10px;
             }
+
+            .community-card {
+                width:
+                    310px;
+            }
+
+        }
+
+        @media (max-width: 700px) {
 
             .navbar {
-                justify-content:
-                    space-between;
-            }
-        }
+                flex-direction:
+                    column;
 
-        @media (max-width: 600px) {
+                gap:
+                    7px;
+
+                padding:
+                    9px 12px;
+            }
+
+            .nav-links {
+                flex-wrap:
+                    wrap;
+
+                justify-content:
+                    center;
+
+                gap:
+                    3px;
+            }
+
+            .nav-links a {
+                padding:
+                    7px 9px;
+
+                font-size:
+                    13px;
+            }
+
+            .account-nav {
+                min-height:
+                    34px;
+
+                padding:
+                    5px 9px;
+
+                font-size:
+                    12px;
+            }
+
+            .account-nav.logged-in {
+                padding:
+                    4px 9px 4px 5px;
+            }
+
+            .account-avatar {
+                width:
+                    25px;
+
+                height:
+                    25px;
+
+                flex:
+                    0 0 25px;
+            }
 
             .account-name {
-                max-width: 100px;
+                max-width:
+                    120px;
             }
 
-            .hero {
-                padding-top: 120px;
-            }
-
-            .section {
+            .main-content {
                 padding:
-                    55px 18px;
+                    118px 15px 68px;
             }
+
+            .hero h1 {
+                font-size:
+                    29px;
+            }
+
+            .hero p {
+                font-size:
+                    14px;
+
+                margin-top:
+                    7px;
+            }
+
+            .container {
+                gap:
+                    10px;
+
+                margin-top:
+                    18px;
+            }
+
+            .card {
+                width:
+                    340px;
+
+                padding:
+                    16px 22px;
+            }
+
+            .card h2 {
+                margin-bottom:
+                    10px;
+            }
+
+            .buttons {
+                gap:
+                    7px;
+            }
+
+            .btn {
+                padding:
+                    8px;
+            }
+
+            footer {
+                padding:
+                    9px 15px;
+
+                font-size:
+                    12px;
+            }
+
         }
+
+        @media (max-width: 650px) {
+
+            .community-section {
+                flex-direction:
+                    column;
+
+                gap:
+                    8px;
+            }
+
+            .community-or {
+                padding:
+                    2px 0;
+            }
+
+            .community-card {
+                width:
+                    340px;
+
+                max-width:
+                    calc(100vw - 40px);
+            }
+
+        }
+
+        @media (max-height: 700px) {
+
+            .main-content {
+                padding:
+                    92px 15px 58px;
+            }
+
+            .hero h1 {
+                font-size:
+                    28px;
+            }
+
+            .hero p {
+                font-size:
+                    13px;
+
+                margin-top:
+                    5px;
+            }
+
+            .container {
+                margin-top:
+                    12px;
+
+                gap:
+                    8px;
+            }
+
+            .card {
+                padding:
+                    12px 20px;
+            }
+
+            .card h2 {
+                margin-bottom:
+                    7px;
+            }
+
+            .buttons {
+                gap:
+                    5px;
+            }
+
+            .btn {
+                padding:
+                    7px;
+            }
+
+            .community-members {
+                margin-top:
+                    5px;
+
+                margin-bottom:
+                    6px;
+            }
+
+            footer {
+                padding:
+                    7px 12px;
+
+                font-size:
+                    11px;
+            }
+
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    .01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    .01ms !important;
+            }
+
+        }
+
     </style>
+
 </head>
 
 <body>
 
-    <!-- =========================
-         NAVBAR
-    ========================= -->
+    <div class="void-glow"></div>
 
-    <nav
-        class="navbar void-enter"
+
+    <!-- =======================================================
+         NAVBAR
+    ======================================================== -->
+
+    <div
+        class="navbar"
         id="navbar"
     >
 
         <a
+            class="nav-logo"
             href="/"
-            class="brand"
         >
-            Rip_Dead
+            Rip_Dead Site
         </a>
+
 
         <div class="nav-links">
 
             <a
                 href="/"
-                class="active"
+                data-page="home"
             >
                 Home
             </a>
 
-            <a href="/art/">
+            <a
+                href="/art/"
+                data-page="art"
+            >
                 Art
             </a>
 
-            <a href="/downloads/">
+            <a
+                href="/downloads/"
+                data-page="downloads"
+            >
                 Downloads
             </a>
 
-            <a href="/blogs/">
+            <a
+                href="/blogs/"
+                data-page="blogs"
+            >
                 Blogs
             </a>
 
             <a
-                href="https://discord.gg/HWr9n4YQmS"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/techintoall/"
+                data-page="techintoall"
             >
                 TechIntoAll
             </a>
 
-            <a href="#">
+            <a
+                href="/auclub/"
+                data-page="auclub"
+            >
                 Among Us Club
+            </a>
+
+
+            <!-- =================================================
+                 RIP_DEAD ACCOUNT
+            ================================================== -->
+
+            <a
+                id="accountNav"
+                class="account-nav sign-in"
+                href="https://account.ripdead.de5.net/login/"
+            >
+
+                <span id="accountNavText">
+                    Sign in into a Rip_Dead Account
+                </span>
+
             </a>
 
         </div>
 
-        <a
-            id="accountNav"
-            class="account-nav"
-            href="#"
-        >
-            Sign in into a Rip_Dead Account
-        </a>
-
-    </nav>
+    </div>
 
 
-    <!-- =========================
-         HERO
-    ========================= -->
+    <!-- =======================================================
+         MAIN
+    ======================================================== -->
 
-    <main>
+    <main class="main-content">
 
-        <section
-            class="hero void-enter"
-        >
+        <section class="hero">
 
-            <div class="hero-content">
+            <h1>
+                Welcome to Rip_Dead Site
+            </h1>
 
-                <h1>
-                    Welcome to
-                    <span>
-                        Rip_Dead Site
-                    </span>
-                </h1>
+            <p>
+                Explore the vast creations of Rip_Dead and his Socials!
+            </p>
 
-                <p>
-                    The hub for Rip_Dead Applications,
-                    Mods, and Socials!
-                </p>
+        </section>
 
-                <div class="hero-buttons">
+
+        <div class="container">
+
+
+            <!-- ===================================================
+                 SOCIALS
+            ==================================================== -->
+
+            <div class="card">
+
+                <h2>
+                    Socials
+                </h2>
+
+                <div class="buttons">
 
                     <a
-                        class="button primary"
-                        href="/downloads/"
+                        class="btn"
+                        href="https://x.com/rip_dead32"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
-                        Explore Downloads
+                        X (Twitter)
                     </a>
 
                     <a
-                        class="button"
-                        href="/blogs/"
+                        class="btn"
+                        href="https://www.youtube.com/@im_rip32"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
-                        Read the Blog
+                        YouTube
+                    </a>
+
+                    <a
+                        class="btn"
+                        href="https://www.reddit.com/u/rip_dead32/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Reddit
                     </a>
 
                 </div>
 
             </div>
 
-        </section>
 
+            <!-- ===================================================
+                 PROJECTS
+            ==================================================== -->
 
-        <!-- =========================
-             PROJECTS
-        ========================= -->
+            <div class="card project-card">
 
-        <section
-            class="section void-enter"
-        >
+                <h2>
+                    Projects
+                </h2>
 
-            <h2 class="section-title">
-                Projects
-            </h2>
+                <p class="project-description">
+                    Check out some of Rip_Dead's projects.
+                </p>
 
-            <p class="section-description">
-                Stuff currently being built by Rip_Dead.
-            </p>
+                <div class="buttons">
 
-            <div class="cards">
+                    <a
+                        class="btn"
+                        href="/win98/"
+                        rel="noopener noreferrer"
+                    >
+                        Windows 98: Dumb Edition
+                    </a>
 
-                <a
-                    class="card"
-                    href="/downloads/"
-                >
-
-                    <h3>
-                        Windows 98 Dumb Edition
-                    </h3>
-
-                    <p>
-                        A dumb little Windows-themed
-                        project because why not.
-                    </p>
-
-                </a>
-
-
-                <a
-                    class="card"
-                    href="/art/"
-                >
-
-                    <h3>
-                        Rip_Dead Art
-
-                    <p>
-                        Funkin' related artwork
-                        and creations.
-                    </p>
-
-                </a>
-
-
-                <a
-                    class="card"
-                    href="/downloads/"
-                >
-
-                    <h3>
-                        Rip_Dead Applications
-                    </h3>
-
-                    <p>
-                        Browse the latest applications
-                        and tools.
-                    </p>
-
-                </a>
+                </div>
 
             </div>
 
-        </section>
+
+            <!-- ===================================================
+                 DISCORD / FLUXER
+            ==================================================== -->
+
+            <div class="community-section">
 
 
-        <!-- =========================
-             SOCIALS
-        ========================= -->
+                <!-- DISCORD -->
 
-        <section
-            class="section void-enter"
-        >
+                <div class="card community-card">
 
-            <h2 class="section-title">
-                Socials
-            </h2>
+                    <h2>
+                        Discord Server
+                    </h2>
 
-            <p class="section-description">
-                Find Rip_Dead around the internet.
-            </p>
+                    <p class="community-description">
+                        Visit Rip_Dead Club!
+                    </p>
 
-            <div class="socials">
+                    <div class="community-members">
 
-                <a
-                    class="social"
-                    href="https://www.facebook.com/share/1XKYnFi3fE/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Facebook
-                </a>
+                        Active members:
 
-                <a
-                    class="social"
-                    href="https://discord.gg/A9Ap8Tp2jb"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Discord
-                </a>
+                        <strong id="discordMemberCount">
+                            Loading...
+                        </strong>
 
-                <a
-                    class="social"
-                    href="https://fluxer.gg/KUmN9sIw"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Fluxer
-                </a>
+                    </div>
+
+                    <div class="buttons">
+
+                        <a
+                            class="btn discord-btn"
+                            href="https://discord.gg/A9Ap8Tp2jb"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Join Discord
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OR -->
+
+                <div class="community-or">
+                    OR
+                </div>
+
+
+                <!-- FLUXER -->
+
+                <div class="card community-card">
+
+                    <h2>
+                        Fluxer Server
+                    </h2>
+
+                    <p class="community-description">
+                        Visit Rip_Dead Club!
+                    </p>
+
+                    <div class="community-members">
+
+                        Active Members:
+
+                        <strong id="fluxerMemberCount">
+                            Unavailable
+                        </strong>
+
+                    </div>
+
+                    <div class="buttons">
+
+                        <a
+                            class="btn fluxer-btn"
+                            href="https://fluxer.gg/KUmN9sIw"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Join Fluxer
+                        </a>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </section>
+        </div>
 
     </main>
 
 
-    <!-- =========================
+    <!-- =======================================================
          FOOTER
-    ========================= -->
+    ======================================================== -->
 
     <footer>
-        © Rip_Dead — All rights reserved.
+
+        © 2026 Rip_Dead Studios™ —
+
+        <a
+            href="https://github.com/ripdead32/Rip_Dead-Site"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <u>
+                <strong>
+                    This project is open source
+                </strong>
+            </u>
+        </a>
+
     </footer>
 
 
     <script>
-        /*
-         * =========================================================
-         * RIP_DEAD SITE AUTHENTICATION
-         * =========================================================
-         */
+
+        /* =========================================================
+           RIP_DEAD SITE SESSION
+        ========================================================== */
 
         const SITE_SESSION_KEY =
             "ripdead_site_session";
@@ -869,11 +1347,89 @@
             "https://vcwfgyikbvfzgqiljmry.supabase.co/functions/v1/site-session";
 
 
-        /*
-         * =========================================================
-         * GET CURRENT RIP_DEAD SITE SESSION
-         * =========================================================
-         */
+        /* =========================================================
+           ACCOUNT NAV
+        ========================================================== */
+
+        const accountNav =
+            document.getElementById(
+                "accountNav"
+            );
+
+        const accountNavText =
+            document.getElementById(
+                "accountNavText"
+            );
+
+
+        /* =========================================================
+           CREATE NAVBAR AVATAR
+        ========================================================== */
+
+        function createNavbarAvatar(
+            profile
+        ) {
+
+            const avatar =
+                document.createElement(
+                    "span"
+                );
+
+            avatar.className =
+                "account-avatar empty";
+
+
+            if (
+                profile &&
+                profile.avatar_url
+            ) {
+
+                const image =
+                    document.createElement(
+                        "img"
+                    );
+
+                image.src =
+                    profile.avatar_url;
+
+                image.alt = "";
+
+                image.addEventListener(
+                    "error",
+                    () => {
+                        image.remove();
+                    }
+                );
+
+                avatar.appendChild(
+                    image
+                );
+            }
+
+
+            return avatar;
+        }
+
+
+        /* =========================================================
+           CLEAR SITE SESSION
+        ========================================================== */
+
+        function clearSiteSession() {
+
+            localStorage.removeItem(
+                SITE_SESSION_KEY
+            );
+
+            localStorage.removeItem(
+                SITE_SESSION_EXPIRES_KEY
+            );
+        }
+
+
+        /* =========================================================
+           GET SITE SESSION
+        ========================================================== */
 
         async function getRipDeadSiteSession() {
 
@@ -882,19 +1438,21 @@
                     SITE_SESSION_KEY
                 );
 
+
             if (!token) {
                 return null;
             }
 
 
             /*
-             * Check the locally stored expiration first.
+             * Check local expiration first.
              */
 
             const storedExpiration =
                 localStorage.getItem(
                     SITE_SESSION_EXPIRES_KEY
                 );
+
 
             if (storedExpiration) {
 
@@ -903,27 +1461,23 @@
                         storedExpiration
                     ).getTime();
 
+
                 if (
                     Number.isFinite(expiration) &&
                     expiration <= Date.now()
                 ) {
 
-                    localStorage.removeItem(
-                        SITE_SESSION_KEY
-                    );
-
-                    localStorage.removeItem(
-                        SITE_SESSION_EXPIRES_KEY
-                    );
+                    clearSiteSession();
 
                     return null;
                 }
+
             }
 
 
             /*
-             * Ask the Edge Function to validate
-             * the session.
+             * Validate the session
+             * with the Edge Function.
              */
 
             try {
@@ -949,6 +1503,7 @@
 
                 let result = null;
 
+
                 try {
 
                     result =
@@ -961,25 +1516,29 @@
                 }
 
 
-                /*
-                 * Invalid / expired / revoked session.
-                 */
-
                 if (
                     !response.ok ||
                     !result ||
                     !result.success
                 ) {
 
-                    localStorage.removeItem(
-                        SITE_SESSION_KEY
-                    );
-
-                    localStorage.removeItem(
-                        SITE_SESSION_EXPIRES_KEY
-                    );
+                    clearSiteSession();
 
                     return null;
+                }
+
+
+                /*
+                 * Keep expiration synchronized.
+                 */
+
+                if (result.expires_at) {
+
+                    localStorage.setItem(
+                        SITE_SESSION_EXPIRES_KEY,
+                        result.expires_at
+                    );
+
                 }
 
 
@@ -988,22 +1547,26 @@
             } catch (error) {
 
                 console.error(
-                    "[Rip_Dead Auth] Session check failed:",
+                    "[Rip_Dead Account] Could not validate site session:",
                     error
                 );
 
+                /*
+                 * Don't destroy a session merely because
+                 * the network temporarily failed.
+                 */
+
                 return null;
             }
+
         }
 
 
-        /*
-         * =========================================================
-         * SIGN IN WITH RIP_DEAD ACCOUNT
-         * =========================================================
-         */
+        /* =========================================================
+           SIGN-IN URL
+        ========================================================== */
 
-        function signInWithRipDead() {
+        function getSignInUrl() {
 
             const params =
                 new URLSearchParams({
@@ -1026,126 +1589,105 @@
                 });
 
 
-            window.location.href =
+            return (
                 "https://account.ripdead.de5.net/authorize/?" +
-                params.toString();
+                params.toString()
+            );
         }
 
 
-        /*
-         * =========================================================
-         * ACCOUNT NAVBAR
-         * =========================================================
-         */
+        /* =========================================================
+           ACCOUNT NAVBAR
+        ========================================================== */
 
         async function loadAccountNavbar() {
-
-            const accountNav =
-                document.getElementById(
-                    "accountNav"
-                );
 
             if (!accountNav) {
                 return;
             }
 
 
+            /*
+             * Always make sure the sign-in button
+             * exists immediately.
+             */
+
+            accountNav.classList.remove(
+                "logged-in"
+            );
+
+            accountNav.classList.add(
+                "sign-in"
+            );
+
+            accountNav.href =
+                getSignInUrl();
+
+            accountNav.innerHTML = "";
+
+
+            const initialText =
+                document.createElement(
+                    "span"
+                );
+
+            initialText.textContent =
+                "Sign in into a Rip_Dead Account";
+
+            accountNav.appendChild(
+                initialText
+            );
+
+
+            /*
+             * Now check whether the user has
+             * a Rip_Dead Site session.
+             */
+
             const session =
                 await getRipDeadSiteSession();
 
 
-            /*
-             * =========================
-             * LOGGED OUT
-             * =========================
-             */
-
             if (!session) {
-
-                accountNav.className =
-                    "account-nav";
-
-                accountNav.innerHTML =
-                    "Sign in into a Rip_Dead Account";
-
-                accountNav.href =
-                    "#";
-
-                accountNav.onclick =
-                    event => {
-
-                        event.preventDefault();
-
-                        signInWithRipDead();
-
-                    };
-
                 return;
             }
 
 
             /*
-             * =========================
-             * LOGGED IN
-             * =========================
+             * Logged in.
              */
 
             const profile =
-                session.profile;
+                session.profile || null;
 
 
-            accountNav.className =
-                "account-nav";
+            const displayName =
+                profile?.display_name ||
+                profile?.username ||
+                "Rip_Dead Account";
+
+
+            accountNav.classList.remove(
+                "sign-in"
+            );
+
+            accountNav.classList.add(
+                "logged-in"
+            );
+
 
             accountNav.href =
                 "https://account.ripdead.de5.net/account/";
 
-            accountNav.onclick = null;
 
             accountNav.innerHTML = "";
 
 
-            /*
-             * Profile avatar
-             */
-
-            if (
-                profile &&
-                profile.avatar_url
-            ) {
-
-                const avatar =
-                    document.createElement(
-                        "img"
-                    );
-
-                avatar.className =
-                    "account-avatar";
-
-                avatar.src =
-                    profile.avatar_url;
-
-                avatar.alt = "";
-
-                avatar.loading =
-                    "eager";
-
-                avatar.onerror =
-                    () => {
-
-                        avatar.remove();
-
-                    };
-
-                accountNav.appendChild(
-                    avatar
+            const avatar =
+                createNavbarAvatar(
+                    profile
                 );
-            }
 
-
-            /*
-             * Display name
-             */
 
             const name =
                 document.createElement(
@@ -1156,45 +1698,288 @@
                 "account-name";
 
             name.textContent =
-                profile?.display_name ||
-                profile?.username ||
-                "Rip_Dead Account";
+                displayName;
+
+
+            accountNav.appendChild(
+                avatar
+            );
 
             accountNav.appendChild(
                 name
             );
+
         }
 
 
-        /*
-         * =========================================================
-         * NAVBAR SCROLL BEHAVIOR
-         * =========================================================
-         */
+        /* =========================================================
+           DISCORD MEMBER COUNT
+        ========================================================== */
 
-        let lastScrollY = 0;
+        async function loadDiscordMembers() {
+
+            const memberCount =
+                document.getElementById(
+                    "discordMemberCount"
+                );
+
+
+            if (!memberCount) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "https://discord.com/api/v10/invites/A9Ap8Tp2jb?with_counts=true"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Discord invite request failed"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                const count =
+                    data.approximate_presence_count;
+
+
+                if (
+                    typeof count === "number"
+                ) {
+
+                    memberCount.textContent =
+                        count.toLocaleString();
+
+                } else {
+
+                    memberCount.textContent =
+                        "Unavailable";
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load Discord member count:",
+                    error
+                );
+
+                memberCount.textContent =
+                    "Unavailable";
+            }
+
+        }
+
+
+        /* =========================================================
+           PAGE TRANSITIONS
+        ========================================================== */
+
+        document
+            .querySelectorAll("a")
+            .forEach(
+                a => {
+
+                    a.addEventListener(
+                        "click",
+                        e => {
+
+                            if (
+                                a.target === "_blank"
+                            ) {
+                                return;
+                            }
+
+
+                            const destination =
+                                new URL(
+                                    a.href,
+                                    window.location.href
+                                );
+
+
+                            /*
+                             * External links should
+                             * navigate normally.
+                             */
+
+                            if (
+                                destination.origin !==
+                                window.location.origin
+                            ) {
+                                return;
+                            }
+
+
+                            /*
+                             * Don't animate hash links.
+                             */
+
+                            if (
+                                destination.href ===
+                                window.location.href
+                            ) {
+                                return;
+                            }
+
+
+                            e.preventDefault();
+
+
+                            document.body.classList.add(
+                                "void-exit"
+                            );
+
+
+                            setTimeout(
+                                () => {
+
+                                    window.location.href =
+                                        destination.href;
+
+                                },
+                                500
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* =========================================================
+           ACTIVE NAV
+        ========================================================== */
+
+        function setActiveNav() {
+
+            const path =
+                window.location.pathname;
+
+
+            document
+                .querySelectorAll(
+                    ".nav-links a[data-page]"
+                )
+                .forEach(
+                    a => {
+
+                        const page =
+                            a.dataset.page;
+
+
+                        if (
+                            path === "/" &&
+                            page === "home"
+                        ) {
+
+                            a.classList.add(
+                                "active"
+                            );
+
+                        }
+
+
+                        if (
+                            path.includes("/art") &&
+                            page === "art"
+                        ) {
+
+                            a.classList.add(
+                                "active"
+                            );
+
+                        }
+
+
+                        if (
+                            path.includes("/downloads") &&
+                            page === "downloads"
+                        ) {
+
+                            a.classList.add(
+                                "active"
+                            );
+
+                        }
+
+
+                        if (
+                            path.includes("/blogs") &&
+                            page === "blogs"
+                        ) {
+
+                            a.classList.add(
+                                "active"
+                            );
+
+                        }
+
+
+                        if (
+                            path.includes("/techintoall") &&
+                            page === "techintoall"
+                        ) {
+
+                            a.classList.add(
+                                "active"
+                            );
+
+                        }
+
+
+                        if (
+                            path.includes("/auclub") &&
+                            page === "auclub"
+                        ) {
+
+                            a.classList.add(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================================
+           SCROLL HIDE NAVBAR
+        ========================================================== */
+
+        let lastScroll = 0;
+
+        const navbar =
+            document.getElementById(
+                "navbar"
+            );
+
 
         window.addEventListener(
             "scroll",
             () => {
 
-                const navbar =
-                    document.getElementById(
-                        "navbar"
-                    );
-
-                if (!navbar) {
-                    return;
-                }
-
-
-                const currentScroll =
-                    window.scrollY;
+                const current =
+                    window.pageYOffset;
 
 
                 if (
-                    currentScroll > lastScrollY &&
-                    currentScroll > 120
+                    current > lastScroll &&
+                    current > 80
                 ) {
 
                     navbar.classList.add(
@@ -1210,108 +1995,54 @@
                 }
 
 
-                lastScrollY =
-                    Math.max(
-                        currentScroll,
-                        0
-                    );
+                lastScroll =
+                    current;
 
-            },
-            {
-                passive: true
             }
         );
 
 
-        /*
-         * =========================================================
-         * PAGE TRANSITIONS
-         * =========================================================
-         */
+        /* =========================================================
+           PAGE LOAD
+        ========================================================== */
 
-        document
-            .querySelectorAll(
-                'a[href^="/"]'
-            )
-            .forEach(
-                link => {
+        window.addEventListener(
+            "DOMContentLoaded",
+            () => {
 
-                    link.addEventListener(
-                        "click",
-                        event => {
+                document.body.classList.add(
+                    "void-enter"
+                );
 
-                            const href =
-                                link.getAttribute(
-                                    "href"
-                                );
+                setActiveNav();
 
+                loadDiscordMembers();
 
-                            if (
-                                !href ||
-                                href === "#"
-                            ) {
-                                return;
-                            }
+                loadAccountNavbar();
+
+            }
+        );
 
 
-                            if (
-                                event.ctrlKey ||
-                                event.metaKey ||
-                                event.shiftKey ||
-                                event.altKey
-                            ) {
-                                return;
-                            }
-
-
-                            event.preventDefault();
-
-
-                            document.body.classList.add(
-                                "void-exit"
-                            );
-
-
-                            setTimeout(
-                                () => {
-
-                                    window.location.href =
-                                        href;
-
-                                },
-                                400
-                            );
-
-                        }
-                    );
-
-                }
-            );
-
-
-        /*
-         * =========================================================
-         * LOAD ACCOUNT
-         * =========================================================
-         */
-
-        loadAccountNavbar();
-
-
-        /*
-         * =========================================================
-         * CONSOLE MESSAGE
-         * =========================================================
-         */
+        /* =========================================================
+           CONSOLE
+        ========================================================== */
 
         console.log(
-            "%cRip_Dead Site",
-            "font-size:20px;font-weight:900;"
+            "%cSTOP! DO NOT INSERT ANYTHING HERE! IT COULD BREAK THE SITE!",
+            "color:#fff;background:#a855f7;padding:6px;border-radius:6px;"
         );
 
         console.log(
-            "Welcome to the Void."
+            "%cRip_Dead Site • VoidUI",
+            "color:#a855f7;font-weight:bold;font-size:15px;"
         );
+
+        console.log(
+            "%cRip_Dead Account integration initialized.",
+            "color:#00ffd5;font-weight:bold;"
+        );
+
     </script>
 
 </body>
