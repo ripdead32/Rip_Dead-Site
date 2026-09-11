@@ -1,1683 +1,1319 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Rip_Dead Site</title>
+
+    <meta
+        name="description"
+        content="Rip_Dead Site, the hub for Rip_Dead Applications, Mods, and Socials!"
+    >
+
+    <link
+        rel="icon"
+        href="/favicon.ico"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(128, 0, 255, 0.18),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 90% 75%,
+                    rgba(0, 220, 255, 0.12),
+                    transparent 32%
+                ),
+                #04040a;
+
+            color: #ffffff;
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .void-enter {
+            animation:
+                voidEnter
+                0.7s
+                ease
+                both;
+        }
+
+        .void-exit {
+            animation:
+                voidExit
+                0.5s
+                ease
+                both;
+        }
+
+        @keyframes voidEnter {
+            from {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes voidExit {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+        }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Rip_Dead Site</title>
-
-<link rel="icon" href="/favicon.ico">
-
-<!-- =========================================================
-     CLOUDFLARE TURNSTILE
-========================================================= -->
-
-<script
-  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-  async
-  defer>
-</script>
-
-<style>
-
-/* =========================================================
-   GLOBAL
-========================================================= */
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-html {
-  background: #04040a;
-}
-
-body {
-  font-family: 'Segoe UI', sans-serif;
-  color: #fff;
-  min-height: 100vh;
-  background: #04040a;
-
-  opacity: 0;
-  transform: translateY(60px);
-
-  transition:
-    opacity .6s ease,
-    transform .6s ease;
-}
-
-body.void-enter {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-body.void-exit {
-  opacity: 0;
-  transform: translateY(80px);
-}
-
-/* =========================================================
-   VOID BACKGROUND
-========================================================= */
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -3;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      rgba(150, 0, 255, .30),
-      rgba(10, 0, 25, .85) 55%,
-      #000 100%
-    );
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      circle at 20% 60%,
-      rgba(168, 85, 247, .20),
-      transparent 60%
-    ),
-    radial-gradient(
-      circle at 80% 30%,
-      rgba(0, 255, 200, .10),
-      transparent 60%
-    );
-
-  filter: blur(50px);
-}
-
-.void-glow {
-  position: fixed;
-  left: -10%;
-  bottom: -30%;
-  width: 120%;
-  height: 65vh;
-
-  z-index: -1;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      ellipse,
-      rgba(0, 255, 200, .10),
-      transparent 65%
-    );
-
-  filter: blur(80px);
-
-  animation:
-    voidGlow 10s ease-in-out infinite alternate;
-}
-
-@keyframes voidGlow {
-
-  from {
-    transform:
-      translateY(0)
-      scale(1);
-  }
-
-  to {
-    transform:
-      translateY(-25px)
-      scale(1.05);
-  }
+        /* =========================
+           NAVBAR
+        ========================= */
 
-}
-
-/* =========================================================
-   CLOUDFLARE VERIFICATION
-========================================================= */
+        .navbar {
+            position: fixed;
 
-#verification {
-  position: fixed;
-  inset: 0;
+            top: 16px;
+            left: 50%;
 
-  width: 100vw;
-  height: 100vh;
+            transform:
+                translateX(-50%);
 
-  z-index: 9000;
+            width:
+                calc(100% - 32px);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+            max-width:
+                1300px;
 
-  box-sizing: border-box;
-  padding: 20px;
+            z-index: 1000;
 
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      rgba(168, 85, 247, .14),
-      transparent 55%
-    ),
-    rgba(2, 2, 7, .96);
+            display: flex;
+            align-items: center;
+            gap: 18px;
 
-  backdrop-filter: blur(10px);
-  overflow: hidden;
+            padding:
+                12px 16px;
 
-  transition:
-    opacity .7s ease,
-    transform .7s ease;
-}
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
 
-#verification.hidden {
-  opacity: 0;
-  transform: translateY(80px);
-  pointer-events: none;
-}
+            border-radius:
+                18px;
 
-.verify-card {
-  width: min(500px, 92vw);
-  max-height: calc(100vh - 40px);
+            background:
+                rgba(10,10,18,0.72);
 
-  box-sizing: border-box;
-  padding: 42px 32px;
+            backdrop-filter:
+                blur(20px);
 
-  text-align: center;
-  overflow: auto;
+            -webkit-backdrop-filter:
+                blur(20px);
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(25, 20, 35, .76),
-      rgba(10, 10, 16, .66)
-    );
+            box-shadow:
+                0 12px 50px
+                rgba(0,0,0,0.35);
 
-  border: 1px solid rgba(255, 255, 255, .07);
-  border-radius: 22px;
+            transition:
+                transform 0.3s ease,
+                opacity 0.3s ease;
+        }
 
-  backdrop-filter: blur(22px);
+        .navbar.hidden {
+            opacity: 0;
 
-  box-shadow:
-    0 25px 80px rgba(0, 0, 0, .5),
-    0 0 45px rgba(168, 85, 247, .08);
-}
+            transform:
+                translate(-50%, -130%);
+        }
 
-.verify-icon {
-  width: 72px;
-  height: 72px;
+        .brand {
+            font-weight: 900;
 
-  margin: 0 auto 24px;
+            letter-spacing:
+                -0.04em;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+            white-space: nowrap;
+        }
 
-  border-radius: 18px;
+        .nav-links {
+            display: flex;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(168, 85, 247, .22),
-      rgba(0, 255, 213, .08)
-    );
+            align-items: center;
 
-  border: 1px solid rgba(168, 85, 247, .25);
+            gap: 18px;
 
-  box-shadow:
-    0 0 35px rgba(168, 85, 247, .16);
+            flex: 1;
 
-  position: relative;
-  overflow: hidden;
-}
+            color:
+                rgba(255,255,255,0.70);
 
-.verify-icon::before {
-  content: "";
+            font-size: 14px;
+        }
 
-  width: 30px;
-  height: 30px;
+        .nav-links a {
+            transition:
+                color 0.2s ease,
+                opacity 0.2s ease;
+        }
 
-  border-radius: 50%;
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffffff;
+        }
 
-  border: 2px solid rgba(192, 132, 252, .85);
+        /* =========================
+           ACCOUNT NAV
+        ========================= */
 
-  box-shadow:
-    0 0 18px rgba(168, 85, 247, .6);
-}
+        .account-nav {
+            display: inline-flex;
 
-.verify-icon::after {
-  content: "";
+            align-items: center;
 
-  position: absolute;
+            gap: 9px;
 
-  width: 8px;
-  height: 8px;
+            padding:
+                7px 11px;
 
-  border-radius: 50%;
+            border-radius:
+                12px;
 
-  background: #00ffd5;
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
 
-  box-shadow:
-    0 0 15px rgba(0, 255, 213, .8);
-}
+            background:
+                rgba(255,255,255,0.045);
 
-.verify-card h1 {
-  margin: 0;
+            color: #ffffff;
 
-  font-size:
-    clamp(28px, 5vw, 40px);
+            font-weight: 700;
 
-  line-height: 1.15;
-}
+            font-size: 13px;
 
-.verify-card > p {
-  margin: 14px auto 0;
+            white-space: nowrap;
 
-  max-width: 410px;
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
 
-  color: rgba(255, 255, 255, .68);
+        .account-nav:hover {
+            background:
+                rgba(255,255,255,0.09);
 
-  font-size: 16px;
-  line-height: 1.6;
-}
+            transform:
+                translateY(-1px);
+        }
 
-.cloudflare-area {
-  margin-top: 30px;
-  padding: 18px;
+        .account-avatar {
+            width: 28px;
+            height: 28px;
 
-  border-radius: 16px;
+            min-width: 28px;
+            min-height: 28px;
 
-  background: rgba(0, 0, 0, .25);
+            border-radius: 50%;
 
-  border:
-    1px solid rgba(255, 255, 255, .055);
+            object-fit: cover;
+            object-position: center;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+            display: block;
 
-.cloudflare-title {
-  margin-bottom: 14px;
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
 
-  color: rgba(255, 255, 255, .45);
+            background:
+                rgba(255,255,255,0.08);
+        }
 
-  font-size: 12px;
+        .account-name {
+            max-width: 170px;
 
-  text-transform: uppercase;
-  letter-spacing: 1.4px;
-}
+            overflow: hidden;
 
-.cloudflare-box {
-  width: 100%;
-  min-height: 70px;
+            text-overflow: ellipsis;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+            white-space: nowrap;
+        }
 
-  border-radius: 12px;
+        /* =========================
+           HERO
+        ========================= */
 
-  background: rgba(255, 255, 255, .025);
+        .hero {
+            min-height: 100vh;
 
-  overflow: hidden;
-}
+            display: flex;
 
-.verify-status {
-  margin-top: 18px !important;
+            align-items: center;
 
-  font-size: 13px !important;
+            justify-content: center;
 
-  color:
-    rgba(255, 255, 255, .42) !important;
-}
+            padding:
+                140px
+                24px
+                110px;
 
-.verify-status.success {
-  color:
-    #00ffd5 !important;
+            text-align: center;
+        }
 
-  text-shadow:
-    0 0 12px rgba(0, 255, 213, .35);
-}
+        .hero-content {
+            width: 100%;
 
-.verify-status.error {
-  color:
-    #ff6b8a !important;
-}
+            max-width: 950px;
+        }
 
-/* =========================================================
-   NAVBAR
-========================================================= */
+        .hero h1 {
+            margin:
+                0
+                0
+                16px;
 
-.navbar {
-  position: fixed;
+            font-size:
+                clamp(42px, 8vw, 86px);
 
-  top: 0;
-  left: 0;
-  right: 0;
+            line-height:
+                0.95;
 
-  z-index: 1000;
+            letter-spacing:
+                -0.065em;
+        }
 
-  display: flex;
+        .hero h1 span {
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #b87cff,
+                    #5ce8ff
+                );
 
-  justify-content: space-between;
-  align-items: center;
+            -webkit-background-clip:
+                text;
 
-  padding: 14px 28px;
+            background-clip:
+                text;
 
-  box-sizing: border-box;
+            color:
+                transparent;
+        }
 
-  background:
-    rgba(0, 0, 0, .55);
+        .hero p {
+            max-width: 720px;
 
-  backdrop-filter: blur(14px);
+            margin:
+                0
+                auto
+                32px;
 
-  border-bottom:
-    1px solid rgba(255, 255, 255, .05);
+            color:
+                rgba(255,255,255,0.60);
 
-  transition:
-    transform .3s ease;
-}
+            font-size:
+                clamp(16px, 2vw, 20px);
 
-.navbar.hidden {
-  transform:
-    translateY(-100%);
-}
+            line-height:
+                1.6;
+        }
 
-.nav-logo {
-  font-weight: bold;
-  font-size: 18px;
+        .hero-buttons {
+            display: flex;
 
-  color: #fff;
+            justify-content: center;
 
-  text-decoration: none;
-}
+            flex-wrap: wrap;
 
-.nav-links {
-  display: flex;
-  gap: 8px;
-}
+            gap: 12px;
+        }
 
-.nav-links a {
-  position: relative;
+        .button {
+            display: inline-flex;
 
-  display: inline-flex;
+            align-items: center;
 
-  align-items: center;
-  justify-content: center;
+            justify-content: center;
 
-  padding: 10px 14px;
+            min-height: 46px;
 
-  border-radius: 10px;
+            padding:
+                0 20px;
 
-  color: #fff;
+            border-radius:
+                14px;
 
-  text-decoration: none;
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
 
-  font-weight: 500;
+            background:
+                rgba(255,255,255,0.055);
 
-  transition: .25s;
+            color: #ffffff;
 
-  overflow: hidden;
-}
+            font-weight: 800;
 
-.nav-links a:hover {
-  background:
-    rgba(168, 85, 247, .15);
+            font-size: 14px;
 
-  color:
-    #c084fc;
-}
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
 
-.nav-links a.active {
-  background:
-    rgba(168, 85, 247, .25);
+        .button:hover {
+            transform:
+                translateY(-2px);
 
-  box-shadow:
-    0 0 12px rgba(168, 85, 247, .4);
-}
+            background:
+                rgba(255,255,255,0.10);
+        }
 
-.nav-links a::after {
-  content: "";
+        .button.primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(124,67,255,0.70),
+                    rgba(0,205,255,0.32)
+                );
+        }
 
-  position: absolute;
+        /* =========================
+           SECTIONS
+        ========================= */
 
-  bottom: 4px;
-  left: 50%;
+        .section {
+            width: 100%;
 
-  width: 0%;
-  height: 2px;
+            max-width: 1200px;
 
-  background:
-    #a855f7;
+            margin:
+                0 auto;
 
-  transition: .3s ease;
+            padding:
+                80px 24px;
+        }
 
-  transform:
-    translateX(-50%);
-}
+        .section-title {
+            margin:
+                0 0 12px;
 
-.nav-links a:hover::after {
-  width: 70%;
-}
+            font-size: 34px;
 
-/* =========================================================
-   MAIN
-========================================================= */
+            letter-spacing:
+                -0.04em;
+        }
 
-.main-content {
-  position: relative;
+        .section-description {
+            margin:
+                0 0 30px;
 
-  width: 100%;
-  min-height: 100vh;
+            color:
+                rgba(255,255,255,0.55);
 
-  box-sizing: border-box;
+            line-height:
+                1.6;
+        }
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+        .cards {
+            display: grid;
 
-  padding:
-    110px 20px 90px;
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(240px, 1fr)
+                );
 
-  text-align: center;
-}
+            gap: 18px;
+        }
 
-/* =========================================================
-   HERO
-========================================================= */
+        .card {
+            padding: 24px;
 
-.hero {
-  width: 100%;
-  text-align: center;
-}
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
 
-.hero h1 {
-  margin: 0;
+            border-radius:
+                22px;
 
-  font-size:
-    clamp(30px, 5vw, 42px);
+            background:
+                rgba(255,255,255,0.035);
 
-  line-height: 1.15;
-}
+            backdrop-filter:
+                blur(15px);
 
-.hero p {
-  margin:
-    12px 0 0;
+            -webkit-backdrop-filter:
+                blur(15px);
 
-  font-size: 18px;
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease;
+        }
 
-  opacity: .8;
-}
+        .card:hover {
+            transform:
+                translateY(-5px);
 
-/* =========================================================
-   CARDS
-========================================================= */
+            background:
+                rgba(255,255,255,0.055);
+        }
 
-.container {
-  width: 100%;
+        .card h3 {
+            margin:
+                0 0 9px;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+            font-size: 19px;
+        }
 
-  gap: 18px;
+        .card p {
+            margin: 0;
 
-  margin-top: 30px;
-}
+            color:
+                rgba(255,255,255,0.55);
 
-.card {
-  width: 360px;
-  max-width:
-    calc(100vw - 40px);
+            line-height:
+                1.6;
+        }
 
-  padding: 26px 30px;
+        /* =========================
+           SOCIALS
+        ========================= */
 
-  box-sizing: border-box;
+        .socials {
+            display: flex;
 
-  background:
-    rgba(20, 20, 20, .55);
+            flex-wrap: wrap;
 
-  backdrop-filter: blur(14px);
+            gap: 10px;
+        }
 
-  border-radius: 16px;
+        .social {
+            padding:
+                11px 15px;
 
-  text-align: center;
+            border-radius:
+                12px;
 
-  border:
-    1px solid rgba(255, 255, 255, .06);
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
 
-  transition: .3s;
-}
+            background:
+                rgba(255,255,255,0.035);
 
-.card:hover {
-  transform:
-    translateY(-8px);
+            color:
+                rgba(255,255,255,0.75);
 
-  box-shadow:
-    0 0 35px rgba(168, 85, 247, .25);
-}
+            font-size: 14px;
 
-.card h2 {
-  margin:
-    0 0 18px;
-}
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
 
-.buttons {
-  display: flex;
-  flex-direction: column;
+        .social:hover {
+            transform:
+                translateY(-2px);
 
-  gap: 10px;
-}
+            background:
+                rgba(255,255,255,0.08);
+        }
 
-.btn {
-  padding: 11px;
+        /* =========================
+           FOOTER
+        ========================= */
 
-  border-radius: 10px;
+        footer {
+            padding:
+                40px 24px 35px;
 
-  background:
-    #a855f7;
+            text-align: center;
 
-  color: #000;
+            color:
+                rgba(255,255,255,0.35);
 
-  font-weight: bold;
+            font-size: 13px;
+        }
 
-  text-decoration: none;
+        /* =========================
+           MOBILE
+        ========================= */
 
-  transition: .25s;
-}
+        @media (max-width: 900px) {
 
-.btn:hover {
-  background:
-    #c084fc;
+            .nav-links {
+                display: none;
+            }
 
-  box-shadow:
-    0 0 18px rgba(168, 85, 247, .6);
-}
+            .navbar {
+                justify-content:
+                    space-between;
+            }
+        }
 
-/* =========================================================
-   PROJECTS
-========================================================= */
+        @media (max-width: 600px) {
 
-.project-card {
-  position: relative;
-}
+            .account-name {
+                max-width: 100px;
+            }
 
-.project-description {
-  margin:
-    -6px 0 18px;
+            .hero {
+                padding-top: 120px;
+            }
 
-  color:
-    rgba(255, 255, 255, .65);
-
-  font-size: 14px;
-
-  line-height: 1.5;
-}
-
-/* =========================================================
-   COMMUNITY
-========================================================= */
-
-.community-section {
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 18px;
-}
-
-.community-card {
-  width: 340px;
-}
-
-.community-description {
-  margin:
-    -4px 0 0;
-
-  opacity: .8;
-
-  font-size: 16px;
-}
-
-.community-members {
-  margin-top: 14px;
-  margin-bottom: 16px;
-
-  font-size: 14px;
-
-  color:
-    rgba(255, 255, 255, .6);
-}
-
-.community-members strong {
-  color: #fff;
-}
-
-.community-or {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 13px;
-
-  font-weight: bold;
-
-  letter-spacing: 1px;
-
-  color:
-    rgba(255, 255, 255, .5);
-}
-
-/* =========================================================
-   DISCORD
-========================================================= */
-
-.discord-btn {
-  background:
-    #5865F2;
-
-  color: #fff;
-}
-
-.discord-btn:hover {
-  background:
-    #7289da;
-
-  box-shadow:
-    0 0 20px rgba(88, 101, 242, .55);
-}
-
-/* =========================================================
-   FLUXER
-========================================================= */
-
-.fluxer-btn {
-  background:
-    #3b82f6;
-
-  color: #fff;
-}
-
-.fluxer-btn:hover {
-  background:
-    #60a5fa;
-
-  box-shadow:
-    0 0 20px rgba(59, 130, 246, .55);
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer {
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  z-index: 500;
-
-  box-sizing: border-box;
-
-  text-align: center;
-
-  padding: 18px 25px;
-
-  background:
-    rgba(0, 0, 0, .35);
-
-  backdrop-filter: blur(12px);
-
-  border-top:
-    1px solid rgba(255, 255, 255, .05);
-
-  font-size: 14px;
-
-  opacity: .85;
-}
-
-footer a {
-  color:
-    #a855f7;
-
-  text-decoration: none;
-
-  font-weight: bold;
-}
-
-footer a:hover {
-  color:
-    #c084fc;
-
-  text-shadow:
-    0 0 12px rgba(168, 85, 247, .5);
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 900px) {
-
-  .community-section {
-    gap: 10px;
-  }
-
-  .community-card {
-    width: 310px;
-  }
-
-}
-
-@media (max-width: 700px) {
-
-  .navbar {
-    flex-direction: column;
-
-    gap: 7px;
-
-    padding: 9px 12px;
-  }
-
-  .nav-links {
-    flex-wrap: wrap;
-
-    justify-content: center;
-
-    gap: 3px;
-  }
-
-  .nav-links a {
-    padding: 7px 9px;
-
-    font-size: 13px;
-  }
-
-  .main-content {
-    padding:
-      118px 15px 68px;
-  }
-
-  .hero h1 {
-    font-size: 29px;
-  }
-
-  .hero p {
-    font-size: 14px;
-
-    margin-top: 7px;
-  }
-
-  .container {
-    gap: 10px;
-
-    margin-top: 18px;
-  }
-
-  .card {
-    width: 340px;
-
-    padding: 16px 22px;
-  }
-
-  .card h2 {
-    margin-bottom: 10px;
-  }
-
-  .buttons {
-    gap: 7px;
-  }
-
-  .btn {
-    padding: 8px;
-  }
-
-  footer {
-    padding: 9px 15px;
-
-    font-size: 12px;
-  }
-
-}
-
-@media (max-width: 650px) {
-
-  .community-section {
-    flex-direction: column;
-
-    gap: 8px;
-  }
-
-  .community-or {
-    padding: 2px 0;
-  }
-
-  .community-card {
-    width: 340px;
-
-    max-width:
-      calc(100vw - 40px);
-  }
-
-}
-
-@media (max-height: 700px) {
-
-  .main-content {
-    padding:
-      92px 15px 58px;
-  }
-
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero p {
-    font-size: 13px;
-
-    margin-top: 5px;
-  }
-
-  .container {
-    margin-top: 12px;
-
-    gap: 8px;
-  }
-
-  .card {
-    padding: 12px 20px;
-  }
-
-  .card h2 {
-    margin-bottom: 7px;
-  }
-
-  .buttons {
-    gap: 5px;
-  }
-
-  .btn {
-    padding: 7px;
-  }
-
-  .community-members {
-    margin-top: 5px;
-
-    margin-bottom: 6px;
-  }
-
-  footer {
-    padding: 7px 12px;
-
-    font-size: 11px;
-  }
-
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration:
-      .01ms !important;
-
-    animation-iteration-count:
-      1 !important;
-
-    transition-duration:
-      .01ms !important;
-  }
-
-}
-
-</style>
-
+            .section {
+                padding:
+                    55px 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="void-glow"></div>
+    <!-- =========================
+         NAVBAR
+    ========================= -->
 
-<!-- =======================================================
-     CLOUDFLARE VERIFICATION
-======================================================= -->
-
-<section id="verification">
-
-  <div class="verify-card">
-
-    <div class="verify-icon"></div>
-
-    <h1>
-      Welcome to Rip_Dead Site!
-    </h1>
-
-    <p>
-      Let's verify you're not a robot first!
-    </p>
-
-    <div class="cloudflare-area">
-
-      <div class="cloudflare-title">
-        Security Verification
-      </div>
-
-      <div class="cloudflare-box">
-
-        <div
-          class="cf-turnstile"
-          data-sitekey="0x4AAAAAAESdqDX7nBnR1ig7"
-          data-theme="dark"
-          data-callback="verificationSuccess"
-          data-expired-callback="verificationExpired"
-          data-error-callback="verificationError">
-        </div>
-
-      </div>
-
-    </div>
-
-    <p
-      class="verify-status"
-      id="verifyStatus">
-      Verifying your connection...
-    </p>
-
-  </div>
-
-</section>
-
-<!-- =======================================================
-     NAVBAR
-======================================================= -->
-
-<div class="navbar" id="navbar">
-
-  <a class="nav-logo" href="/">
-    Rip_Dead Site
-  </a>
-
-  <div class="nav-links">
-
-    <a
-      href="/"
-      data-page="home">
-      Home
-    </a>
-
-    <a
-      href="/art/"
-      data-page="art">
-      Art
-    </a>
-
-    <a
-      href="/downloads/"
-      data-page="downloads">
-      Downloads
-    </a>
-
-    <a
-      href="/blogs/"
-      data-page="blogs">
-      Blogs
-    </a>
-
-    <a
-      href="/techintoall/"
-      data-page="techintoall">
-      TechIntoAll
-    </a>
-
-    <!-- ===================================================
-         AMONG US CLUB
-    ==================================================== -->
-
-    <a
-      href="/auclub/"
-      data-page="auclub">
-      Among Us Club
-    </a>
-
-  </div>
-
-</div>
-
-<!-- =======================================================
-     MAIN
-======================================================= -->
-
-<main class="main-content">
-
-  <section class="hero">
-
-    <h1>
-      Welcome to Rip_Dead Site
-    </h1>
-
-    <p>
-      Explore the vast creations of Rip_Dead and his Socials!
-    </p>
-
-  </section>
-
-  <div class="container">
-
-    <!-- ===================================================
-         SOCIALS
-    ==================================================== -->
-
-    <div class="card">
-
-      <h2>
-        Socials
-      </h2>
-
-      <div class="buttons">
+    <nav
+        class="navbar void-enter"
+        id="navbar"
+    >
 
         <a
-          class="btn"
-          href="https://x.com/rip_dead32"
-          target="_blank"
-          rel="noopener noreferrer">
-          X (Twitter)
+            href="/"
+            class="brand"
+        >
+            Rip_Dead
         </a>
+
+        <div class="nav-links">
+
+            <a
+                href="/"
+                class="active"
+            >
+                Home
+            </a>
+
+            <a href="/art/">
+                Art
+            </a>
+
+            <a href="/downloads/">
+                Downloads
+            </a>
+
+            <a href="/blogs/">
+                Blogs
+            </a>
+
+            <a
+                href="https://discord.gg/HWr9n4YQmS"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                TechIntoAll
+            </a>
+
+            <a href="#">
+                Among Us Club
+            </a>
+
+        </div>
 
         <a
-          class="btn"
-          href="https://www.youtube.com/@im_rip32"
-          target="_blank"
-          rel="noopener noreferrer">
-          YouTube
+            id="accountNav"
+            class="account-nav"
+            href="#"
+        >
+            Sign in into a Rip_Dead Account
         </a>
 
-        <a
-          class="btn"
-          href="https://www.reddit.com/u/rip_dead32/"
-          target="_blank"
-          rel="noopener noreferrer">
-          Reddit
-        </a>
+    </nav>
 
-      </div>
 
-    </div>
+    <!-- =========================
+         HERO
+    ========================= -->
 
-    <!-- ===================================================
-         PROJECTS
-    ==================================================== -->
+    <main>
 
-    <div class="card project-card">
+        <section
+            class="hero void-enter"
+        >
 
-      <h2>
-        Projects
-      </h2>
+            <div class="hero-content">
 
-      <p class="project-description">
-        Check out some of Rip_Dead's projects.
-      </p>
+                <h1>
+                    Welcome to
+                    <span>
+                        Rip_Dead Site
+                    </span>
+                </h1>
 
-      <div class="buttons">
+                <p>
+                    The hub for Rip_Dead Applications,
+                    Mods, and Socials!
+                </p>
 
-        <a
-          class="btn"
-          href="/win98/"
-          rel="noopener noreferrer">
-          Windows 98: Dumb Edition
-        </a>
+                <div class="hero-buttons">
 
-      </div>
+                    <a
+                        class="button primary"
+                        href="/downloads/"
+                    >
+                        Explore Downloads
+                    </a>
 
-    </div>
+                    <a
+                        class="button"
+                        href="/blogs/"
+                    >
+                        Read the Blog
+                    </a>
 
-    <!-- ===================================================
-         DISCORD / FLUXER
-    ==================================================== -->
+                </div>
 
-    <div class="community-section">
+            </div>
 
-      <!-- DISCORD -->
+        </section>
 
-      <div class="card community-card">
 
-        <h2>
-          Discord Server
-        </h2>
+        <!-- =========================
+             PROJECTS
+        ========================= -->
 
-        <p class="community-description">
-          Visit Rip_Dead Club!
-        </p>
+        <section
+            class="section void-enter"
+        >
 
-        <div class="community-members">
+            <h2 class="section-title">
+                Projects
+            </h2>
 
-          Active members:
+            <p class="section-description">
+                Stuff currently being built by Rip_Dead.
+            </p>
 
-          <strong id="discordMemberCount">
-            Loading...
-          </strong>
+            <div class="cards">
 
-        </div>
+                <a
+                    class="card"
+                    href="/downloads/"
+                >
 
-        <div class="buttons">
+                    <h3>
+                        Windows 98 Dumb Edition
+                    </h3>
 
-          <a
-            class="btn discord-btn"
-            href="https://discord.gg/A9Ap8Tp2jb"
-            target="_blank"
-            rel="noopener noreferrer">
-            Join Discord
-          </a>
+                    <p>
+                        A dumb little Windows-themed
+                        project because why not.
+                    </p>
 
-        </div>
+                </a>
 
-      </div>
 
-      <!-- OR -->
+                <a
+                    class="card"
+                    href="/art/"
+                >
 
-      <div class="community-or">
-        OR
-      </div>
+                    <h3>
+                        Rip_Dead FNF
+                    </h3>
 
-      <!-- FLUXER -->
+                    <p>
+                        Funkin' related artwork
+                        and creations.
+                    </p>
 
-      <div class="card community-card">
+                </a>
 
-        <h2>
-          Fluxer Server
-        </h2>
 
-        <p class="community-description">
-          Visit Rip_Dead Club!
-        </p>
+                <a
+                    class="card"
+                    href="/downloads/"
+                >
 
-        <div class="community-members">
+                    <h3>
+                        Rip_Dead Applications
+                    </h3>
 
-          Active Members:
+                    <p>
+                        Browse the latest applications
+                        and tools.
+                    </p>
 
-          <strong id="fluxerMemberCount">
-            Unavailable
-          </strong>
+                </a>
 
-        </div>
+            </div>
 
-        <div class="buttons">
+        </section>
 
-          <a
-            class="btn fluxer-btn"
-            href="https://fluxer.gg/KUmN9sIw"
-            target="_blank"
-            rel="noopener noreferrer">
-            Join Fluxer
-          </a>
 
-        </div>
+        <!-- =========================
+             SOCIALS
+        ========================= -->
 
-      </div>
+        <section
+            class="section void-enter"
+        >
 
-    </div>
+            <h2 class="section-title">
+                Socials
+            </h2>
 
-  </div>
+            <p class="section-description">
+                Find Rip_Dead around the internet.
+            </p>
 
-</main>
+            <div class="socials">
 
-<!-- =======================================================
-     FOOTER
-======================================================= -->
+                <a
+                    class="social"
+                    href="https://www.facebook.com/share/1XKYnFi3fE/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Facebook
+                </a>
 
-<footer>
+                <a
+                    class="social"
+                    href="https://discord.gg/A9Ap8Tp2jb"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Discord
+                </a>
 
-  © 2026 Rip_Dead Studios™ —
+                <a
+                    class="social"
+                    href="https://fluxer.gg/KUmN9sIw"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Fluxer
+                </a>
 
-  <a
-    href="https://github.com/ripdead32/Rip_Dead-Site"
-    target="_blank"
-    rel="noopener noreferrer">
+            </div>
 
-    <u>
-      <strong>
-        This project is open source
-      </strong>
-    </u>
+        </section>
 
-  </a>
+    </main>
 
-</footer>
 
-<script>
+    <!-- =========================
+         FOOTER
+    ========================= -->
 
-/* =========================================================
-   VERIFICATION
-========================================================= */
+    <footer>
+        © Rip_Dead — All rights reserved.
+    </footer>
 
-const VERIFIED_KEY =
-  "ripdead_turnstile_verified";
 
-const verification =
-  document.getElementById(
-    "verification"
-  );
+    <script>
+        /*
+         * =========================================================
+         * RIP_DEAD SITE AUTHENTICATION
+         * =========================================================
+         */
 
-const verifyStatus =
-  document.getElementById(
-    "verifyStatus"
-  );
+        const SITE_SESSION_KEY =
+            "ripdead_site_session";
 
-/* =========================================================
-   CHECK VERIFICATION
-========================================================= */
+        const SITE_SESSION_EXPIRES_KEY =
+            "ripdead_site_session_expires";
 
-function checkVerification() {
+        const SITE_SESSION_FUNCTION =
+            "https://vcwfgyikbvfzgqiljmry.supabase.co/functions/v1/site-session";
 
-  if (
-    sessionStorage.getItem(
-      VERIFIED_KEY
-    ) === "true"
-  ) {
 
-    verification.style.display =
-      "none";
+        /*
+         * =========================================================
+         * GET CURRENT RIP_DEAD SITE SESSION
+         * =========================================================
+         */
 
-    verification.classList.add(
-      "hidden"
-    );
+        async function getRipDeadSiteSession() {
 
-    return true;
-  }
+            const token =
+                localStorage.getItem(
+                    SITE_SESSION_KEY
+                );
 
-  return false;
-}
+            if (!token) {
+                return null;
+            }
 
-/* =========================================================
-   PAGE LOAD
-========================================================= */
 
-window.addEventListener(
-  "DOMContentLoaded",
-  () => {
+            /*
+             * Check the locally stored expiration first.
+             */
 
-    document.body.classList.add(
-      "void-enter"
-    );
+            const storedExpiration =
+                localStorage.getItem(
+                    SITE_SESSION_EXPIRES_KEY
+                );
 
-    setActiveNav();
+            if (storedExpiration) {
 
-    checkVerification();
+                const expiration =
+                    new Date(
+                        storedExpiration
+                    ).getTime();
 
-    loadDiscordMembers();
+                if (
+                    Number.isFinite(expiration) &&
+                    expiration <= Date.now()
+                ) {
 
-  }
-);
+                    localStorage.removeItem(
+                        SITE_SESSION_KEY
+                    );
 
-/* =========================================================
-   TURNSTILE SUCCESS
-========================================================= */
+                    localStorage.removeItem(
+                        SITE_SESSION_EXPIRES_KEY
+                    );
 
-function verificationSuccess(token) {
+                    return null;
+                }
+            }
 
-  console.log(
-    "%cCloudflare verification successful.",
-    "color:#00ffd5;font-weight:bold;"
-  );
 
-  sessionStorage.setItem(
-    VERIFIED_KEY,
-    "true"
-  );
+            /*
+             * Ask the Edge Function to validate
+             * the session.
+             */
 
-  verifyStatus.textContent =
-    "Verification successful! Welcome.";
+            try {
 
-  verifyStatus.classList.add(
-    "success"
-  );
+                const response =
+                    await fetch(
+                        SITE_SESSION_FUNCTION,
+                        {
+                            method: "POST",
 
-  setTimeout(
-    () => {
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
 
-      verification.classList.add(
-        "hidden"
-      );
+                            body:
+                                JSON.stringify({
+                                    token
+                                })
+                        }
+                    );
 
-      setTimeout(
-        () => {
 
-          verification.style.display =
-            "none";
+                let result = null;
 
-        },
-        700
-      );
+                try {
 
-    },
-    650
-  );
+                    result =
+                        await response.json();
 
-}
+                } catch {
 
-/* =========================================================
-   TURNSTILE EXPIRED
-========================================================= */
+                    result = null;
 
-function verificationExpired() {
+                }
 
-  sessionStorage.removeItem(
-    VERIFIED_KEY
-  );
 
-  verifyStatus.textContent =
-    "Verification expired. Please wait for it to retry.";
+                /*
+                 * Invalid / expired / revoked session.
+                 */
 
-  verifyStatus.classList.remove(
-    "success"
-  );
+                if (
+                    !response.ok ||
+                    !result ||
+                    !result.success
+                ) {
 
-}
+                    localStorage.removeItem(
+                        SITE_SESSION_KEY
+                    );
 
-/* =========================================================
-   TURNSTILE ERROR
-========================================================= */
+                    localStorage.removeItem(
+                        SITE_SESSION_EXPIRES_KEY
+                    );
 
-function verificationError() {
+                    return null;
+                }
 
-  sessionStorage.removeItem(
-    VERIFIED_KEY
-  );
 
-  verifyStatus.textContent =
-    "Verification encountered an error. Please refresh.";
+                return result;
 
-  verifyStatus.classList.remove(
-    "success"
-  );
+            } catch (error) {
 
-  verifyStatus.classList.add(
-    "error"
-  );
+                console.error(
+                    "[Rip_Dead Auth] Session check failed:",
+                    error
+                );
 
-}
+                return null;
+            }
+        }
 
-/* =========================================================
-   DISCORD MEMBER COUNT
-========================================================= */
 
-async function loadDiscordMembers() {
+        /*
+         * =========================================================
+         * SIGN IN WITH RIP_DEAD ACCOUNT
+         * =========================================================
+         */
 
-  const memberCount =
-    document.getElementById(
-      "discordMemberCount"
-    );
+        function signInWithRipDead() {
 
-  try {
+            const params =
+                new URLSearchParams({
 
-    const response =
-      await fetch(
-        "https://discord.com/api/v10/invites/A9Ap8Tp2jb?with_counts=true"
-      );
+                    client_id:
+                        "ripdead-site",
 
-    if (!response.ok) {
+                    redirect_uri:
+                        "https://ripdead.de5.net/auth/callback/",
 
-      throw new Error(
-        "Discord invite request failed"
-      );
+                    response_type:
+                        "code",
 
-    }
+                    scope:
+                        "profile",
 
-    const data =
-      await response.json();
+                    state:
+                        crypto.randomUUID()
 
-    const count =
-      data.approximate_presence_count;
+                });
 
-    if (
-      typeof count === "number"
-    ) {
 
-      memberCount.textContent =
-        count.toLocaleString();
+            window.location.href =
+                "https://account.ripdead.de5.net/authorize/?" +
+                params.toString();
+        }
 
-    } else {
 
-      memberCount.textContent =
-        "Unavailable";
+        /*
+         * =========================================================
+         * ACCOUNT NAVBAR
+         * =========================================================
+         */
 
-    }
+        async function loadAccountNavbar() {
 
-  } catch (error) {
+            const accountNav =
+                document.getElementById(
+                    "accountNav"
+                );
 
-    console.error(
-      "Could not load Discord member count:",
-      error
-    );
+            if (!accountNav) {
+                return;
+            }
 
-    memberCount.textContent =
-      "Unavailable";
 
-  }
+            const session =
+                await getRipDeadSiteSession();
 
-}
 
-/* =========================================================
-   PAGE TRANSITIONS
-========================================================= */
+            /*
+             * =========================
+             * LOGGED OUT
+             * =========================
+             */
 
-document
-  .querySelectorAll("a")
-  .forEach(
-    a => {
+            if (!session) {
 
-      a.addEventListener(
-        "click",
-        e => {
+                accountNav.className =
+                    "account-nav";
 
-          if (
-            a.target === "_blank"
-          ) {
-            return;
-          }
+                accountNav.innerHTML =
+                    "Sign in into a Rip_Dead Account";
 
-          const destination =
-            new URL(
-              a.href,
-              window.location.href
+                accountNav.href =
+                    "#";
+
+                accountNav.onclick =
+                    event => {
+
+                        event.preventDefault();
+
+                        signInWithRipDead();
+
+                    };
+
+                return;
+            }
+
+
+            /*
+             * =========================
+             * LOGGED IN
+             * =========================
+             */
+
+            const profile =
+                session.profile;
+
+
+            accountNav.className =
+                "account-nav";
+
+            accountNav.href =
+                "https://account.ripdead.de5.net/account/";
+
+            accountNav.onclick = null;
+
+            accountNav.innerHTML = "";
+
+
+            /*
+             * Profile avatar
+             */
+
+            if (
+                profile &&
+                profile.avatar_url
+            ) {
+
+                const avatar =
+                    document.createElement(
+                        "img"
+                    );
+
+                avatar.className =
+                    "account-avatar";
+
+                avatar.src =
+                    profile.avatar_url;
+
+                avatar.alt = "";
+
+                avatar.loading =
+                    "eager";
+
+                avatar.onerror =
+                    () => {
+
+                        avatar.remove();
+
+                    };
+
+                accountNav.appendChild(
+                    avatar
+                );
+            }
+
+
+            /*
+             * Display name
+             */
+
+            const name =
+                document.createElement(
+                    "span"
+                );
+
+            name.className =
+                "account-name";
+
+            name.textContent =
+                profile?.display_name ||
+                profile?.username ||
+                "Rip_Dead Account";
+
+            accountNav.appendChild(
+                name
             );
+        }
 
-          if (
-            destination.origin !==
-            window.location.origin
-          ) {
-            return;
-          }
 
-          e.preventDefault();
+        /*
+         * =========================================================
+         * NAVBAR SCROLL BEHAVIOR
+         * =========================================================
+         */
 
-          document.body.classList.add(
-            "void-exit"
-          );
+        let lastScrollY = 0;
 
-          setTimeout(
+        window.addEventListener(
+            "scroll",
             () => {
 
-              window.location.href =
-                destination.href;
+                const navbar =
+                    document.getElementById(
+                        "navbar"
+                    );
+
+                if (!navbar) {
+                    return;
+                }
+
+
+                const currentScroll =
+                    window.scrollY;
+
+
+                if (
+                    currentScroll > lastScrollY &&
+                    currentScroll > 120
+                ) {
+
+                    navbar.classList.add(
+                        "hidden"
+                    );
+
+                } else {
+
+                    navbar.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+
+                lastScrollY =
+                    Math.max(
+                        currentScroll,
+                        0
+                    );
 
             },
-            500
-          );
+            {
+                passive: true
+            }
+        );
 
-        }
-      );
 
-    }
-  );
+        /*
+         * =========================================================
+         * PAGE TRANSITIONS
+         * =========================================================
+         */
 
-/* =========================================================
-   ACTIVE NAV
-========================================================= */
+        document
+            .querySelectorAll(
+                'a[href^="/"]'
+            )
+            .forEach(
+                link => {
 
-function setActiveNav() {
+                    link.addEventListener(
+                        "click",
+                        event => {
 
-  const path =
-    window.location.pathname;
+                            const href =
+                                link.getAttribute(
+                                    "href"
+                                );
 
-  document
-    .querySelectorAll(
-      ".nav-links a"
-    )
-    .forEach(
-      a => {
 
-        const page =
-          a.dataset.page;
+                            if (
+                                !href ||
+                                href === "#"
+                            ) {
+                                return;
+                            }
 
-        if (
-          path === "/" &&
-          page === "home"
-        ) {
 
-          a.classList.add(
-            "active"
-          );
+                            if (
+                                event.ctrlKey ||
+                                event.metaKey ||
+                                event.shiftKey ||
+                                event.altKey
+                            ) {
+                                return;
+                            }
 
-        }
 
-        if (
-          path.includes("/art") &&
-          page === "art"
-        ) {
+                            event.preventDefault();
 
-          a.classList.add(
-            "active"
-          );
 
-        }
+                            document.body.classList.add(
+                                "void-exit"
+                            );
 
-        if (
-          path.includes("/downloads") &&
-          page === "downloads"
-        ) {
 
-          a.classList.add(
-            "active"
-          );
+                            setTimeout(
+                                () => {
 
-        }
+                                    window.location.href =
+                                        href;
 
-        if (
-          path.includes("/blogs") &&
-          page === "blogs"
-        ) {
+                                },
+                                400
+                            );
 
-          a.classList.add(
-            "active"
-          );
+                        }
+                    );
 
-        }
+                }
+            );
 
-        if (
-          path.includes("/techintoall") &&
-          page === "techintoall"
-        ) {
 
-          a.classList.add(
-            "active"
-          );
+        /*
+         * =========================================================
+         * LOAD ACCOUNT
+         * =========================================================
+         */
 
-        }
+        loadAccountNavbar();
 
-        /* =================================================
-           AMONG US CLUB ACTIVE NAV
-        ================================================= */
 
-        if (
-          path.includes("/auclub") &&
-          page === "auclub"
-        ) {
+        /*
+         * =========================================================
+         * CONSOLE MESSAGE
+         * =========================================================
+         */
 
-          a.classList.add(
-            "active"
-          );
+        console.log(
+            "%cRip_Dead Site",
+            "font-size:20px;font-weight:900;"
+        );
 
-        }
-
-      }
-    );
-
-}
-
-/* =========================================================
-   SCROLL HIDE NAVBAR
-========================================================= */
-
-let lastScroll = 0;
-
-const navbar =
-  document.getElementById(
-    "navbar"
-  );
-
-window.addEventListener(
-  "scroll",
-  () => {
-
-    const current =
-      window.pageYOffset;
-
-    if (
-      current > lastScroll &&
-      current > 80
-    ) {
-
-      navbar.classList.add(
-        "hidden"
-      );
-
-    } else {
-
-      navbar.classList.remove(
-        "hidden"
-      );
-
-    }
-
-    lastScroll =
-      current;
-
-  }
-);
-
-/* =========================================================
-   CONSOLE WARNING
-========================================================= */
-
-console.log(
-  "%cSTOP! DO NOT INSERT ANYTHING HERE! IT COULD BREAK THE SITE!",
-  "color:#fff;background:#a855f7;padding:6px;border-radius:6px;"
-);
-
-console.log(
-  "%cRip_Dead Site • VoidUI",
-  "color:#a855f7;font-weight:bold;font-size:15px;"
-);
-
-</script>
+        console.log(
+            "Welcome to the Void."
+        );
+    </script>
 
 </body>
 </html>
