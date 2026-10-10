@@ -1,11 +1,11 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Rip_Dead Site - Downloads</title>
+    <title>Connecting Account - Rip_Dead Site</title>
     <link rel="icon" href="/favicon.ico">
 
     <style>
@@ -14,413 +14,235 @@
         body {
             margin: 0;
             min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 20px;
             font-family: "Segoe UI", sans-serif;
             color: #fff;
-            background: #04040a;
-            opacity: 0;
-            transform: translateY(35px);
-            transition: opacity .5s ease, transform .5s ease;
-        }
-
-        body.void-enter {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            background: radial-gradient(
-                circle at 50% 40%,
-                rgba(150, 0, 255, .3),
-                rgba(0, 0, 0, .9),
-                #000
-            );
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
             background:
-                radial-gradient(circle at 20% 60%, rgba(168,85,247,.2), transparent 60%),
-                radial-gradient(circle at 80% 30%, rgba(0,255,200,.1), transparent 60%);
-            filter: blur(50px);
+                radial-gradient(circle at 50% 40%, rgba(150,0,255,.3),
+                rgba(0,0,0,.9), #000);
         }
 
-        .top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            padding: 20px;
+        .panel {
+            width: min(460px, 100%);
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(168,85,247,.25);
+            border-radius: 18px;
+            background: rgba(20,20,20,.8);
+            box-shadow: 0 0 35px rgba(168,85,247,.12);
         }
 
-        .page-title {
-            font-size: 24px;
-            font-weight: bold;
+        h1 {
+            font-size: 23px;
+            color: #d8b4fe;
         }
 
-        .back, .action {
+        p {
+            color: #b5b5c5;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .status { color: #67e8f9; }
+        .error { color: #ff7070; }
+
+        a {
             display: inline-block;
+            margin-top: 12px;
             padding: 10px 14px;
             border-radius: 10px;
             background: #a855f7;
             color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            transition: .25s;
-        }
-
-        .back:hover, .action:hover {
-            background: #c084fc;
-            box-shadow: 0 0 15px rgba(168,85,247,.6);
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            width: min(900px, 100%);
-        }
-
-        .card {
-            padding: 18px;
-            border: 1px solid rgba(255,255,255,.08);
-            border-radius: 14px;
-            background: rgba(20,20,20,.6);
-            backdrop-filter: blur(12px);
-            transition: .25s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 0 25px rgba(168,85,247,.2);
-        }
-
-        .title-row {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 7px;
-        }
-
-        .title-row h3 {
-            margin: 0 3px 0 0;
-            font-size: 18px;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 4px 8px;
-            border: 1px solid rgba(255,255,255,.08);
-            border-radius: 7px;
-            background: rgba(255,255,255,.08);
-            color: rgba(255,255,255,.75);
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .category-tag {
-            color: #c084fc;
-            background: rgba(168,85,247,.15);
-            border-color: rgba(168,85,247,.2);
-        }
-
-        .exclusive-tag {
-            color: #67e8f9;
-            background: rgba(34,211,238,.1);
-            border-color: rgba(34,211,238,.25);
-        }
-
-        .description {
-            color: #b5b5c5;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .download-btn {
-            display: inline-block;
-            margin-top: 14px;
-            padding: 10px 12px;
-            border: 0;
-            border-radius: 10px;
-            background: #a855f7;
-            color: #000;
-            font: inherit;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .download-btn:hover {
-            background: #c084fc;
-        }
-
-        .locked {
-            margin-top: 14px;
-            padding: 12px;
-            border: 1px solid rgba(168,85,247,.3);
-            border-radius: 10px;
-            background: rgba(168,85,247,.08);
-        }
-
-        .locked strong {
-            display: block;
-            margin-bottom: 6px;
-            color: #d8b4fe;
-        }
-
-        .locked p {
-            margin: 0 0 12px;
-            color: #b5b5c5;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .status {
-            grid-column: 1 / -1;
-            padding: 40px 20px;
-            text-align: center;
-            opacity: .75;
-        }
-
-        .error { color: #ff7070; }
-
-        footer {
-            margin-top: 80px;
-            padding: 25px;
-            border-top: 1px solid rgba(255,255,255,.05);
-            background: rgba(0,0,0,.35);
-            text-align: center;
-            font-size: 14px;
-        }
-
-        footer a {
-            color: #a855f7;
             font-weight: bold;
             text-decoration: none;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                transition-duration: .01ms !important;
-            }
-        }
+        a:hover { background: #c084fc; }
     </style>
 </head>
 
 <body>
-    <header class="top">
-        <div class="page-title">📦 Downloads</div>
-        <a class="back" href="/">← Back Home</a>
-    </header>
-
-    <main class="container">
-        <div class="grid" id="downloads">
-            <div class="status" id="status">Loading downloads...</div>
-        </div>
+    <main class="panel">
+        <h1>Rip_Dead Account</h1>
+        <p id="status" class="status">Connecting your account...</p>
+        <p id="details"></p>
+        <a id="return-link" href="https://ripdead.de5.net/Downloads/"
+           hidden>Return to Downloads</a>
     </main>
-
-    <footer>
-        © 2026 Rip_Dead Studios™ —
-        <a
-            href="https://github.com/ripdead32/Rip_Dead-Site"
-            target="_blank"
-            rel="noopener noreferrer"
-        ><u><strong>This project is open source</strong></u></a>
-    </footer>
 
     <script>
     (() => {
         "use strict";
 
-        const box = document.getElementById("downloads");
-        const loginUrl =
-            "https://account.ripdead.de5.net/login/?redirect=" +
-            encodeURIComponent("https://ripdead.de5.net/Downloads/");
+        const SITE_ORIGIN = "https://ripdead.de5.net";
+        const CALLBACK_URL = SITE_ORIGIN + "/auth/callback/";
+        const DOWNLOADS_URL = SITE_ORIGIN + "/Downloads/";
 
-        /*
-         * IMPORTANT:
-         * A session on account.ripdead.de5.net is not automatically
-         * available on ripdead.de5.net.
-         *
-         * Connect this page to the existing Account OAuth flow before
-         * treating a visitor as authenticated. Do not set this to true
-         * merely because a visitor returned from the login page.
-         */
-        let isAccountAuthenticated = false;
+        const CLIENT_ID = "ripdead-site";
 
-        window.addEventListener("load", () => {
-            requestAnimationFrame(() => {
-                document.body.classList.add("void-enter");
-            });
-        });
+        const OAUTH_EXCHANGE_URL =
+            "https://vcwfgyikbvfzgqiljmry.supabase.co/functions/v1/oauth-exchange";
 
-        function makeTag(text, className = "tag") {
-            const tag = document.createElement("span");
-            tag.className = className;
-            tag.textContent = text;
-            return tag;
+        const SITE_SESSION_URL =
+            "https://vcwfgyikbvfzgqiljmry.supabase.co/functions/v1/site-session";
+
+        const SESSION_KEY = "ripdead_site_session";
+        const SESSION_EXPIRES_KEY = "ripdead_site_session_expires";
+        const STATE_KEY = "ripdead_oauth_state";
+
+        const statusElement = document.getElementById("status");
+        const detailsElement = document.getElementById("details");
+        const returnLink = document.getElementById("return-link");
+
+        function showError(message) {
+            statusElement.textContent = "Account connection failed.";
+            statusElement.className = "error";
+            detailsElement.textContent = message;
+            returnLink.hidden = false;
         }
 
-        function makeLink(text, href, className) {
-            const link = document.createElement("a");
-            link.className = className;
-            link.textContent = text;
-            link.href = href;
-            return link;
-        }
+        async function connectAccount() {
+            const params = new URLSearchParams(window.location.search);
 
-        function createCard(download) {
-            const card = document.createElement("article");
-            card.className = "card";
+            const code = params.get("code");
+            const returnedState = params.get("state");
+            const oauthError = params.get("error");
+            const oauthErrorDescription = params.get("error_description");
 
-            const titleRow = document.createElement("div");
-            titleRow.className = "title-row";
+            // Remove query parameters from the visible address bar.
+            window.history.replaceState(
+                {},
+                document.title,
+                CALLBACK_URL
+            );
 
-            const title = document.createElement("h3");
-            title.textContent = download.name || "Unnamed Download";
-            titleRow.appendChild(title);
+            if (oauthError) {
+                sessionStorage.removeItem(STATE_KEY);
 
-            if (download.type) {
-                titleRow.appendChild(makeTag(download.type));
-            }
-
-            if (download.size) {
-                titleRow.appendChild(makeTag(download.size));
-            }
-
-            if (download.category) {
-                titleRow.appendChild(
-                    makeTag(download.category, "tag category-tag")
+                showError(
+                    oauthErrorDescription ||
+                    oauthError ||
+                    "Authorization was cancelled."
                 );
+                return;
             }
 
-            if (download.RDAExclusive === true) {
-                titleRow.appendChild(
-                    makeTag("RD ACCOUNT EXCLUSIVE", "tag exclusive-tag")
+            if (!code || !returnedState) {
+                showError("The authorization response is missing its code or state.");
+                return;
+            }
+
+            const expectedState = sessionStorage.getItem(STATE_KEY);
+            sessionStorage.removeItem(STATE_KEY);
+
+            if (!expectedState || returnedState !== expectedState) {
+                showError(
+                    "The OAuth state could not be verified. Please start again from Downloads."
                 );
+                return;
             }
 
-            card.appendChild(titleRow);
-
-            if (download.description) {
-                const description = document.createElement("p");
-                description.className = "description";
-                description.textContent = download.description;
-                card.appendChild(description);
-            }
-
-            if (download.RDAExclusive === true &&
-                !isAccountAuthenticated) {
-                const locked = document.createElement("div");
-                locked.className = "locked";
-
-                const heading = document.createElement("strong");
-                heading.textContent = "🔒 Rip_Dead Account required";
-
-                const explanation = document.createElement("p");
-                explanation.textContent =
-                    "Sign in to your Rip_Dead Account to access this download.";
-
-                locked.appendChild(heading);
-                locked.appendChild(explanation);
-                locked.appendChild(
-                    makeLink("Log In", loginUrl, "download-btn")
-                );
-
-                const signupUrl =
-                    "https://account.ripdead.de5.net/signup/";
-
-                locked.appendChild(document.createTextNode(" "));
-                locked.appendChild(
-                    makeLink("Create Account", signupUrl, "download-btn")
-                );
-
-                card.appendChild(locked);
-                return card;
-            }
-
-            if (download.file) {
-                const button = makeLink(
-                    "Download",
-                    download.file,
-                    "download-btn"
-                );
-
-                button.target = "_blank";
-                button.rel = "noopener noreferrer";
-
-                card.appendChild(button);
-            } else {
-                const missing = document.createElement("p");
-                missing.className = "description";
-                missing.textContent = "Download link unavailable.";
-                card.appendChild(missing);
-            }
-
-            return card;
-        }
-
-        async function loadDownloads() {
             try {
-                const response = await fetch(
-                    "/downloads/downloads.json",
-                    { cache: "no-cache" }
-                );
+                statusElement.textContent = "Exchanging authorization code...";
 
-                if (!response.ok) {
-                    throw new Error("HTTP " + response.status);
+                const exchangeResponse = await fetch(OAUTH_EXCHANGE_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        client_id: CLIENT_ID,
+                        redirect_uri: CALLBACK_URL,
+                        state: returnedState
+                    }),
+                    cache: "no-store"
+                });
+
+                const exchangeResult = await exchangeResponse.json();
+
+                if (
+                    !exchangeResponse.ok ||
+                    exchangeResult.success !== true ||
+                    typeof exchangeResult.session_token !== "string" ||
+                    exchangeResult.session_token.length < 32
+                ) {
+                    throw new Error(
+                        exchangeResult.error ||
+                        "The account server did not return a valid site session."
+                    );
                 }
 
-                const downloads = await response.json();
+                const token = exchangeResult.session_token;
 
-                if (!Array.isArray(downloads)) {
-                    throw new Error("downloads.json must contain an array.");
+                statusElement.textContent = "Verifying your account session...";
+
+                const verifyResponse = await fetch(SITE_SESSION_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ token }),
+                    cache: "no-store"
+                });
+
+                const verifyResult = await verifyResponse.json();
+
+                if (
+                    !verifyResponse.ok ||
+                    verifyResult.success !== true ||
+                    verifyResult.client_id !== CLIENT_ID
+                ) {
+                    throw new Error(
+                        verifyResult.error ||
+                        "The returned session could not be verified for Rip_Dead Site."
+                    );
                 }
 
-                box.replaceChildren();
+                // Only save the token after the server confirms it is valid.
+                localStorage.setItem(SESSION_KEY, token);
 
-                if (downloads.length === 0) {
-                    const empty = document.createElement("div");
-                    empty.className = "status";
-                    empty.textContent = "No downloads are currently available.";
-                    box.appendChild(empty);
-                    return;
+                const expiresAt =
+                    verifyResult.expires_at ||
+                    exchangeResult.expires_at;
+
+                if (expiresAt) {
+                    localStorage.setItem(
+                        SESSION_EXPIRES_KEY,
+                        expiresAt
+                    );
+                } else {
+                    localStorage.removeItem(SESSION_EXPIRES_KEY);
                 }
 
-                for (const download of downloads) {
-                    box.appendChild(createCard(download));
-                }
+                statusElement.textContent = "Account connected successfully!";
+                statusElement.className = "status";
+                detailsElement.textContent =
+                    "Returning you to Downloads...";
 
-                console.log("[Downloads] JSON loaded.");
+                window.setTimeout(() => {
+                    window.location.replace(DOWNLOADS_URL);
+                }, 900);
+
             } catch (error) {
-                console.error("[Downloads] Failed to load:", error);
+                console.error("[RDA OAuth Callback]", error);
 
-                box.replaceChildren();
+                localStorage.removeItem(SESSION_KEY);
+                localStorage.removeItem(SESSION_EXPIRES_KEY);
 
-                const errorBox = document.createElement("div");
-                errorBox.className = "status error";
-                errorBox.textContent =
-                    "Failed to load downloads. Check downloads.json and try again.";
-
-                box.appendChild(errorBox);
+                showError(
+                    error instanceof Error
+                        ? error.message
+                        : "An unexpected error occurred."
+                );
             }
         }
 
-        loadDownloads();
+        connectAccount();
     })();
     </script>
 </body>
 </html>
+```
