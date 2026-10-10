@@ -1,28 +1,25 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Rip_Dead Site - Downloads</title>
-
     <link rel="icon" href="/favicon.ico">
 
     <style>
-
-        /* ================= VOIDUI TRANSITIONS ================= */
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            color: #fff;
             min-height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+            color: #fff;
             background: #04040a;
-
             opacity: 0;
-            transform: translateY(60px);
-            transition: 0.6s ease;
+            transform: translateY(35px);
+            transition: opacity .5s ease, transform .5s ease;
         }
 
         body.void-enter {
@@ -30,27 +27,17 @@
             transform: translateY(0);
         }
 
-        body.void-exit {
-            opacity: 0;
-            transform: translateY(80px);
-        }
-
-
-        /* ================= VOID BACKGROUND ================= */
-
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             z-index: -2;
-
-            background:
-                radial-gradient(
-                    circle at 50% 40%,
-                    rgba(150, 0, 255, 0.30),
-                    rgba(0, 0, 0, 0.9),
-                    #000
-                );
+            background: radial-gradient(
+                circle at 50% 40%,
+                rgba(150, 0, 255, .3),
+                rgba(0, 0, 0, .9),
+                #000
+            );
         }
 
         body::after {
@@ -58,57 +45,41 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-
+            pointer-events: none;
             background:
-                radial-gradient(
-                    circle at 20% 60%,
-                    rgba(168, 85, 247, 0.2),
-                    transparent 60%
-                ),
-                radial-gradient(
-                    circle at 80% 30%,
-                    rgba(0, 255, 200, 0.1),
-                    transparent 60%
-                );
-
+                radial-gradient(circle at 20% 60%, rgba(168,85,247,.2), transparent 60%),
+                radial-gradient(circle at 80% 30%, rgba(0,255,200,.1), transparent 60%);
             filter: blur(50px);
         }
-
-
-        /* ================= HEADER ================= */
 
         .top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 16px;
             padding: 20px;
         }
 
-        .title {
+        .page-title {
             font-size: 24px;
             font-weight: bold;
         }
 
-        .back {
+        .back, .action {
+            display: inline-block;
             padding: 10px 14px;
             border-radius: 10px;
-
             background: #a855f7;
             color: #000;
-
             text-decoration: none;
             font-weight: bold;
-
-            transition: 0.25s;
+            transition: .25s;
         }
 
-        .back:hover {
+        .back:hover, .action:hover {
             background: #c084fc;
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+            box-shadow: 0 0 15px rgba(168,85,247,.6);
         }
-
-
-        /* ================= GRID ================= */
 
         .container {
             display: flex;
@@ -118,579 +89,338 @@
 
         .grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(250px, 1fr)
-                );
-
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
-
-            width: min(900px, 90%);
+            width: min(900px, 100%);
         }
 
-
-        /* ================= CARD ================= */
-
         .card {
-            background: rgba(20, 20, 20, 0.55);
-
-            backdrop-filter: blur(12px);
-
-            border-radius: 14px;
-
             padding: 18px;
-
-            border: 1px solid rgba(255, 255, 255, 0.06);
-
-            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 14px;
+            background: rgba(20,20,20,.6);
+            backdrop-filter: blur(12px);
+            transition: .25s;
         }
 
         .card:hover {
-            transform: translateY(-6px);
-
-            box-shadow:
-                0 0 25px rgba(168, 85, 247, 0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 0 25px rgba(168,85,247,.2);
         }
-
-
-        /* ================= TITLE + TAGS ================= */
 
         .title-row {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-
             gap: 7px;
         }
 
         .title-row h3 {
-            margin: 0;
-            margin-right: 3px;
-
+            margin: 0 3px 0 0;
             font-size: 18px;
         }
 
-
-        /* ================= TAGS ================= */
-
         .tag {
             display: inline-block;
-
             padding: 4px 8px;
-
+            border: 1px solid rgba(255,255,255,.08);
             border-radius: 7px;
-
-            background: rgba(255, 255, 255, 0.08);
-
-            border: 1px solid rgba(255, 255, 255, 0.08);
-
-            color: rgba(255, 255, 255, 0.7);
-
+            background: rgba(255,255,255,.08);
+            color: rgba(255,255,255,.75);
             font-size: 11px;
             font-weight: 600;
-
-            white-space: nowrap;
         }
 
         .category-tag {
-            background: rgba(168, 85, 247, 0.15);
-
             color: #c084fc;
-
-            border-color:
-                rgba(168, 85, 247, 0.2);
+            background: rgba(168,85,247,.15);
+            border-color: rgba(168,85,247,.2);
         }
 
+        .exclusive-tag {
+            color: #67e8f9;
+            background: rgba(34,211,238,.1);
+            border-color: rgba(34,211,238,.25);
+        }
 
-        /* ================= DOWNLOAD BUTTON ================= */
+        .description {
+            color: #b5b5c5;
+            font-size: 13px;
+            line-height: 1.5;
+        }
 
         .download-btn {
             display: inline-block;
-
             margin-top: 14px;
-
             padding: 10px 12px;
-
+            border: 0;
             border-radius: 10px;
-
             background: #a855f7;
-
             color: #000;
-
+            font: inherit;
             font-weight: bold;
-
             text-decoration: none;
-
-            transition: 0.25s;
+            cursor: pointer;
         }
 
         .download-btn:hover {
             background: #c084fc;
-
-            box-shadow:
-                0 0 18px rgba(168, 85, 247, 0.6);
         }
 
+        .locked {
+            margin-top: 14px;
+            padding: 12px;
+            border: 1px solid rgba(168,85,247,.3);
+            border-radius: 10px;
+            background: rgba(168,85,247,.08);
+        }
 
-        /* ================= STATUS ================= */
+        .locked strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #d8b4fe;
+        }
+
+        .locked p {
+            margin: 0 0 12px;
+            color: #b5b5c5;
+            font-size: 13px;
+            line-height: 1.5;
+        }
 
         .status {
             grid-column: 1 / -1;
-
-            text-align: center;
-
             padding: 40px 20px;
-
-            opacity: 0.7;
+            text-align: center;
+            opacity: .75;
         }
 
-        .error {
-            color: #ff7070;
-        }
-
-
-        /* ================= FOOTER ================= */
+        .error { color: #ff7070; }
 
         footer {
-            text-align: center;
-
-            padding: 25px;
-
             margin-top: 80px;
-
-            background: rgba(0, 0, 0, 0.35);
-
-            backdrop-filter: blur(12px);
-
-            border-top:
-                1px solid rgba(255, 255, 255, 0.05);
-
+            padding: 25px;
+            border-top: 1px solid rgba(255,255,255,.05);
+            background: rgba(0,0,0,.35);
+            text-align: center;
             font-size: 14px;
-
-            opacity: 0.85;
         }
 
         footer a {
             color: #a855f7;
-
-            text-decoration: none;
-
             font-weight: bold;
+            text-decoration: none;
         }
 
-        footer a:hover {
-            color: #c084fc;
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition-duration: .01ms !important;
+            }
         }
-
     </style>
 </head>
 
-
 <body>
+    <header class="top">
+        <div class="page-title">📦 Downloads</div>
+        <a class="back" href="/">← Back Home</a>
+    </header>
 
-
-    <!-- ================= HEADER ================= -->
-
-    <div class="top">
-
-        <div class="title">
-            📦 Downloads
+    <main class="container">
+        <div class="grid" id="downloads">
+            <div class="status" id="status">Loading downloads...</div>
         </div>
-
-        <a
-            class="back"
-            href="/"
-        >
-            ← Back Home
-        </a>
-
-    </div>
-
-
-    <!-- ================= DOWNLOAD GRID ================= -->
-
-    <div class="container">
-
-        <div
-            class="grid"
-            id="downloads"
-        >
-
-            <div
-                class="status"
-                id="status"
-            >
-                Loading downloads...
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ================= FOOTER ================= -->
+    </main>
 
     <footer>
-
         © 2026 Rip_Dead Studios™ —
-
         <a
             href="https://github.com/ripdead32/Rip_Dead-Site"
             target="_blank"
             rel="noopener noreferrer"
-        >
-            <u>
-                <strong>
-                    This project is open source
-                </strong>
-            </u>
-        </a>
-
+        ><u><strong>This project is open source</strong></u></a>
     </footer>
 
-
     <script>
+    (() => {
+        "use strict";
 
-        /* =====================================================
-           VOIDUI PAGE TRANSITIONS
-           ===================================================== */
+        const box = document.getElementById("downloads");
+        const loginUrl =
+            "https://account.ripdead.de5.net/login/?redirect=" +
+            encodeURIComponent("https://ripdead.de5.net/Downloads/");
+
+        /*
+         * IMPORTANT:
+         * A session on account.ripdead.de5.net is not automatically
+         * available on ripdead.de5.net.
+         *
+         * Connect this page to the existing Account OAuth flow before
+         * treating a visitor as authenticated. Do not set this to true
+         * merely because a visitor returned from the login page.
+         */
+        let isAccountAuthenticated = false;
 
         window.addEventListener("load", () => {
-
             requestAnimationFrame(() => {
-
-                document.body.classList.add(
-                    "void-enter"
-                );
-
+                document.body.classList.add("void-enter");
             });
-
         });
 
-
-        document.addEventListener("click", (e) => {
-
-            const link =
-                e.target.closest("a");
-
-
-            if (!link) return;
-
-
-            /*
-             * Don't animate external links.
-             */
-
-            if (link.target === "_blank") {
-                return;
-            }
-
-
-            /*
-             * Don't animate anchor links.
-             */
-
-            if (link.href.includes("#")) {
-                return;
-            }
-
-
-            e.preventDefault();
-
-
-            document.body.classList.remove(
-                "void-enter"
-            );
-
-            document.body.classList.add(
-                "void-exit"
-            );
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    link.href;
-
-            }, 520);
-
-        });
-
-
-        /* =====================================================
-           DOWNLOADS.JSON CMS
-           ===================================================== */
-
-        const box =
-            document.getElementById("downloads");
-
-
-        const status =
-            document.getElementById("status");
-
-
-        async function loadDownloads() {
-
-            try {
-
-                /*
-                 * Load downloads.json
-                 */
-
-                const response =
-                    await fetch(
-                        "/downloads/downloads.json",
-                        {
-                            cache: "no-cache"
-                        }
-                    );
-
-
-                /*
-                 * Check response
-                 */
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        `HTTP ${response.status}`
-                    );
-
-                }
-
-
-                /*
-                 * Parse JSON
-                 */
-
-                const downloads =
-                    await response.json();
-
-
-                /*
-                 * Make sure the JSON
-                 * contains an array.
-                 */
-
-                if (!Array.isArray(downloads)) {
-
-                    throw new Error(
-                        "downloads.json must contain an array."
-                    );
-
-                }
-
-
-                /*
-                 * Remove loading message.
-                 */
-
-                box.innerHTML = "";
-
-
-                /*
-                 * Empty downloads list.
-                 */
-
-                if (downloads.length === 0) {
-
-                    box.innerHTML = `
-                        <div class="status">
-                            No downloads are currently available.
-                        </div>
-                    `;
-
-                    return;
-
-                }
-
-
-                /*
-                 * Generate cards.
-                 */
-
-                downloads.forEach((download) => {
-
-                    /* ================= CARD ================= */
-
-                    const card =
-                        document.createElement("div");
-
-                    card.className = "card";
-
-
-                    /* ================= TITLE ROW ================= */
-
-                    const titleRow =
-                        document.createElement("div");
-
-                    titleRow.className =
-                        "title-row";
-
-
-                    /* ================= NAME ================= */
-
-                    const title =
-                        document.createElement("h3");
-
-                    title.textContent =
-                        download.name ||
-                        "Unnamed Download";
-
-
-                    titleRow.appendChild(title);
-
-
-                    /* ================= TYPE TAG ================= */
-
-                    if (download.type) {
-
-                        const typeTag =
-                            document.createElement("span");
-
-                        typeTag.className =
-                            "tag";
-
-                        typeTag.textContent =
-                            download.type;
-
-                        titleRow.appendChild(typeTag);
-
-                    }
-
-
-                    /* ================= SIZE TAG ================= */
-
-                    if (download.size) {
-
-                        const sizeTag =
-                            document.createElement("span");
-
-                        sizeTag.className =
-                            "tag";
-
-                        sizeTag.textContent =
-                            download.size;
-
-                        titleRow.appendChild(sizeTag);
-
-                    }
-
-
-                    /* ================= CATEGORY TAG ================= */
-
-                    if (download.category) {
-
-                        const categoryTag =
-                            document.createElement("span");
-
-                        categoryTag.className =
-                            "tag category-tag";
-
-                        categoryTag.textContent =
-                            download.category;
-
-                        titleRow.appendChild(
-                            categoryTag
-                        );
-
-                    }
-
-
-                    /* ================= DOWNLOAD BUTTON ================= */
-
-                    const button =
-                        document.createElement("a");
-
-                    button.className =
-                        "download-btn";
-
-                    button.textContent =
-                        "Download";
-
-
-                    /*
-                     * Your JSON uses "file".
-                     */
-
-                    button.href =
-                        download.file ||
-                        "#";
-
-
-                    button.target =
-                        "_blank";
-
-
-                    button.rel =
-                        "noopener noreferrer";
-
-
-                    /* ================= BUILD CARD ================= */
-
-                    card.appendChild(
-                        titleRow
-                    );
-
-                    card.appendChild(
-                        button
-                    );
-
-                    box.appendChild(
-                        card
-                    );
-
-                });
-
-
-                /* ================= LOG ================= */
-
-                console.log(
-                    "%cVOIDUI DOWNLOADS LOADED FROM downloads.json",
-                    "color:#a855f7;font-weight:bold;"
-                );
-
-
-            } catch (error) {
-
-                /* ================= ERROR ================= */
-
-                console.error(
-                    "Failed to load downloads.json:",
-                    error
-                );
-
-
-                box.innerHTML = `
-                    <div class="status error">
-
-                        Failed to load downloads.
-
-                        <br>
-
-                        <small>
-                            Check that /downloads.json exists
-                            and contains valid JSON.
-                        </small>
-
-                    </div>
-                `;
-
-            }
-
+        function makeTag(text, className = "tag") {
+            const tag = document.createElement("span");
+            tag.className = className;
+            tag.textContent = text;
+            return tag;
         }
 
+        function makeLink(text, href, className) {
+            const link = document.createElement("a");
+            link.className = className;
+            link.textContent = text;
+            link.href = href;
+            return link;
+        }
 
-        /* =====================================================
-           START CMS
-           ===================================================== */
+        function createCard(download) {
+            const card = document.createElement("article");
+            card.className = "card";
+
+            const titleRow = document.createElement("div");
+            titleRow.className = "title-row";
+
+            const title = document.createElement("h3");
+            title.textContent = download.name || "Unnamed Download";
+            titleRow.appendChild(title);
+
+            if (download.type) {
+                titleRow.appendChild(makeTag(download.type));
+            }
+
+            if (download.size) {
+                titleRow.appendChild(makeTag(download.size));
+            }
+
+            if (download.category) {
+                titleRow.appendChild(
+                    makeTag(download.category, "tag category-tag")
+                );
+            }
+
+            if (download.RDAExclusive === true) {
+                titleRow.appendChild(
+                    makeTag("RD ACCOUNT EXCLUSIVE", "tag exclusive-tag")
+                );
+            }
+
+            card.appendChild(titleRow);
+
+            if (download.description) {
+                const description = document.createElement("p");
+                description.className = "description";
+                description.textContent = download.description;
+                card.appendChild(description);
+            }
+
+            if (download.RDAExclusive === true &&
+                !isAccountAuthenticated) {
+                const locked = document.createElement("div");
+                locked.className = "locked";
+
+                const heading = document.createElement("strong");
+                heading.textContent = "🔒 Rip_Dead Account required";
+
+                const explanation = document.createElement("p");
+                explanation.textContent =
+                    "Sign in to your Rip_Dead Account to access this download.";
+
+                locked.appendChild(heading);
+                locked.appendChild(explanation);
+                locked.appendChild(
+                    makeLink("Log In", loginUrl, "download-btn")
+                );
+
+                const signupUrl =
+                    "https://account.ripdead.de5.net/signup/";
+
+                locked.appendChild(document.createTextNode(" "));
+                locked.appendChild(
+                    makeLink("Create Account", signupUrl, "download-btn")
+                );
+
+                card.appendChild(locked);
+                return card;
+            }
+
+            if (download.file) {
+                const button = makeLink(
+                    "Download",
+                    download.file,
+                    "download-btn"
+                );
+
+                button.target = "_blank";
+                button.rel = "noopener noreferrer";
+
+                card.appendChild(button);
+            } else {
+                const missing = document.createElement("p");
+                missing.className = "description";
+                missing.textContent = "Download link unavailable.";
+                card.appendChild(missing);
+            }
+
+            return card;
+        }
+
+        async function loadDownloads() {
+            try {
+                const response = await fetch(
+                    "/downloads/downloads.json",
+                    { cache: "no-cache" }
+                );
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const downloads = await response.json();
+
+                if (!Array.isArray(downloads)) {
+                    throw new Error("downloads.json must contain an array.");
+                }
+
+                box.replaceChildren();
+
+                if (downloads.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.className = "status";
+                    empty.textContent = "No downloads are currently available.";
+                    box.appendChild(empty);
+                    return;
+                }
+
+                for (const download of downloads) {
+                    box.appendChild(createCard(download));
+                }
+
+                console.log("[Downloads] JSON loaded.");
+            } catch (error) {
+                console.error("[Downloads] Failed to load:", error);
+
+                box.replaceChildren();
+
+                const errorBox = document.createElement("div");
+                errorBox.className = "status error";
+                errorBox.textContent =
+                    "Failed to load downloads. Check downloads.json and try again.";
+
+                box.appendChild(errorBox);
+            }
+        }
 
         loadDownloads();
-
+    })();
     </script>
-
 </body>
-
 </html>
