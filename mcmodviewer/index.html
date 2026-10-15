@@ -1,0 +1,1824 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0c0a12">
+    <title>Minecraft Mod Viewer | Rip_Dead</title>
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0c0a12;
+            --panel: #15111f;
+            --panel2: #1c1729;
+            --border: #302641;
+            --text: #f5f0ff;
+            --muted: #a69ab9;
+            --purple: #a970ff;
+            --purple2: #7c3aed;
+            --teal: #54e6d1;
+            --danger: #ff718b;
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse at 15% 0%, #27163c 0, transparent 38%),
+                radial-gradient(ellipse at 90% 20%, #101d30 0, transparent 30%),
+                var(--bg);
+            color: var(--text);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            opacity: 0;
+            animation: page-in .45s ease forwards;
+        }
+
+        body.leaving {
+            animation: page-out .22s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes page-in {
+            to { opacity: 1; }
+        }
+
+        @keyframes page-out {
+            to {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+        }
+
+        button, input, select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 2px solid var(--teal);
+            outline-offset: 3px;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 15px clamp(16px, 4vw, 52px);
+            background: rgb(12 10 18 / 88%);
+            border-bottom: 1px solid rgb(169 112 255 / 18%);
+            backdrop-filter: blur(16px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, var(--purple2), #3c2465);
+            box-shadow: 0 0 25px rgb(124 58 237 / 25%);
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .brand-title {
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: .8px;
+        }
+
+        .brand-subtitle {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .return-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: var(--panel);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .return-button:hover {
+            border-color: var(--purple);
+            background: #211831;
+            transform: translateY(-1px);
+        }
+
+        main {
+            width: min(1240px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .hero {
+            padding: clamp(38px, 8vw, 82px) 0 34px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 11px;
+            border: 1px solid rgb(169 112 255 / 30%);
+            border-radius: 999px;
+            background: rgb(169 112 255 / 8%);
+            color: #d9c0ff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 10px var(--teal);
+        }
+
+        h1 {
+            margin: 20px 0 12px;
+            font-size: clamp(36px, 6vw, 66px);
+            line-height: 1.04;
+            letter-spacing: -2.3px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(100deg, #c7a1ff, #8b5cf6 48%, #61e9d3);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-description {
+            max-width: 650px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .search-panel {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: linear-gradient(145deg, rgb(29 22 42 / 96%), rgb(18 15 27 / 96%));
+            box-shadow: 0 20px 70px rgb(0 0 0 / 18%);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            color: var(--muted);
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        #searchInput {
+            width: 100%;
+            min-height: 51px;
+            padding: 13px 15px 13px 43px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #0e0b16;
+            color: var(--text);
+        }
+
+        #searchInput::placeholder {
+            color: #766a88;
+        }
+
+        .primary-button {
+            min-height: 51px;
+            padding: 12px 23px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #a970ff, #7041d7);
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 7px 24px rgb(124 58 237 / 20%);
+            transition: .2s ease;
+        }
+
+        .primary-button:hover {
+            filter: brightness(1.12);
+            transform: translateY(-1px);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1.3fr 1fr 1fr;
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .filter-group {
+            min-width: 0;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .9px;
+            text-transform: uppercase;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 34px;
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: #100d18;
+            color: #c7bbd8;
+            font-size: 12px;
+            font-weight: 700;
+            transition: .15s ease;
+        }
+
+        .chip:hover {
+            border-color: #7655a5;
+        }
+
+        .chip.active {
+            border-color: var(--purple);
+            background: rgb(169 112 255 / 13%);
+            color: #e6d4ff;
+        }
+
+        .chip img {
+            width: 17px;
+            height: 17px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .filter-select {
+            width: 100%;
+            min-height: 38px;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: #100d18;
+            color: var(--text);
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin: 34px 0 18px;
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: -.5px;
+        }
+
+        .result-count {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 38px;
+            padding: 8px 11px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--panel);
+            color: #d5c9e4;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .icon-button:hover,
+        .icon-button.active {
+            border-color: var(--purple);
+            color: white;
+        }
+
+        .status {
+            margin: 12px 0 18px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .status.error {
+            color: var(--danger);
+        }
+
+        .status:empty {
+            display: none;
+        }
+
+        .mod-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .mod-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .mod-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            background: linear-gradient(150deg, rgb(25 20 36 / 97%), rgb(17 14 25 / 97%));
+            transition: border-color .2s ease, transform .2s ease, background .2s ease;
+            animation: card-in .3s ease both;
+        }
+
+        @keyframes card-in {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mod-card:hover {
+            border-color: #5d437c;
+            background: linear-gradient(150deg, #21182f, #171220);
+            transform: translateY(-2px);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .mod-icon {
+            display: grid;
+            place-items: center;
+            width: 58px;
+            height: 58px;
+            flex: 0 0 58px;
+            overflow: hidden;
+            border: 1px solid #392d4b;
+            border-radius: 13px;
+            background: #100d18;
+            color: var(--purple);
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .mod-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-heading {
+            flex: 1;
+            min-width: 0;
+            padding-top: 2px;
+        }
+
+        .mod-title {
+            overflow-wrap: anywhere;
+            margin: 0;
+            font-size: 16px;
+            font-weight: 850;
+            line-height: 1.35;
+        }
+
+        .mod-author {
+            overflow: hidden;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 11px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .favorite-button {
+            display: grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            background: transparent;
+            color: #8e809f;
+            font-size: 19px;
+        }
+
+        .favorite-button:hover {
+            border-color: var(--border);
+            color: #ffd166;
+        }
+
+        .favorite-button.is-favorite {
+            color: #ffd166;
+        }
+
+        .mod-description {
+            display: -webkit-box;
+            overflow: hidden;
+            min-height: 60px;
+            margin: 15px 0 14px;
+            color: #b6a9c8;
+            font-size: 12px;
+            line-height: 1.65;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            max-width: 100%;
+            padding: 5px 7px;
+            border: 1px solid #332741;
+            border-radius: 7px;
+            background: #171121;
+            color: #c6b2e3;
+            font-size: 10px;
+            font-weight: 750;
+        }
+
+        .tag img {
+            width: 13px;
+            height: 13px;
+            object-fit: contain;
+        }
+
+        .platform-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid rgb(48 38 65 / 75%);
+        }
+
+
+.platform-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #100d18;
+    color: #e6dcf3;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    transition: .2s ease;
+}
+
+.platform-link:hover {
+    border-color: var(--purple);
+    background: #241832;
+}
+
+.platform-link img {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+        .card-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .stat {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .list-view .mod-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: 20px;
+        }
+
+        .list-view .card-top,
+        .list-view .mod-description,
+        .list-view .tags,
+        .list-view .platform-row,
+        .list-view .card-stats {
+            grid-column: 1 / -1;
+        }
+
+        .list-view .mod-description {
+            min-height: auto;
+            -webkit-line-clamp: 2;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 55px 20px;
+            border: 1px dashed #40334f;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            margin-bottom: 12px;
+            color: var(--purple);
+            font-size: 35px;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .load-more-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 28px 0 12px;
+        }
+
+        .load-more {
+            min-width: 170px;
+            min-height: 43px;
+            padding: 10px 18px;
+            border: 1px solid #594174;
+            border-radius: 11px;
+            background: #1a1326;
+            color: #e3d2ff;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .load-more:hover:not(:disabled) {
+            border-color: var(--purple);
+            background: #251934;
+        }
+
+        .load-more:disabled {
+            cursor: wait;
+            opacity: .55;
+        }
+
+        .footer {
+            margin-top: 62px;
+            padding: 24px 16px 35px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            text-align: center;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .footer strong {
+            color: #d6c5eb;
+        }
+
+        .footer a {
+            color: #c8a4ff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+            .filter-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .mod-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 12px 14px;
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .brand-title {
+                font-size: 12px;
+            }
+
+            .return-button {
+                padding: 9px 10px;
+                font-size: 11px;
+            }
+
+            main {
+                width: min(100% - 24px, 1240px);
+            }
+
+            h1 {
+                letter-spacing: -1.3px;
+            }
+
+            .hero-description {
+                font-size: 13px;
+            }
+
+            .search-panel {
+                padding: 13px;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .primary-button {
+                width: 100%;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 17px 12px;
+            }
+
+            .mod-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .toolbar-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .list-view .mod-card {
+                display: flex;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">RD</div>
+            <div>
+                <div class="brand-title">RIP_DEAD MOD VIEWER</div>
+                <div class="brand-subtitle">Discover mods for your Minecraft version</div>
+            </div>
+        </div>
+
+        <a class="return-button" id="returnButton" href="https://ripdead.de5.net/">
+            <span aria-hidden="true">←</span>
+            Return to Rip_Dead Site
+        </a>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Minecraft mod discovery
+            </div>
+
+            <h1>Discover your next <span class="gradient-text">mod.</span></h1>
+
+            <p class="hero-description">
+                Explore Minecraft mods from Modrinth and CurseForge.
+                Filter by mod loader and game version, compare results,
+                save favorites, and open the original mod page.
+            </p>
+        </section>
+
+        <section class="search-panel" aria-label="Search and filters">
+            <form id="searchForm">
+                <div class="search-row">
+                    <div class="search-input-wrap">
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input
+                            id="searchInput"
+                            type="search"
+                            placeholder="Search mods, features, or creators..."
+                            autocomplete="off"
+                            aria-label="Search Minecraft mods"
+                        >
+                    </div>
+                    <button class="primary-button" type="submit">Search Mods ↗</button>
+                </div>
+            </form>
+
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <span class="filter-label">Platforms</span>
+                    <div class="chips">
+                        <button class="chip active" type="button" data-platform="modrinth" aria-pressed="true">
+                            <img src="mcmodviewer/modrinth.png" alt="" onerror="this.style.display='none'">
+                            Modrinth
+                        </button>
+                        <button class="chip active" type="button" data-platform="curseforge" aria-pressed="true">
+                            <img src="mcmodviewer/curseforge.png" alt="" onerror="this.style.display='none'">
+                            CurseForge
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <span class="filter-label">Mod loaders</span>
+                    <div class="chips">
+                        <button class="chip" type="button" data-loader="fabric" aria-pressed="false">
+                            <img src="mcmodviewer/fabric.png" alt="" onerror="this.style.display='none'">
+                            Fabric
+                        </button>
+                        <button class="chip" type="button" data-loader="forge" aria-pressed="false">
+                            <img src="mcmodviewer/forge.png" alt="" onerror="this.style.display='none'">
+                            Forge
+                        </button>
+                        <button class="chip" type="button" data-loader="neoforge" aria-pressed="false">
+                            <img src="mcmodviewer/neoforge.png" alt="" onerror="this.style.display='none'">
+                            NeoForge
+                        </button>
+                        <button class="chip" type="button" data-loader="quilt" aria-pressed="false">
+                            <img src="mcmodviewer/quilt.png" alt="" onerror="this.style.display='none'">
+                            Quilt
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label" for="versionSelect">Minecraft version</label>
+                    <select class="filter-select" id="versionSelect">
+                        <option value="">Any version</option>
+                        <option>1.21.10</option>
+                        <option>1.21.9</option>
+                        <option>1.21.8</option>
+                        <option>1.21.7</option>
+                        <option>1.21.6</option>
+                        <option>1.21.5</option>
+                        <option>1.21.4</option>
+                        <option>1.21.3</option>
+                        <option>1.21.2</option>
+                        <option>1.21.1</option>
+                        <option>1.21</option>
+                        <option>1.20.6</option>
+                        <option>1.20.4</option>
+                        <option>1.20.2</option>
+                        <option>1.20.1</option>
+                        <option>1.19.4</option>
+                        <option>1.19.2</option>
+                        <option>1.18.2</option>
+                        <option>1.16.5</option>
+                        <option>1.12.2</option>
+                        <option>1.8.9</option>
+                        <option>1.8.8</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label" for="sortSelect">Sort by</label>
+                    <select class="filter-select" id="sortSelect">
+                        <option value="relevance">Relevance</option>
+                        <option value="downloads">Downloads</option>
+                        <option value="updated">Recently updated</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section aria-label="Mod results">
+            <div class="toolbar">
+                <div>
+                    <h2 class="section-title">Mod library</h2>
+                    <div class="result-count" id="resultCount">Ready to search</div>
+                </div>
+
+                <div class="toolbar-actions">
+                    <button class="icon-button" id="favoritesToggle" type="button" aria-pressed="false">
+                        ☆ Favorites
+                    </button>
+                    <button class="icon-button active" id="gridToggle" type="button" aria-pressed="true">
+                        ▦ Grid
+                    </button>
+                    <button class="icon-button" id="listToggle" type="button" aria-pressed="false">
+                        ☰ List
+                    </button>
+                </div>
+            </div>
+
+            <div class="status" id="status" role="status" aria-live="polite"></div>
+            <div class="mod-grid" id="modGrid"></div>
+
+            <div class="load-more-wrap">
+                <button class="load-more" id="loadMoreButton" type="button" hidden>
+                    Load more mods
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <strong>Rip_Dead Mod Viewer</strong> · A mod discovery tool for Minecraft players.
+        <br>
+        Modrinth and CurseForge are independent platforms. Mod pages and downloads remain on their
+        respective platforms. This viewer is not affiliated with either platform.
+        <br>
+        <a href="https://ripdead.de5.net/">Return to Rip_Dead Site</a>
+    </footer>
+
+    <script src="mcmodviewer/curseforge.js"></script>
+
+    <script>
+    (() => {
+        "use strict";
+
+        const $ = (selector) => document.querySelector(selector);
+
+        const ASSETS = {
+            modrinth: "mcmodviewer/modrinth.png",
+            curseforge: "mcmodviewer/curseforge.png",
+            fabric: "mcmodviewer/fabric.png",
+            forge: "mcmodviewer/forge.png",
+            neoforge: "mcmodviewer/neoforge.png",
+            quilt: "mcmodviewer/quilt.png"
+        };
+
+        const PAGE_SIZE = 24;
+
+        const state = {
+            query: "",
+            platforms: new Set(["modrinth", "curseforge"]),
+            loader: "",
+            version: "",
+            sort: "relevance",
+            offset: 0,
+            loading: false,
+            requestId: 0,
+            mods: [],
+            hasMore: false,
+            favoritesOnly: false,
+            view: "grid",
+            favorites: loadFavorites()
+        };
+
+        function loadFavorites() {
+            try {
+                const value = JSON.parse(localStorage.getItem("rd-modviewer-favorites") || "[]");
+                return new Set(Array.isArray(value) ? value : []);
+            } catch {
+                return new Set();
+            }
+        }
+
+        function saveFavorites() {
+            try {
+                localStorage.setItem(
+                    "rd-modviewer-favorites",
+                    JSON.stringify([...state.favorites])
+                );
+            } catch {
+                // Favorites still work for the current page if storage is unavailable.
+            }
+        }
+
+        function normalize(value) {
+            return String(value || "")
+                .normalize("NFKD")
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, "");
+        }
+
+        function safeArray(value) {
+            return Array.isArray(value) ? value : [];
+        }
+
+        function safeNumber(value) {
+            const number = Number(value);
+            return Number.isFinite(number) ? number : 0;
+        }
+
+        function formatDownloads(value) {
+            return new Intl.NumberFormat("en", {
+                notation: "compact",
+                maximumFractionDigits: 1
+            }).format(safeNumber(value));
+        }
+
+        function formatDate(value) {
+            if (!value) return "Unknown";
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return "Unknown";
+
+            return date.toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            });
+        }
+
+        function normalizeLoader(value) {
+            const key = normalize(value);
+
+            if (key === "fabric") return "fabric";
+            if (key === "forge") return "forge";
+            if (key === "neoforge") return "neoforge";
+            if (key === "quilt") return "quilt";
+
+            return "";
+        }
+
+        function normalizeModrinth(item) {
+            const id = String(item.project_id || item.id || item.slug || "");
+            const slug = String(item.slug || id);
+            const categories = safeArray(item.categories);
+            const displayCategories = safeArray(item.display_categories);
+            const loaders = [...new Set(
+                categories.map(normalizeLoader).filter(Boolean)
+            )];
+
+            return {
+                id: "modrinth:" + id,
+                title: String(item.title || "Untitled mod"),
+                description: String(item.description || "No description available."),
+                author: String(item.author || "Unknown author"),
+                icon: String(item.icon_url || ""),
+                downloads: safeNumber(item.downloads),
+                updated: item.date_modified || "",
+                categories: [...new Set([...categories, ...displayCategories])],
+                loaders,
+                versions: safeArray(item.versions).map(String),
+                platforms: {
+                    modrinth: {
+                        id,
+                        url: "https://modrinth.com/mod/" + encodeURIComponent(slug)
+                    },
+                    curseforge: null
+                },
+                source: "modrinth"
+            };
+        }
+
+        function normalizeCurseForge(item) {
+            // Accept normalized objects from curseforge.js or raw CurseForge API objects.
+            const id = String(item.id || item.projectId || "");
+            const slug = String(item.slug || id);
+            const links = item.links || {};
+            const categories = safeArray(item.categories).map(category =>
+                typeof category === "string"
+                    ? category
+                    : String(category.name || category.slug || "")
+            );
+
+            const rawLoaders = safeArray(item.loaders).length
+                ? item.loaders
+                : safeArray(item.gameVersions).filter(value =>
+                    ["fabric", "forge", "neoforge", "quilt"].includes(normalizeLoader(value))
+                );
+
+            const loaders = [...new Set(rawLoaders.map(value => {
+                if (typeof value === "object") {
+                    return normalizeLoader(value.name || value.slug || value.type);
+                }
+                return normalizeLoader(value);
+            }).filter(Boolean))];
+
+            const versions = safeArray(item.versions).length
+                ? item.versions
+                : safeArray(item.gameVersions).filter(value =>
+                    /^\d+\.\d+/.test(String(value))
+                );
+
+            const rawUpdated = item.dateModified || item.date_modified || item.updated || "";
+
+            return {
+                id: "curseforge:" + id,
+                title: String(item.name || item.title || "Untitled mod"),
+                description: String(item.summary || item.description || "No description available."),
+                author: String(
+                    item.author?.name ||
+                    item.authors?.[0]?.name ||
+                    item.author ||
+                    "Unknown author"
+                ),
+                icon: String(
+                    item.logo?.url ||
+                    item.icon_url ||
+                    item.icon ||
+                    ""
+                ),
+                downloads: safeNumber(item.downloadCount ?? item.downloads),
+                updated: rawUpdated,
+                categories,
+                loaders,
+                versions: versions.map(value =>
+                    typeof value === "object"
+                        ? String(value.name || value.version || "")
+                        : String(value)
+                ),
+                platforms: {
+                    modrinth: null,
+                    curseforge: {
+                        id,
+                        url: links.websiteUrl ||
+                            item.url ||
+                            (id ? "https://www.curseforge.com/minecraft/mc-mods/" + encodeURIComponent(slug) : "")
+                    }
+                },
+                source: "curseforge"
+            };
+        }
+
+        function ensureModShape(mod) {
+            // Guard against raw API objects or malformed results reaching createCard().
+            if (!mod || typeof mod !== "object") return null;
+
+            if (!mod.platforms || typeof mod.platforms !== "object") {
+                mod.platforms = {
+                    modrinth: null,
+                    curseforge: null
+                };
+            }
+
+            if (!("modrinth" in mod.platforms)) mod.platforms.modrinth = null;
+            if (!("curseforge" in mod.platforms)) mod.platforms.curseforge = null;
+
+            mod.categories = safeArray(mod.categories);
+            mod.loaders = safeArray(mod.loaders);
+            mod.versions = safeArray(mod.versions);
+            mod.downloads = safeNumber(mod.downloads);
+
+            return mod;
+        }
+
+        function getModrinthFacets() {
+            const facets = [['project_type:mod']];
+
+            if (state.loader) {
+                facets.push(['categories:' + state.loader]);
+            }
+
+            if (state.version) {
+                facets.push(['versions:' + state.version]);
+            }
+
+            return JSON.stringify(facets);
+        }
+
+        async function searchModrinth(offset, requestId) {
+            const params = new URLSearchParams({
+                query: state.query,
+                limit: String(PAGE_SIZE),
+                offset: String(offset),
+                index: state.sort,
+                facets: getModrinthFacets()
+            });
+
+            const response = await fetch(
+                "https://api.modrinth.com/v2/search?" + params.toString()
+            );
+
+            if (!response.ok) {
+                throw new Error("Modrinth returned HTTP " + response.status);
+            }
+
+            const data = await response.json();
+
+            if (requestId !== state.requestId) return [];
+
+            return safeArray(data.hits).map(normalizeModrinth);
+        }
+
+        async function searchCurseForge(offset, requestId) {
+            if (!window.RipDeadCurseForge ||
+                typeof window.RipDeadCurseForge.search !== "function") {
+                throw new Error(
+                    "CurseForge search is not configured. Check mcmodviewer/curseforge.js and your /api/curseforge/mods proxy."
+                );
+            }
+
+            const result = await window.RipDeadCurseForge.search({
+                query: state.query,
+                gameVersion: state.version,
+                version: state.version,
+                loader: state.loader,
+                sort: state.sort,
+                offset,
+                limit: PAGE_SIZE
+            });
+
+            if (requestId !== state.requestId) return [];
+
+            // Support both { data: [...] } and { data: { data: [...] } } responses.
+            const rows = Array.isArray(result)
+                ? result
+                : Array.isArray(result?.data)
+                    ? result.data
+                    : Array.isArray(result?.data?.data)
+                        ? result.data.data
+                        : Array.isArray(result?.mods)
+                            ? result.mods
+                            : [];
+
+            return rows.map(normalizeCurseForge);
+        }
+
+        function canMerge(a, b) {
+            const aName = normalize(a.title);
+            const bName = normalize(b.title);
+
+            if (!aName || aName !== bName) return false;
+
+            const aPlatforms = a.platforms || {};
+            const bPlatforms = b.platforms || {};
+
+            // Don't merge two projects from the same platform.
+            if (aPlatforms.modrinth && bPlatforms.modrinth) return false;
+            if (aPlatforms.curseforge && bPlatforms.curseforge) return false;
+
+            return true;
+        }
+
+        function mergeProjects(mods) {
+            const result = [];
+
+            for (const original of mods) {
+                const mod = ensureModShape(original);
+                if (!mod) continue;
+
+                const existing = result.find(candidate => canMerge(candidate, mod));
+
+                if (!existing) {
+                    result.push({
+                        ...mod,
+                        platforms: {
+                            modrinth: mod.platforms.modrinth || null,
+                            curseforge: mod.platforms.curseforge || null
+                        },
+                        categories: [...mod.categories],
+                        loaders: [...mod.loaders],
+                        versions: [...mod.versions]
+                    });
+                    continue;
+                }
+
+                // Keep both platform links and retain the most useful metadata.
+                existing.platforms.modrinth =
+                    existing.platforms.modrinth || mod.platforms.modrinth || null;
+
+                existing.platforms.curseforge =
+                    existing.platforms.curseforge || mod.platforms.curseforge || null;
+
+                if ((!existing.icon || !existing.icon.trim()) && mod.icon) {
+                    existing.icon = mod.icon;
+                }
+
+                if ((!existing.description ||
+                    existing.description === "No description available.") &&
+                    mod.description) {
+                    existing.description = mod.description;
+                }
+
+                existing.downloads = Math.max(
+                    safeNumber(existing.downloads),
+                    safeNumber(mod.downloads)
+                );
+
+                existing.categories = [...new Set([
+                    ...safeArray(existing.categories),
+                    ...safeArray(mod.categories)
+                ])];
+
+                existing.loaders = [...new Set([
+                    ...safeArray(existing.loaders),
+                    ...safeArray(mod.loaders)
+                ])];
+
+                existing.versions = [...new Set([
+                    ...safeArray(existing.versions),
+                    ...safeArray(mod.versions)
+                ])];
+
+                if (mod.updated && (!existing.updated ||
+                    new Date(mod.updated) > new Date(existing.updated))) {
+                    existing.updated = mod.updated;
+                }
+            }
+
+            return result.map(ensureModShape).filter(Boolean);
+        }
+
+        function passesFilters(mod) {
+            ensureModShape(mod);
+
+            if (state.loader) {
+                const loaders = mod.loaders.map(normalizeLoader);
+                const categories = mod.categories.map(normalizeLoader);
+
+                if (![...loaders, ...categories].includes(state.loader)) {
+                    return false;
+                }
+            }
+
+            if (state.version) {
+                const versions = mod.versions.map(String);
+
+                if (!versions.includes(state.version)) {
+                    return false;
+                }
+            }
+
+            if (state.favoritesOnly && !state.favorites.has(mod.id)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function sortMods(mods) {
+            const sorted = [...mods];
+
+            if (state.sort === "downloads") {
+                sorted.sort((a, b) => safeNumber(b.downloads) - safeNumber(a.downloads));
+            } else if (state.sort === "updated") {
+                sorted.sort((a, b) =>
+                    new Date(b.updated || 0).getTime() -
+                    new Date(a.updated || 0).getTime()
+                );
+            }
+
+            return sorted;
+        }
+
+        function createTag(label, imagePath = "") {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+
+            if (imagePath) {
+                const img = document.createElement("img");
+                img.src = imagePath;
+                img.alt = "";
+                img.onerror = () => img.remove();
+                tag.appendChild(img);
+            }
+
+            tag.appendChild(document.createTextNode(label));
+            return tag;
+        }
+
+ 
+function createPlatformLink(name, info) {
+    if (!info || !info.url) return null;
+
+    const link = document.createElement("a");
+    link.className = "platform-link";
+    link.href = info.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+
+    const img = document.createElement("img");
+    img.src = ASSETS[name];
+    img.alt = "";
+    img.onerror = () => img.remove();
+
+    const label = document.createElement("span");
+    label.textContent = name === "modrinth"
+        ? "View Mod Page (Modrinth)"
+        : "View Mod Page (CurseForge)";
+
+    link.append(img, label);
+
+    return link;
+}
+
+        function createCard(original) {
+            const mod = ensureModShape(original);
+
+            if (!mod) return document.createElement("article");
+
+            const platforms = mod.platforms || {
+                modrinth: null,
+                curseforge: null
+            };
+
+            const card = document.createElement("article");
+            card.className = "mod-card";
+
+            const top = document.createElement("div");
+            top.className = "card-top";
+
+            const icon = document.createElement("div");
+            icon.className = "mod-icon";
+
+            if (mod.icon) {
+                const img = document.createElement("img");
+                img.src = mod.icon;
+                img.alt = "";
+                img.loading = "lazy";
+                img.referrerPolicy = "no-referrer";
+                img.onerror = () => {
+                    icon.textContent = String(mod.title || "M").charAt(0).toUpperCase();
+                };
+                icon.appendChild(img);
+            } else {
+                icon.textContent = String(mod.title || "M").charAt(0).toUpperCase();
+            }
+
+            const heading = document.createElement("div");
+            heading.className = "card-heading";
+
+            const title = document.createElement("h3");
+            title.className = "mod-title";
+            title.textContent = mod.title || "Untitled mod";
+
+            const author = document.createElement("div");
+            author.className = "mod-author";
+            author.textContent = "by " + (mod.author || "Unknown author");
+
+            heading.append(title, author);
+
+            const favorite = document.createElement("button");
+            favorite.type = "button";
+            favorite.className = "favorite-button";
+            favorite.classList.toggle("is-favorite", state.favorites.has(mod.id));
+            favorite.textContent = state.favorites.has(mod.id) ? "★" : "☆";
+            favorite.title = state.favorites.has(mod.id)
+                ? "Remove from favorites"
+                : "Add to favorites";
+            favorite.setAttribute("aria-label", favorite.title);
+
+            favorite.addEventListener("click", () => {
+                if (state.favorites.has(mod.id)) {
+                    state.favorites.delete(mod.id);
+                } else {
+                    state.favorites.add(mod.id);
+                }
+
+                saveFavorites();
+                renderMods();
+            });
+
+            top.append(icon, heading, favorite);
+
+            const description = document.createElement("p");
+            description.className = "mod-description";
+            description.textContent = mod.description || "No description available.";
+
+            const tags = document.createElement("div");
+            tags.className = "tags";
+
+            const uniqueLoaders = [...new Set(
+                safeArray(mod.loaders).map(normalizeLoader).filter(Boolean)
+            )];
+
+            for (const loader of uniqueLoaders.slice(0, 4)) {
+                tags.appendChild(createTag(
+                    loader === "neoforge"
+                        ? "NeoForge"
+                        : loader.charAt(0).toUpperCase() + loader.slice(1),
+                    ASSETS[loader]
+                ));
+            }
+
+            const uniqueVersions = [...new Set(safeArray(mod.versions).map(String))];
+
+            for (const version of uniqueVersions.slice(0, 3)) {
+                if (/^\d+\.\d+/.test(version)) {
+                    tags.appendChild(createTag(version));
+                }
+            }
+
+            if (!tags.childElementCount) {
+                tags.appendChild(createTag("Minecraft mod"));
+            }
+
+            const stats = document.createElement("div");
+            stats.className = "card-stats";
+
+            const downloads = document.createElement("span");
+            downloads.className = "stat";
+            downloads.textContent = "↓ " + formatDownloads(mod.downloads) + " downloads";
+
+            const updated = document.createElement("span");
+            updated.className = "stat";
+            updated.textContent = "◷ Updated " + formatDate(mod.updated);
+
+            stats.append(downloads, updated);
+
+            const platformRow = document.createElement("div");
+            platformRow.className = "platform-row";
+
+            const modrinthLink = createPlatformLink("modrinth", platforms.modrinth);
+            const curseforgeLink = createPlatformLink("curseforge", platforms.curseforge);
+
+            if (modrinthLink) platformRow.appendChild(modrinthLink);
+            if (curseforgeLink) platformRow.appendChild(curseforgeLink);
+
+            if (!platformRow.childElementCount) {
+                const unavailable = document.createElement("span");
+                unavailable.className = "tag";
+                unavailable.textContent = "No external link available";
+                platformRow.appendChild(unavailable);
+            }
+
+            card.append(top, description, tags, stats, platformRow);
+            return card;
+        }
+
+        function renderMods() {
+            const grid = $("#modGrid");
+            const visibleMods = sortMods(state.mods.filter(passesFilters));
+
+            grid.replaceChildren();
+            grid.classList.toggle("list-view", state.view === "list");
+
+            $("#gridToggle").classList.toggle("active", state.view === "grid");
+            $("#listToggle").classList.toggle("active", state.view === "list");
+            $("#gridToggle").setAttribute("aria-pressed", String(state.view === "grid"));
+            $("#listToggle").setAttribute("aria-pressed", String(state.view === "list"));
+
+            $("#favoritesToggle").classList.toggle("active", state.favoritesOnly);
+            $("#favoritesToggle").setAttribute("aria-pressed", String(state.favoritesOnly));
+            $("#favoritesToggle").textContent = state.favoritesOnly
+                ? "★ Favorites only"
+                : "☆ Favorites";
+
+            $("#resultCount").textContent =
+                visibleMods.length + " mod" + (visibleMods.length === 1 ? "" : "s") +
+                (state.favoritesOnly ? " in your favorites" : " shown");
+
+            if (!visibleMods.length) {
+                const empty = document.createElement("div");
+                empty.className = "empty-state";
+
+                const icon = document.createElement("div");
+                icon.className = "empty-icon";
+                icon.textContent = state.favoritesOnly ? "☆" : "⌕";
+
+                const heading = document.createElement("h3");
+                heading.textContent = state.favoritesOnly
+                    ? "No favorite mods yet"
+                    : "No mods found";
+
+                const paragraph = document.createElement("p");
+                paragraph.textContent = state.favoritesOnly
+                    ? "Click the star on a mod card to save it here."
+                    : "Try another search, select more platforms, or remove a filter.";
+
+                empty.append(icon, heading, paragraph);
+                grid.appendChild(empty);
+            } else {
+                const fragment = document.createDocumentFragment();
+
+                for (const mod of visibleMods) {
+                    fragment.appendChild(createCard(mod));
+                }
+
+                grid.appendChild(fragment);
+            }
+
+            $("#loadMoreButton").hidden = !state.hasMore || state.favoritesOnly;
+            $("#loadMoreButton").disabled = state.loading;
+            $("#loadMoreButton").textContent = state.loading
+                ? "Loading…"
+                : "Load more mods";
+        }
+
+        function setStatus(message, type = "") {
+            const status = $("#status");
+            status.textContent = message;
+            status.className = "status" + (type ? " " + type : "");
+        }
+
+        function updateFilterButtons() {
+            document.querySelectorAll("[data-platform]").forEach(button => {
+                const active = state.platforms.has(button.dataset.platform);
+                button.classList.toggle("active", active);
+                button.setAttribute("aria-pressed", String(active));
+            });
+
+            document.querySelectorAll("[data-loader]").forEach(button => {
+                const active = state.loader === button.dataset.loader;
+                button.classList.toggle("active", active);
+                button.setAttribute("aria-pressed", String(active));
+            });
+        }
+
+        async function searchMods(append = false) {
+            // Every new search invalidates older requests. Load-more is blocked only
+            // while the current request is running; new searches can replace old ones.
+            if (append && state.loading) return;
+
+            const requestId = ++state.requestId;
+
+            state.query = $("#searchInput").value.trim();
+            state.version = $("#versionSelect").value;
+            state.sort = $("#sortSelect").value;
+
+            if (!append) {
+                state.offset = 0;
+                state.mods = [];
+                state.hasMore = false;
+                renderMods();
+            }
+
+            if (!state.platforms.size) {
+                state.loading = false;
+                setStatus("Select at least one platform to search.", "error");
+                renderMods();
+                return;
+            }
+
+            state.loading = true;
+            $("#loadMoreButton").disabled = true;
+            $("#loadMoreButton").textContent = "Loading…";
+            setStatus(append ? "Loading more mods…" : "Searching mod platforms…");
+
+            const platforms = [...state.platforms];
+            const tasks = [];
+
+            if (platforms.includes("modrinth")) {
+                tasks.push({
+                    platform: "modrinth",
+                    promise: searchModrinth(state.offset, requestId)
+                });
+            }
+
+            if (platforms.includes("curseforge")) {
+                tasks.push({
+                    platform: "curseforge",
+                    promise: searchCurseForge(state.offset, requestId)
+                });
+            }
+
+            try {
+                const results = await Promise.allSettled(tasks.map(task => task.promise));
+
+                if (requestId !== state.requestId) return;
+
+                let successfulPlatforms = 0;
+                let fetched = [];
+                const errors = [];
+
+                results.forEach((result, index) => {
+                    const platform = tasks[index].platform;
+
+                    if (result.status === "fulfilled") {
+                        successfulPlatforms++;
+                        fetched.push(...safeArray(result.value).map(ensureModShape).filter(Boolean));
+                    } else {
+                        console.error(platform + " search failed:", result.reason);
+                        errors.push(
+                            (platform === "modrinth" ? "Modrinth" : "CurseForge") +
+                            ": " + (result.reason?.message || "Request failed")
+                        );
+                    }
+                });
+
+                if (!successfulPlatforms) {
+                    throw new Error(errors.join(" | ") || "No platform returned results.");
+                }
+
+                // Merge results with already loaded cards to avoid duplicates when
+                // users click Load more.
+                const combined = append ? [...state.mods, ...fetched] : fetched;
+                state.mods = mergeProjects(combined);
+
+                state.offset += PAGE_SIZE;
+                state.hasMore = fetched.length >= PAGE_SIZE * successfulPlatforms;
+
+                if (errors.length) {
+                    setStatus("Some results could not be loaded. " + errors.join(" | "), "error");
+                } else {
+                    setStatus(
+                        "Showing results from " +
+                        (successfulPlatforms === 2
+                            ? "Modrinth and CurseForge."
+                            : successfulPlatforms === 1
+                                ? platforms[0] === "modrinth" ? "Modrinth." : "CurseForge."
+                                : "your selected platforms.")
+                    );
+                }
+
+                renderMods();
+            } catch (error) {
+                if (requestId !== state.requestId) return;
+
+                console.error("Mod search failed:", error);
+                setStatus(
+                    "Could not load mods: " + (error?.message || "Unknown error"),
+                    "error"
+                );
+
+                if (!append) {
+                    state.mods = [];
+                }
+
+                renderMods();
+            } finally {
+                if (requestId === state.requestId) {
+                    state.loading = false;
+                    $("#loadMoreButton").disabled = false;
+                    $("#loadMoreButton").textContent = "Load more mods";
+                    renderMods();
+                }
+            }
+        }
+
+        $("#searchForm").addEventListener("submit", event => {
+            event.preventDefault();
+            searchMods(false);
+        });
+
+        document.querySelectorAll("[data-platform]").forEach(button => {
+            button.addEventListener("click", () => {
+                const platform = button.dataset.platform;
+
+                if (state.platforms.has(platform)) {
+                    state.platforms.delete(platform);
+                } else {
+                    state.platforms.add(platform);
+                }
+
+                updateFilterButtons();
+                searchMods(false);
+            });
+        });
+
+        document.querySelectorAll("[data-loader]").forEach(button => {
+            button.addEventListener("click", () => {
+                const loader = button.dataset.loader;
+                state.loader = state.loader === loader ? "" : loader;
+                updateFilterButtons();
+                searchMods(false);
+            });
+        });
+
+        $("#versionSelect").addEventListener("change", () => searchMods(false));
+        $("#sortSelect").addEventListener("change", () => searchMods(false));
+
+        $("#loadMoreButton").addEventListener("click", () => searchMods(true));
+
+        $("#favoritesToggle").addEventListener("click", () => {
+            state.favoritesOnly = !state.favoritesOnly;
+            renderMods();
+        });
+
+        $("#gridToggle").addEventListener("click", () => {
+            state.view = "grid";
+            renderMods();
+        });
+
+        $("#listToggle").addEventListener("click", () => {
+            state.view = "list";
+            renderMods();
+        });
+
+        document.querySelectorAll(".return-button, .footer a").forEach(link => {
+            link.addEventListener("click", event => {
+                if (
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey ||
+                    link.target === "_blank"
+                ) {
+                    return;
+                }
+
+                const destination = new URL(link.href, location.href);
+
+                if (destination.origin !== location.origin) return;
+
+                event.preventDefault();
+                document.body.classList.add("leaving");
+
+                setTimeout(() => {
+                    location.href = destination.href;
+                }, 190);
+            });
+        });
+
+        updateFilterButtons();
+        renderMods();
+        searchMods(false);
+    })();
+    </script>
+</body>
+</html>
