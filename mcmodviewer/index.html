@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,7 +19,6 @@
 }
 
 * { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -40,13 +38,8 @@ body.leaving { animation: pageOut .22s ease forwards; }
     from { opacity: 0; transform: translateY(7px); }
     to { opacity: 1; transform: translateY(0); }
 }
-@keyframes shimmer {
-    to { background-position: -220% 0; }
-}
-@keyframes fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+@keyframes shimmer { to { background-position: -220% 0; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slide {
     from { transform: translateX(25px); opacity: .5; }
     to { transform: translateX(0); opacity: 1; }
@@ -391,13 +384,37 @@ select {
     margin: 14px 0;
 }
 
+/* Downloads and updated date have separate elements, so they wrap cleanly. */
 .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    align-items: center;
+    gap: 6px 14px;
     color: var(--muted);
-    font-size: 10px;
+    font-size: 11px;
+    line-height: 1.6;
     margin: 0 0 13px;
+    min-width: 0;
+}
+
+.meta > span {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.meta > span + span {
+    padding-left: 10px;
+    border-left: 1px solid var(--line);
+}
+
+@media (max-width: 620px) {
+    .meta { gap: 5px 10px; }
+    .meta > span + span {
+        padding-left: 0;
+        border-left: 0;
+    }
 }
 
 .badges {
@@ -807,6 +824,8 @@ footer {
     </section>
 </div>
 
+<!-- These files can continue handling their other features.
+     Modrinth search below does not depend on their global API. -->
 <script src="./modrinth.js"></script>
 <script src="./curseforge.js"></script>
 <script src="./mod-details.js"></script>
@@ -1042,19 +1061,19 @@ function makeCard(mod, index) {
     description.textContent =
         mod.description || "No description supplied by the platform.";
 
+    /* FIX: separate metadata spans let CSS wrap each item properly. */
     const meta = document.createElement("div");
     meta.className = "meta";
 
-    meta.append(
-        document.createTextNode(
-            (mod.downloads || 0).toLocaleString() + " downloads"
-        )
-    );
+    const downloads = document.createElement("span");
+    downloads.textContent =
+        (mod.downloads || 0).toLocaleString() + " downloads";
+    meta.append(downloads);
 
     if (mod.updated) {
-        meta.append(
-            document.createTextNode("Updated " + formatDate(mod.updated))
-        );
+        const updated = document.createElement("span");
+        updated.textContent = "Updated " + formatDate(mod.updated);
+        meta.append(updated);
     }
 
     const badges = document.createElement("div");
@@ -1095,7 +1114,7 @@ function makeCard(mod, index) {
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         link.textContent =
-            "View Mod Page (" + platformNames[platform] + ")";
+            "View Mod Page (" + (platformNames[platform] || platform) + ")";
         actions.append(link);
     }
 
@@ -1173,7 +1192,7 @@ function fillOptions(selector, values, firstLabel) {
 
     [...new Set(values.filter(Boolean))]
         .sort((a, b) =>
-            String(a).localeCompare(String(b), undefined, { numeric: true })
+            String(a).localeCompare(b, undefined, { numeric: true })
         )
         .forEach(value => select.add(new Option(value, value)));
 
@@ -1196,13 +1215,28 @@ function updateFilterOptions(mods) {
     );
 }
 
+/*
+ * Convert a Modrinth search result into this page's internal mod format.
+ * This function intentionally does not depend on modrinth.js.
+ */
 function normalizeModrinth(item) {
-    if (window.RDModrinth?.normalize) {
-        return window.RDModrinth.normalize(item);
-    }
-
     const projectId = item.project_id || item.projectId || item.id;
     const slug = item.slug || projectId;
+    const rawCategories = Array.isArray(item.categories)
+        ? item.categories
+        : [];
+
+    const loaders = rawCategories.filter(category =>
+        Object.prototype.hasOwnProperty.call(loaderNames, category)
+    );
+
+    const categories = (
+        Array.isArray(item.display_categories) && item.display_categories.length
+            ? item.display_categories
+            : rawCategories
+    ).filter(category =>
+        !Object.prototype.hasOwnProperty.call(loaderNames, category)
+    );
 
     return {
         key: "modrinth:" + projectId,
@@ -1212,14 +1246,75 @@ function normalizeModrinth(item) {
         icon: item.icon_url || item.icon || "",
         downloads: Number(item.downloads) || 0,
         updated: item.date_modified || item.updated || "",
-        categories: item.display_categories || item.categories || [],
-        versions: item.versions || [],
-        loaders: item.loaders || [],
+        categories,
+        versions: Array.isArray(item.versions) ? item.versions : [],
+        loaders,
         platforms: {
             modrinth: {
                 url: "https://modrinth.com/mod/" + encodeURIComponent(slug)
             }
         }
+    };
+}
+
+/*
+ * Search Modrinth's public API directly.
+ * No API key is required for this endpoint.
+ */
+async function searchModrinth() {
+    const offset = state.offset;
+
+    const params = new URLSearchParams({
+        query: state.query,
+        offset: String(offset),
+        limit: String(state.limit),
+        index: state.sort === "downloads"
+            ? "downloads"
+            : state.sort === "updated"
+                ? "updated"
+                : "relevance"
+    });
+
+    const facets = [["project_type:mod"]];
+
+    if (state.version) {
+        facets.push(["versions:" + state.version]);
+    }
+
+    if (state.loader) {
+        facets.push(["categories:" + state.loader]);
+    }
+
+    if (state.category) {
+        facets.push(["categories:" + state.category]);
+    }
+
+    params.set("facets", JSON.stringify(facets));
+
+    const response = await fetch(
+        "https://api.modrinth.com/v2/search?" + params.toString(),
+        {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(
+            "Modrinth API returned HTTP " + response.status +
+            (response.status === 429 ? " (rate limited; wait a moment and retry)" : "")
+        );
+    }
+
+    const data = await response.json();
+    const hits = Array.isArray(data.hits) ? data.hits : [];
+
+    return {
+        mods: hits.map(normalizeModrinth),
+        total: Number(data.total) || 0,
+        hasMore: offset + hits.length < (Number(data.total) || 0)
     };
 }
 
@@ -1237,38 +1332,22 @@ async function search(append = false) {
 
     more.hidden = true;
 
-    const query = encodeURIComponent(state.query);
     const curseForgeUrl =
         "https://www.curseforge.com/minecraft/search?page=1&pageSize=20&sortBy=relevancy&search=" +
-        query;
+        encodeURIComponent(state.query);
 
     const tasks = [];
 
     if (platforms.includes("modrinth")) {
-        if (!window.RDModrinth?.search) {
-            setNotice("Modrinth adapter missing. Check that modrinth.js exists and loads correctly.", true);
-            results.replaceChildren();
-            return;
-        }
-
         tasks.push(
-            window.RDModrinth.search({
-                query: state.query,
-                version: state.version,
-                loader: state.loader,
-                category: state.category,
-                sort: state.sort,
-                offset: append ? state.offset : 0,
-                limit: state.limit
-            }).then(result => ({ platform: "modrinth", result }))
+            searchModrinth().then(result => ({
+                platform: "modrinth",
+                result
+            }))
         );
     }
 
-    if (requestId !== state.request) return;
-
     if (platforms.includes("curseforge")) {
-        // API searching will be enabled after a private server-side API key is configured.
-        // Until then, offer the official CurseForge search website without exposing a key.
         setNotice(
             "CurseForge API search is waiting for your API key. " +
             '<a href="' + curseForgeUrl +
@@ -1280,7 +1359,7 @@ async function search(append = false) {
             true
         );
     } else {
-        setNotice("Searching Modrinth…");
+        setNotice("Connecting to Modrinth…");
     }
 
     if (!tasks.length) {
@@ -1324,7 +1403,9 @@ async function search(append = false) {
 
         for (const item of settled) {
             if (item.status === "rejected") {
-                warnings.push(item.reason?.message || "Modrinth search failed.");
+                warnings.push(
+                    item.reason?.message || "Modrinth search failed."
+                );
                 continue;
             }
 
@@ -1335,7 +1416,7 @@ async function search(append = false) {
                     ? payload.data
                     : [];
 
-            incoming.push(...rawMods.map(normalizeModrinth));
+            incoming.push(...rawMods);
             total += Number(payload.total) || rawMods.length;
             hasMore ||= Boolean(payload.hasMore);
         }
@@ -1343,10 +1424,10 @@ async function search(append = false) {
         state.total = total;
 
         for (const mod of incoming) {
-            const key = normalize(mod.title);
+            const titleKey = normalize(mod.title);
             const existing = state.mods.find(
                 current => current.key === mod.key ||
-                           normalize(current.title) === key
+                           normalize(current.title) === titleKey
             );
 
             if (!existing) {
@@ -1376,23 +1457,50 @@ async function search(append = false) {
 
             if (!existing.icon) existing.icon = mod.icon;
             if (!existing.description) existing.description = mod.description;
-            existing.downloads = Math.max(existing.downloads || 0, mod.downloads || 0);
+            existing.downloads = Math.max(
+                existing.downloads || 0,
+                mod.downloads || 0
+            );
         }
 
-        state.offset += state.limit;
+        state.offset += incoming.length;
         updateFilterOptions(state.mods);
         render();
 
         more.hidden = !hasMore;
 
         if (warnings.length) {
-            setNotice(warnings.join(" "), true);
+            setNotice("Could not load Modrinth: " + warnings.join(" "), true);
         } else if (!platforms.includes("curseforge")) {
             setNotice("");
         }
     } catch (error) {
         if (requestId === state.request) {
-            setNotice("Could not load mods: " + (error?.message || String(error)), true);
+            setNotice(
+                "Could not load mods: " + (error?.message || String(error)),
+                true
+            );
+            results.replaceChildren();
+
+            const empty = document.createElement("div");
+            empty.className = "empty";
+
+            const heading = document.createElement("strong");
+            heading.textContent = "Modrinth could not be reached";
+
+            const message = document.createElement("p");
+            message.textContent =
+                "Check your internet connection, then try searching again. " +
+                "If the problem continues, open the browser console for details.";
+
+            const retry = document.createElement("button");
+            retry.type = "button";
+            retry.className = "btn secondary";
+            retry.textContent = "Try again";
+            retry.addEventListener("click", () => search());
+
+            empty.append(heading, message, retry);
+            results.append(empty);
         }
     }
 }
@@ -1400,7 +1508,8 @@ async function search(append = false) {
 function openDetails(mod) {
     $("#detail-title").textContent = mod.title || "Untitled mod";
     $("#detail-author").textContent = "by " + (mod.author || "Unknown author");
-    $("#detail-description").textContent = mod.description || "No description available.";
+    $("#detail-description").textContent =
+        mod.description || "No description available.";
 
     const icon = $("#detail-icon");
     icon.hidden = !mod.icon;
@@ -1411,7 +1520,13 @@ function openDetails(mod) {
     badges.replaceChildren();
 
     for (const loader of mod.loaders || []) {
-        badges.append(makeBadge(loaderNames[loader] || loader, "loader", "./" + loader + ".png"));
+        badges.append(
+            makeBadge(
+                loaderNames[loader] || loader,
+                "loader",
+                "./" + loader + ".png"
+            )
+        );
     }
 
     const platformContainer = $("#detail-platforms");
@@ -1423,11 +1538,11 @@ function openDetails(mod) {
 
         const label = document.createElement("div");
         const image = document.createElement("img");
-        image.src = logos[platform];
+        image.src = logos[platform] || "";
         image.alt = "";
 
         const name = document.createElement("strong");
-        name.textContent = platformNames[platform];
+        name.textContent = platformNames[platform] || platform;
 
         label.append(image, name);
 
@@ -1435,7 +1550,8 @@ function openDetails(mod) {
         link.href = safeUrl(mod.platforms[platform].url);
         link.target = "_blank";
         link.rel = "noopener noreferrer";
-        link.textContent = "View Mod Page ↗";
+        link.textContent =
+            "View Mod Page (" + (platformNames[platform] || platform) + ") ↗";
 
         row.append(label, link);
         platformContainer.append(row);
@@ -1460,8 +1576,15 @@ function openDetails(mod) {
     const rows = [
         ["Downloads", (mod.downloads || 0).toLocaleString()],
         ["Last updated", formatDate(mod.updated)],
-        ["Loaders", (mod.loaders || []).map(x => loaderNames[x] || x).join(", ") || "Not listed"],
-        ["Minecraft versions", (mod.versions || []).join(", ") || "Not listed"]
+        [
+            "Loaders",
+            (mod.loaders || []).map(x => loaderNames[x] || x).join(", ") ||
+                "Not listed"
+        ],
+        [
+            "Minecraft versions",
+            (mod.versions || []).join(", ") || "Not listed"
+        ]
     ];
 
     for (const [label, value] of rows) {
@@ -1479,8 +1602,11 @@ function openDetails(mod) {
     comparison.append(table);
 
     $("#detail-compat").textContent =
-        "Loaders: " + ((mod.loaders || []).map(x => loaderNames[x] || x).join(", ") || "Not listed") +
-        "\nMinecraft versions: " + ((mod.versions || []).join(", ") || "Not listed");
+        "Loaders: " +
+        ((mod.loaders || []).map(x => loaderNames[x] || x).join(", ") ||
+            "Not listed") +
+        "\nMinecraft versions: " +
+        ((mod.versions || []).join(", ") || "Not listed");
 
     const categories = $("#detail-categories");
     categories.replaceChildren();
@@ -1579,7 +1705,7 @@ $("#category").addEventListener("change", event => {
 
 $("#sort").addEventListener("change", event => {
     state.sort = event.target.value;
-    render();
+    search();
 });
 
 more.addEventListener("click", () => search(true));
