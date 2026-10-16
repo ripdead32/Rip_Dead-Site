@@ -24,11 +24,8 @@
     --danger: #ff7185;
     --radius: 16px;
 }
-
 * { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
 body {
     margin: 0;
     min-height: 100vh;
@@ -43,65 +40,43 @@ body {
     opacity: 0;
     animation: enter .4s ease forwards;
 }
-
-body.leaving {
-    opacity: 0;
-    transition: opacity .18s ease;
-}
-
+body.leaving { opacity: 0; transition: opacity .18s ease; }
 @keyframes enter { to { opacity: 1; } }
-
 button, input, select { font: inherit; }
-
 button, a, select { -webkit-tap-highlight-color: transparent; }
-
 button {
     color: inherit;
     cursor: pointer;
 }
-
-button:disabled {
-    opacity: .55;
-    cursor: not-allowed;
-}
-
+button:disabled { opacity: .55; cursor: not-allowed; }
 a { color: var(--purple); }
-
 a:hover { color: #c8adff; }
-
 button:focus-visible, a:focus-visible,
 input:focus-visible, select:focus-visible {
     outline: 2px solid var(--teal);
     outline-offset: 3px;
 }
-
 button:focus:not(:focus-visible) { outline: none; }
-
 button, select, input {
     border: 1px solid var(--border);
     border-radius: 10px;
     background: var(--panel);
     color: var(--text);
 }
-
 button {
     padding: 9px 13px;
     transition: background .18s, border-color .18s, transform .18s;
 }
-
 button:hover:not(:disabled) {
     border-color: #735a91;
     background: #251d34;
 }
-
 button:active:not(:disabled) { transform: scale(.98); }
-
 .container {
     width: min(1500px, 100%);
     margin: auto;
     padding: 0 25px;
 }
-
 .topbar {
     position: sticky;
     top: 0;
@@ -110,7 +85,6 @@ button:active:not(:disabled) { transform: scale(.98); }
     background: #0c0a11eF;
     backdrop-filter: blur(18px);
 }
-
 .nav {
     min-height: 72px;
     display: flex;
@@ -118,7 +92,6 @@ button:active:not(:disabled) { transform: scale(.98); }
     justify-content: space-between;
     gap: 18px;
 }
-
 .brand {
     display: flex;
     align-items: center;
@@ -127,7 +100,6 @@ button:active:not(:disabled) { transform: scale(.98); }
     text-decoration: none;
     min-width: 0;
 }
-
 .brandmark {
     width: 43px;
     height: 43px;
@@ -141,11 +113,9 @@ button:active:not(:disabled) { transform: scale(.98); }
     background: linear-gradient(135deg, #b38aff, #6e43cf 65%, #392c65);
     box-shadow: 0 5px 25px #8a57d733;
 }
-
 .brandname { font-size: 16px; font-weight: 850; }
 .brandname span { color: var(--purple); }
 .brandsub { color: var(--muted); font-size: 11px; }
-
 .navright {
     display: flex;
     align-items: center;
@@ -153,7 +123,6 @@ button:active:not(:disabled) { transform: scale(.98); }
     flex-wrap: wrap;
     gap: 10px;
 }
-
 .backbtn {
     display: inline-flex;
     align-items: center;
@@ -167,15 +136,12 @@ button:active:not(:disabled) { transform: scale(.98); }
     font-weight: 650;
     transition: .18s;
 }
-
 .backbtn:hover {
     border-color: var(--purple);
     background: var(--panel2);
     color: white;
 }
-
 .hero { padding: 38px 0 27px; }
-
 .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -190,7 +156,6 @@ button:active:not(:disabled) { transform: scale(.98); }
     text-transform: uppercase;
     letter-spacing: .1em;
 }
-
 .eyedot {
     width: 7px;
     height: 7px;
@@ -198,35 +163,30 @@ button:active:not(:disabled) { transform: scale(.98); }
     border-radius: 50%;
     box-shadow: 0 0 12px #4de1c1aa;
 }
-
 h1 {
     margin: 15px 0 8px;
     font-size: clamp(30px, 4vw, 48px);
     line-height: 1.12;
     letter-spacing: -.045em;
 }
-
 h1 span {
     background: linear-gradient(90deg, #c6a5ff, #8eafff, #69e8ce);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
 }
-
 .hero p {
     max-width: 650px;
     margin: 0;
     color: var(--muted);
     font-size: 14px;
 }
-
 .stats {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     margin-top: 20px;
 }
-
 .stat {
     border: 1px solid var(--border);
     background: #171320aa;
@@ -235,9 +195,7 @@ h1 span {
     color: var(--muted);
     font-size: 12px;
 }
-
 .stat strong { color: var(--text); }
-
 .workspace {
     display: grid;
     grid-template-columns: 245px minmax(0, 1fr);
@@ -245,23 +203,19 @@ h1 span {
     gap: 20px;
     padding-bottom: 50px;
 }
-
 .sidebar {
     position: sticky;
     top: 91px;
     display: grid;
     gap: 14px;
 }
-
 .panel {
     background: linear-gradient(150deg, #1b1526, #14101c);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
 }
-
 .panelbody { padding: 16px; }
-
 .paneltitle {
     display: flex;
     justify-content: space-between;
@@ -273,7 +227,6 @@ h1 span {
     text-transform: uppercase;
     letter-spacing: .07em;
 }
-
 .sectionlabel {
     color: var(--muted);
     font-size: 10px;
@@ -282,21 +235,14 @@ h1 span {
     text-transform: uppercase;
     margin: 18px 0 9px;
 }
-
 .sectionlabel:first-child { margin-top: 0; }
-
-.searchbox {
-    display: flex;
-    gap: 8px;
-}
-
+.searchbox { display: flex; gap: 8px; }
 .searchbox input {
     width: 100%;
     min-width: 0;
     padding: 12px 13px;
     background: #0e0b14;
 }
-
 .primary {
     background: linear-gradient(135deg, var(--purple2), #9463ed);
     border-color: #a984ff;
@@ -304,23 +250,12 @@ h1 span {
     font-weight: 800;
     white-space: nowrap;
 }
-
 .primary:hover:not(:disabled) {
     background: linear-gradient(135deg, #8551e9, #a982ff);
 }
-
 .full { width: 100%; }
-
-.smallmuted {
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.platformchoices {
-    display: grid;
-    gap: 8px;
-}
-
+.smallmuted { color: var(--muted); font-size: 11px; }
+.platformchoices { display: grid; gap: 8px; }
 .platformchoice {
     width: 100%;
     display: flex;
@@ -330,24 +265,20 @@ h1 span {
     padding: 10px;
     background: #110e19;
 }
-
 .platformchoice[aria-pressed="true"] {
     border-color: var(--purple);
     background: #8e62d51c;
     box-shadow: inset 0 0 0 1px #a879ff22;
 }
-
 .platformchoice img {
     width: 27px;
     height: 27px;
     object-fit: contain;
     flex-shrink: 0;
 }
-
 .platformchoice .choicecopy { flex: 1; }
 .platformchoice strong { display: block; font-size: 12px; }
 .platformchoice small { display: block; color: var(--muted); font-size: 10px; }
-
 .checkmark {
     width: 17px;
     height: 17px;
@@ -358,18 +289,11 @@ h1 span {
     color: var(--teal);
     font-size: 11px;
 }
-
 .platformchoice[aria-pressed="true"] .checkmark {
     background: #4de1c11c;
     border-color: var(--teal);
 }
-
-.filterchips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-}
-
+.filterchips { display: flex; flex-wrap: wrap; gap: 7px; }
 .chip {
     padding: 6px 9px;
     border-radius: 9px;
@@ -377,15 +301,12 @@ h1 span {
     background: #110e19;
     color: var(--muted);
 }
-
 .chip[aria-pressed="true"] {
     color: white;
     border-color: var(--purple);
     background: #8e62d529;
 }
-
 .field { margin-top: 11px; }
-
 .field label {
     display: block;
     margin-bottom: 6px;
@@ -393,23 +314,19 @@ h1 span {
     font-size: 11px;
     font-weight: 650;
 }
-
 .field select, .field input {
     width: 100%;
     min-height: 39px;
     padding: 8px 10px;
     background: #100d17;
 }
-
 .resetbtn {
     margin-top: 14px;
     color: var(--muted);
     background: transparent;
     width: 100%;
 }
-
 .content { min-width: 0; }
-
 .contenthead {
     display: flex;
     align-items: center;
@@ -418,30 +335,16 @@ h1 span {
     flex-wrap: wrap;
     margin-bottom: 13px;
 }
-
 .headinggroup h2 {
     margin: 0;
     font-size: 20px;
     letter-spacing: -.02em;
 }
-
-.headinggroup p {
-    margin: 3px 0 0;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.viewtools {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 7px;
-}
-
+.headinggroup p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+.viewtools { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
 .toolbtn { font-size: 11px; padding: 8px 10px; }
 .toolbtn.active { color: white; border-color: var(--purple); background: #8e62d52b; }
 .toolbtn.favactive { border-color: var(--orange); color: var(--orange); }
-
 .notice {
     border: 1px solid #4de1c133;
     background: #4de1c10d;
@@ -452,21 +355,17 @@ h1 span {
     font-size: 12px;
     overflow-wrap: anywhere;
 }
-
 .notice.error {
     color: #ffc1ca;
     border-color: #ff718544;
     background: #ff71850d;
 }
-
 .notice:empty { display: none; }
-
 .results {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
 }
-
 .modcard {
     min-width: 0;
     display: flex;
@@ -479,23 +378,12 @@ h1 span {
     animation: cardin .25s ease both;
     transition: border-color .18s, transform .18s, background .18s;
 }
-
-.modcard:hover {
-    border-color: #57406f;
-    transform: translateY(-2px);
-}
-
+.modcard:hover { border-color: #57406f; transform: translateY(-2px); }
 @keyframes cardin {
     from { opacity: 0; transform: translateY(7px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
-.cardhead {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-}
-
+.cardhead { display: flex; align-items: flex-start; gap: 10px; }
 .modicon {
     width: 48px;
     height: 48px;
@@ -505,7 +393,6 @@ h1 span {
     background: #2b223b;
     border: 1px solid #ffffff10;
 }
-
 .modtitle {
     margin: 0;
     font-size: 14px;
@@ -513,14 +400,7 @@ h1 span {
     line-height: 1.35;
     overflow-wrap: anywhere;
 }
-
-.author {
-    color: var(--muted);
-    font-size: 10px;
-    margin-top: 4px;
-    overflow-wrap: anywhere;
-}
-
+.author { color: var(--muted); font-size: 10px; margin-top: 4px; overflow-wrap: anywhere; }
 .favorite {
     margin-left: auto;
     padding: 4px 7px;
@@ -531,10 +411,8 @@ h1 span {
     line-height: 1;
     flex-shrink: 0;
 }
-
 .favorite:hover { background: transparent; color: var(--orange); }
 .favorite.saved { color: var(--orange); }
-
 .desc {
     margin: 0;
     color: #b7adc5;
@@ -547,7 +425,6 @@ h1 span {
     overflow-wrap: anywhere;
     min-height: 54px;
 }
-
 .meta {
     display: flex;
     align-items: center;
@@ -557,13 +434,7 @@ h1 span {
     color: var(--muted);
     font-size: 10px;
 }
-
-.badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-
+.badges { display: flex; flex-wrap: wrap; gap: 5px; }
 .badge {
     display: inline-flex;
     align-items: center;
@@ -578,37 +449,11 @@ h1 span {
     line-height: 1.4;
     overflow-wrap: anywhere;
 }
-
-.badge img {
-    width: 13px;
-    height: 13px;
-    object-fit: contain;
-}
-
-.badge.modrinth {
-    color: #8bf1c1;
-    border-color: #42c78a45;
-    background: #42c78a10;
-}
-
-.badge.curseforge {
-    color: #ffc28b;
-    border-color: #ffad6645;
-    background: #ffad6610;
-}
-
-.badge.loader {
-    color: #b8c9ff;
-    border-color: #809bff33;
-    background: #809bff0c;
-}
-
-.cardactions {
-    margin-top: auto;
-    display: grid;
-    gap: 6px;
-}
-
+.badge img { width: 13px; height: 13px; object-fit: contain; }
+.badge.modrinth { color: #8bf1c1; border-color: #42c78a45; background: #42c78a10; }
+.badge.curseforge { color: #ffc28b; border-color: #ffad6645; background: #ffad6610; }
+.badge.loader { color: #b8c9ff; border-color: #809bff33; background: #809bff0c; }
+.cardactions { margin-top: auto; display: grid; gap: 6px; }
 .cardactions a, .cardactions button {
     display: block;
     width: 100%;
@@ -623,30 +468,17 @@ h1 span {
     background: #211a2d;
     overflow-wrap: anywhere;
 }
-
-.cardactions a:hover {
-    border-color: var(--purple);
-    background: #8e62d51c;
-    color: white;
-}
-
-.cardactions button {
-    color: var(--muted);
-    background: transparent;
-}
-
+.cardactions a:hover { border-color: var(--purple); background: #8e62d51c; color: white; }
+.cardactions button { color: var(--muted); background: transparent; }
 .list { grid-template-columns: 1fr; }
-
 .list .modcard {
     display: grid;
     grid-template-columns: minmax(170px, .85fr) minmax(0, 1.3fr) minmax(150px, .75fr);
     align-items: center;
     gap: 13px;
 }
-
 .list .desc { min-height: 0; }
 .list .cardactions { margin: 0; }
-
 .skeleton {
     height: 255px;
     border: 1px solid var(--border);
@@ -655,11 +487,7 @@ h1 span {
     background-size: 200% 100%;
     animation: shimmer 1.4s linear infinite;
 }
-
-@keyframes shimmer {
-    to { background-position-x: -200%; }
-}
-
+@keyframes shimmer { to { background-position-x: -200%; } }
 .empty {
     grid-column: 1 / -1;
     text-align: center;
@@ -668,19 +496,11 @@ h1 span {
     border-radius: 15px;
     color: var(--muted);
 }
-
 .emptyicon { font-size: 35px; margin-bottom: 10px; }
 .empty strong { display: block; color: var(--text); font-size: 15px; }
 .empty p { margin: 5px 0 0; font-size: 12px; }
-
-.loadmorewrap {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
+.loadmorewrap { display: flex; justify-content: center; margin-top: 20px; }
 #load-more { min-width: 190px; }
-
 .footer {
     border-top: 1px solid var(--border);
     color: var(--muted);
@@ -692,9 +512,7 @@ h1 span {
     flex-wrap: wrap;
     gap: 12px;
 }
-
 .footer a { text-decoration: none; }
-
 .overlay {
     position: fixed;
     inset: 0;
@@ -705,11 +523,8 @@ h1 span {
     backdrop-filter: blur(7px);
     animation: fadein .18s ease;
 }
-
 .overlay[hidden] { display: none; }
-
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
-
 .drawer {
     width: min(560px, 100%);
     height: 100%;
@@ -719,12 +534,10 @@ h1 span {
     padding: 23px;
     animation: slidein .24s ease;
 }
-
 @keyframes slidein {
     from { transform: translateX(25px); opacity: .5; }
     to { transform: translateX(0); opacity: 1; }
 }
-
 .drawerhead {
     display: flex;
     justify-content: space-between;
@@ -732,16 +545,9 @@ h1 span {
     gap: 12px;
     margin-bottom: 24px;
 }
-
 .drawerhead strong { font-size: 13px; }
 .closebtn { font-size: 20px; padding: 4px 10px; }
-
-.detailhero {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
+.detailhero { display: flex; gap: 15px; align-items: center; }
 .detailhero img {
     width: 75px;
     height: 75px;
@@ -750,18 +556,9 @@ h1 span {
     background: var(--panel2);
     flex-shrink: 0;
 }
-
-.detailhero h2 {
-    margin: 0;
-    font-size: 23px;
-    line-height: 1.25;
-    overflow-wrap: anywhere;
-}
-
+.detailhero h2 { margin: 0; font-size: 23px; line-height: 1.25; overflow-wrap: anywhere; }
 .detailhero p { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
-
 .detailsection { margin-top: 25px; }
-
 .detailsection h3 {
     margin: 0 0 10px;
     font-size: 11px;
@@ -769,16 +566,8 @@ h1 span {
     letter-spacing: .08em;
     text-transform: uppercase;
 }
-
-.detaildescription {
-    color: #d2c7e0;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    font-size: 12px;
-}
-
+.detaildescription { color: #d2c7e0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
 .platformlinks { display: grid; gap: 8px; }
-
 .platformrow {
     display: flex;
     justify-content: space-between;
@@ -790,21 +579,9 @@ h1 span {
     padding: 11px;
     background: #1b1526;
 }
-
 .platformrow strong { font-size: 12px; }
-
-.platformrow a {
-    text-decoration: none;
-    font-size: 11px;
-    font-weight: 750;
-}
-
-.detailtable {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 11px;
-}
-
+.platformrow a { text-decoration: none; font-size: 11px; font-weight: 750; }
+.detailtable { width: 100%; border-collapse: collapse; font-size: 11px; }
 .detailtable th, .detailtable td {
     text-align: left;
     vertical-align: top;
@@ -812,7 +589,6 @@ h1 span {
     border-bottom: 1px solid var(--border);
     overflow-wrap: anywhere;
 }
-
 .detailtable th { width: 38%; color: var(--muted); font-weight: 600; }
 .detailtable td { color: var(--text); }
 
@@ -821,7 +597,6 @@ h1 span {
     .list .modcard { grid-template-columns: 1fr; }
     .list .cardactions { margin-top: 4px; }
 }
-
 @media (max-width: 800px) {
     .container { padding: 0 15px; }
     .workspace { grid-template-columns: 1fr; }
@@ -831,7 +606,6 @@ h1 span {
     .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .sidebar .panelbody { padding: 14px; }
 }
-
 @media (max-width: 520px) {
     .brandsub { display: none; }
     .brandmark { width: 37px; height: 37px; }
@@ -856,10 +630,8 @@ h1 span {
                 <div class="brandsub">Minecraft Mod Viewer</div>
             </div>
         </a>
-
         <div class="navright">
-            <a class="backbtn" id="return-link"
-               href="https://ripdead.de5.net/">
+            <a class="backbtn" id="return-link" href="https://ripdead.de5.net/">
                 <span aria-hidden="true">←</span>
                 Return to Rip_Dead Site
             </a>
@@ -889,8 +661,7 @@ h1 span {
                     <h2 class="paneltitle">Search mods</h2>
                     <form id="search-form">
                         <div class="searchbox">
-                            <input id="query" type="search"
-                                   placeholder="Search Minecraft mods…"
+                            <input id="query" type="search" placeholder="Search Minecraft mods…"
                                    autocomplete="off" maxlength="180">
                             <button class="primary" type="submit">Search</button>
                         </div>
@@ -907,31 +678,26 @@ h1 span {
                     <div class="smallmuted" style="margin-bottom:11px">
                         Select either or both. With neither selected, both are searched.
                     </div>
-
                     <div class="platformchoices">
                         <button class="platformchoice" type="button"
                                 data-platform="modrinth" aria-pressed="false">
-                            <img src="./modrinth.png" alt=""
-                                 onerror="this.style.display='none'">
+                            <img src="./modrinth.png" alt="" onerror="this.style.display='none'">
                             <span class="choicecopy">
                                 <strong>Modrinth</strong>
                                 <small>Mods via Modrinth</small>
                             </span>
-                            <span class=""></span>
+                            <span class= aria-hidden="true"></span>
                         </button>
-
                         <button class="platformchoice" type="button"
                                 data-platform="curseforge" aria-pressed="false">
-                            <img src="./curseforge.png" alt=""
-                                 onerror="this.style.display='none'">
+                            <img src="./curseforge.png" alt="" onerror="this.style.display='none'">
                             <span class="choicecopy">
                                 <strong>CurseForge</strong>
                                 <small>Mods via CurseForge</small>
                             </span>
-                            <span class=""></span>
+                            <span class= aria-hidden="true"></span>
                         </button>
                     </div>
-
                     <div class="smallmuted" style="margin-top:10px">
                         Both disabled = both sources included.
                     </div>
@@ -941,33 +707,23 @@ h1 span {
             <section class="panel">
                 <div class="panelbody">
                     <h2 class="paneltitle">Filters</h2>
-
-                    <div class="sectionlabel">Mod loader</div>
+                    <div class="sectionlabel">Mod loaders · select multiple</div>
                     <div class="filterchips">
-                        <button class="chip" type="button" data-loader="fabric"
-                                aria-pressed="false">Fabric</button>
-                        <button class="chip" type="button" data-loader="forge"
-                                aria-pressed="false">Forge</button>
-                        <button class="chip" type="button" data-loader="neoforge"
-                                aria-pressed="false">NeoForge</button>
-                        <button class="chip" type="button" data-loader="quilt"
-                                aria-pressed="false">Quilt</button>
+                        <button class="chip" type="button" data-loader="fabric" aria-pressed="false">Fabric</button>
+                        <button class="chip" type="button" data-loader="forge" aria-pressed="false">Forge</button>
+                        <button class="chip" type="button" data-loader="neoforge" aria-pressed="false">NeoForge</button>
+                        <button class="chip" type="button" data-loader="quilt" aria-pressed="false">Quilt</button>
                     </div>
+                    <p class="smallmuted">When multiple loaders are selected, a mod must support every selected loader.</p>
 
                     <div class="field">
                         <label for="version">Minecraft version</label>
-                        <select id="version">
-                            <option value="">All versions</option>
-                        </select>
+                        <select id="version"><option value="">All versions</option></select>
                     </div>
-
                     <div class="field">
                         <label for="category">Category</label>
-                        <select id="category">
-                            <option value="">All categories</option>
-                        </select>
+                        <select id="category"><option value="">All categories</option></select>
                     </div>
-
                     <div class="field">
                         <label for="sort">Sort results</label>
                         <select id="sort">
@@ -976,10 +732,7 @@ h1 span {
                             <option value="updated">Recently updated</option>
                         </select>
                     </div>
-
-                    <button id="reset-filters" class="resetbtn" type="button">
-                        Clear filters
-                    </button>
+                    <button id="reset-filters" class="resetbtn" type="button">Clear filters</button>
                 </div>
             </section>
         </aside>
@@ -990,25 +743,16 @@ h1 span {
                     <h2 id="section-title">Discover mods</h2>
                     <p id="result-count">Ready to search</p>
                 </div>
-
                 <div class="viewtools">
-                    <button id="favorites-view" class="toolbtn" type="button"
-                            aria-pressed="false">☆ Favorites</button>
-                    <button id="grid-view" class="toolbtn active" type="button"
-                            aria-pressed="true">▦ Grid</button>
-                    <button id="list-view" class="toolbtn" type="button"
-                            aria-pressed="false">☷ List</button>
+                    <button id="favorites-view" class="toolbtn" type="button" aria-pressed="false">☆ Favorites</button>
+                    <button id="grid-view" class="toolbtn active" type="button" aria-pressed="true">▦ Grid</button>
+                    <button id="list-view" class="toolbtn" type="button" aria-pressed="false">☷ List</button>
                 </div>
             </div>
-
             <div id="notice" class="notice" role="status" aria-live="polite"></div>
-
             <div id="results" class="results" aria-live="polite"></div>
-
             <div class="loadmorewrap">
-                <button id="load-more" class="primary" type="button" hidden>
-                    ↓ Load More Mods
-                </button>
+                <button id="load-more" class="primary" type="button" hidden>↓ Load More Mods</button>
             </div>
         </section>
     </div>
@@ -1020,18 +764,16 @@ h1 span {
         <a href="https://modrinth.com/" target="_blank" rel="noopener noreferrer">Modrinth</a>
         and
         <a href="https://www.curseforge.com/minecraft" target="_blank" rel="noopener noreferrer">CurseForge</a>
-    </span>This Mod Viewer is NOT affiliated with Modrinth or CurseForge or Mojang / Microsoft.
+    </span>
+    <span>This Mod Viewer is NOT affiliated with Modrinth or CurseForge or Mojang / Microsoft.</span>
 </footer>
 
 <div id="details-overlay" class="overlay" hidden>
-    <section class="drawer" role="dialog" aria-modal="true"
-             aria-labelledby="detail-title">
+    <section class="drawer" role="dialog" aria-modal="true" aria-labelledby="detail-title">
         <div class="drawerhead">
             <strong>MOD DETAILS</strong>
-            <button id="close-details" class="closebtn" type="button"
-                    aria-label="Close details">×</button>
+            <button id="close-details" class="closebtn" type="button" aria-label="Close details">×</button>
         </div>
-
         <div class="detailhero">
             <img id="detail-icon" alt="" hidden>
             <div>
@@ -1039,24 +781,18 @@ h1 span {
                 <p id="detail-author"></p>
             </div>
         </div>
-
         <div class="detailsection">
             <h3>Description</h3>
             <div id="detail-description" class="detaildescription"></div>
         </div>
-
         <div class="detailsection">
             <h3>Platform pages</h3>
             <div id="detail-platforms" class="platformlinks"></div>
         </div>
-
         <div class="detailsection">
             <h3>Compatibility and metadata</h3>
-            <table class="detailtable">
-                <tbody id="detail-metadata"></tbody>
-            </table>
+            <table class="detailtable"><tbody id="detail-metadata"></tbody></table>
         </div>
-
         <div class="detailsection">
             <h3>Categories</h3>
             <div id="detail-categories" class="badges"></div>
@@ -1068,17 +804,9 @@ h1 span {
 (() => {
 "use strict";
 
-/*
- * Modrinth is queried directly.
- * CurseForge is queried through your Cloudflare Worker.
- * Keep your CurseForge API key on the Worker, never in this file.
- */
 const MODRINTH_API = "https://api.modrinth.com/v2/search";
-const CURSEFORGE_API =
-    "https://ripdead-curseforge-api.ripdead890.workers.dev/search";
-
+const CURSEFORGE_API = "https://ripdead-curseforge-api.ripdead890.workers.dev/search";
 const PAGE_SIZE = 24;
-
 const $ = selector => document.querySelector(selector);
 
 const ui = {
@@ -1112,10 +840,17 @@ const LOADER_NAMES = {
     quilt: "Quilt"
 };
 
+const CURSEFORGE_LOADER_IDS = {
+    forge: 1,
+    fabric: 4,
+    quilt: 5,
+    neoforge: 6
+};
+
 const state = {
     query: "",
     selectedPlatforms: new Set(),
-    loader: "",
+    selectedLoaders: new Set(),
     version: "",
     category: "",
     sort: "relevance",
@@ -1133,9 +868,7 @@ const state = {
 
 function readFavorites() {
     try {
-        const value = JSON.parse(
-            localStorage.getItem("ripdead-modviewer-favorites") || "[]"
-        );
+        const value = JSON.parse(localStorage.getItem("ripdead-modviewer-favorites") || "[]");
         return new Set(Array.isArray(value) ? value : []);
     } catch {
         return new Set();
@@ -1144,10 +877,7 @@ function readFavorites() {
 
 function saveFavorites() {
     try {
-        localStorage.setItem(
-            "ripdead-modviewer-favorites",
-            JSON.stringify([...state.favorites])
-        );
+        localStorage.setItem("ripdead-modviewer-favorites", JSON.stringify([...state.favorites]));
     } catch {
         showNotice("Favorites could not be saved in this browser.", true);
     }
@@ -1164,8 +894,7 @@ function normalize(value) {
 function safeUrl(value) {
     try {
         const url = new URL(value);
-        return url.protocol === "https:" || url.protocol === "http:"
-            ? url.href : "";
+        return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
     } catch {
         return "";
     }
@@ -1187,7 +916,6 @@ function formatDate(value) {
     if (!value) return "Unknown";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "Unknown";
-
     return date.toLocaleDateString(undefined, {
         year: "numeric",
         month: "short",
@@ -1200,7 +928,9 @@ function formatDownloads(value) {
 }
 
 function unique(values) {
-    return [...new Set(values.filter(value => value !== undefined && value !== null && value !== ""))];
+    return [...new Set(values.filter(value =>
+        value !== undefined && value !== null && value !== ""
+    ))];
 }
 
 function getLoader(value) {
@@ -1234,19 +964,27 @@ function makeBadge(label, kind = "", iconUrl = "") {
 function normalizeModrinth(item) {
     const id = String(item.project_id || item.id || "");
     const slug = item.slug || id;
-    const categories = Array.isArray(item.display_categories) &&
-        item.display_categories.length
-        ? item.display_categories
-        : item.categories || [];
 
-    const loaders = unique((item.categories || []).filter(
-        value => Object.hasOwn(LOADER_NAMES, value)
+    // Loader metadata can appear in either "loaders" or "categories".
+    const loaderValues = unique([
+        ...(Array.isArray(item.loaders) ? item.loaders : []),
+        ...(Array.isArray(item.categories) ? item.categories : [])
+    ]).map(value => String(value).toLowerCase());
+
+    const loaders = unique(loaderValues.filter(value =>
+        Object.hasOwn(LOADER_NAMES, value)
     ));
 
-    const versions = Array.isArray(item.versions) ? item.versions : [];
+    const rawCategories = Array.isArray(item.display_categories) && item.display_categories.length
+        ? item.display_categories
+        : (item.categories || []);
+
+    const categories = unique(rawCategories.filter(value =>
+        !Object.hasOwn(LOADER_NAMES, String(value).toLowerCase())
+    ));
 
     return {
-        key: "modrinth:" + id,
+        key: "mod:" + normalize(item.title),
         matchKey: normalize(item.title),
         title: item.title || "Untitled mod",
         author: item.author || "Unknown author",
@@ -1254,11 +992,9 @@ function normalizeModrinth(item) {
         icon: safeUrl(item.icon_url),
         downloads: Number(item.downloads) || 0,
         updated: item.date_modified || "",
-        versions,
+        versions: Array.isArray(item.versions) ? item.versions : [],
         loaders,
-        categories: unique(categories.filter(
-            value => !Object.hasOwn(LOADER_NAMES, value)
-        )),
+        categories,
         platforms: {
             modrinth: {
                 id,
@@ -1278,11 +1014,8 @@ function normalizeCurseForge(item) {
         ).filter(Boolean)
         : [];
 
-    const url = safeUrl(item.url) ||
-        "https://www.curseforge.com/minecraft/search";
-
     return {
-        key: "curseforge:" + id,
+        key: "mod:" + normalize(item.title || item.name),
         matchKey: normalize(item.title || item.name),
         title: item.title || item.name || "Untitled mod",
         author: item.author || "Unknown author",
@@ -1291,16 +1024,16 @@ function normalizeCurseForge(item) {
         downloads: Number(item.downloads) || 0,
         updated: item.updated || "",
         versions: rawVersions,
-        loaders: rawLoaders.filter(value =>
-            Object.hasOwn(LOADER_NAMES, value)
-        ),
+        loaders: unique(rawLoaders.map(value => String(value).toLowerCase()))
+            .filter(value => Object.hasOwn(LOADER_NAMES, value)),
         categories: unique(categories.filter(value =>
-            !Object.hasOwn(LOADER_NAMES, value)
+            !Object.hasOwn(LOADER_NAMES, String(value).toLowerCase())
         )),
         platforms: {
             curseforge: {
                 id,
-                url
+                url: safeUrl(item.url) ||
+                    "https://www.curseforge.com/minecraft/search"
             }
         }
     };
@@ -1308,10 +1041,8 @@ function normalizeCurseForge(item) {
 
 function mergeMods(incoming) {
     for (const mod of incoming) {
-        // Exact normalized titles are used as a best-effort duplicate match.
         const existing = state.mods.find(candidate =>
-            candidate.matchKey &&
-            candidate.matchKey === mod.matchKey
+            candidate.matchKey && candidate.matchKey === mod.matchKey
         );
 
         if (!existing) {
@@ -1319,30 +1050,22 @@ function mergeMods(incoming) {
             continue;
         }
 
+        // Merge source records into one card, keeping both platform links.
         Object.assign(existing.platforms, mod.platforms);
 
-        if ((mod.description || "").length >
-            (existing.description || "").length) {
+        if ((mod.description || "").length > (existing.description || "").length) {
             existing.description = mod.description;
         }
 
         if (!existing.icon && mod.icon) existing.icon = mod.icon;
+
         if (!existing.author || existing.author === "Unknown author") {
             existing.author = mod.author;
         }
 
-        existing.categories = unique([
-            ...existing.categories, ...mod.categories
-        ]);
-
-        existing.versions = unique([
-            ...existing.versions, ...mod.versions
-        ]);
-
-        existing.loaders = unique([
-            ...existing.loaders, ...mod.loaders
-        ]);
-
+        existing.categories = unique([...existing.categories, ...mod.categories]);
+        existing.versions = unique([...existing.versions, ...mod.versions]);
+        existing.loaders = unique([...existing.loaders, ...mod.loaders]);
         existing.downloads = Math.max(existing.downloads, mod.downloads);
 
         if (!existing.updated || mod.updated > existing.updated) {
@@ -1363,6 +1086,20 @@ async function fetchJson(url) {
     return response.json();
 }
 
+function modrinthFacets() {
+    // Facet groups are ANDed by Modrinth; values within a group are ORed.
+    // Separate loader groups therefore require every selected loader.
+    const facets = [["project_type:mod"]];
+
+    if (state.version) facets.push(["versions:" + state.version]);
+
+    for (const loader of state.selectedLoaders) {
+        facets.push(["categories:" + loader]);
+    }
+
+    return facets;
+}
+
 async function searchModrinth(offset) {
     const params = new URLSearchParams({
         query: state.query,
@@ -1371,27 +1108,31 @@ async function searchModrinth(offset) {
         index: state.sort
     });
 
-    const facets = [["project_type:mod"]];
-
-    if (state.version) facets.push(["versions:" + state.version]);
-    if (state.loader) facets.push(["categories:" + state.loader]);
-
-    params.set("facets", JSON.stringify(facets));
+    params.set("facets", JSON.stringify(modrinthFacets()));
 
     const data = await fetchJson(MODRINTH_API + "?" + params);
     const hits = Array.isArray(data.hits) ? data.hits : [];
     const total = Number(data.total_hits) || 0;
 
+    let mods = hits.map(normalizeModrinth);
+
+    // Apply AND compatibility locally too, using available loader metadata.
+    if (state.selectedLoaders.size) {
+        mods = mods.filter(mod =>
+            [...state.selectedLoaders].every(loader => mod.loaders.includes(loader))
+        );
+    }
+
     return {
         platform: "modrinth",
-        mods: hits.map(normalizeModrinth),
+        mods,
         total,
         nextOffset: offset + hits.length,
         hasMore: hits.length === PAGE_SIZE && offset + hits.length < total
     };
 }
 
-async function searchCurseForge(offset) {
+async function requestCurseForge(offset, loader) {
     const params = new URLSearchParams({
         query: state.query,
         index: String(offset),
@@ -1400,29 +1141,94 @@ async function searchCurseForge(offset) {
 
     if (state.version) params.set("gameVersion", state.version);
 
-    if (state.loader) {
-        const loaderIds = {
-            forge: 1,
-            fabric: 4,
-            quilt: 5,
-            neoforge: 6
-        };
+    if (loader && CURSEFORGE_LOADER_IDS[loader] !== undefined) {
+        params.set("modLoaderType", String(CURSEFORGE_LOADER_IDS[loader]));
+    }
 
-        if (loaderIds[state.loader] !== undefined) {
-            params.set("modLoaderType", String(loaderIds[state.loader]));
+    return fetchJson(CURSEFORGE_API + "?" + params);
+}
+
+async function searchCurseForge(offset) {
+    let data;
+    let mods;
+
+    if (state.selectedLoaders.size > 1) {
+        /*
+         * CurseForge accepts one modLoaderType per request.
+         * Request each selected loader and intersect project IDs so that
+         * only projects returned for EVERY selected loader are kept.
+         */
+        const loaders = [...state.selectedLoaders];
+
+        const responses = await Promise.all(loaders.map(async loader => {
+            const response = await requestCurseForge(offset, loader);
+
+            if (!Array.isArray(response.data)) {
+                throw new Error(response.error || "Invalid CurseForge Worker response");
+            }
+
+            return {
+                loader,
+                response,
+                projects: response.data.map(item => ({
+                    id: String(item.id),
+                    item
+                }))
+            };
+        }));
+
+        const commonIds = new Set(responses[0].projects.map(project => project.id));
+
+        for (const response of responses.slice(1)) {
+            const ids = new Set(response.projects.map(project => project.id));
+            for (const id of commonIds) {
+                if (!ids.has(id)) commonIds.delete(id);
+            }
         }
-    }
 
-    const data = await fetchJson(CURSEFORGE_API + "?" + params);
+        const firstResponse = responses[0].response;
+        const firstProjects = responses[0].projects;
 
-    if (!Array.isArray(data.data)) {
-        throw new Error(data.error || "Invalid CurseForge Worker response");
-    }
+        mods = firstProjects
+            .filter(project => commonIds.has(project.id))
+            .map(project => {
+                const item = project.item;
+                const mod = normalizeCurseForge({
+                    projectId: item.id,
+                    title: item.name,
+                    author: item.authors?.[0]?.name || "Unknown author",
+                    description: item.summary || "",
+                    icon: item.logo?.url || "",
+                    downloads: item.downloadCount || 0,
+                    updated: item.dateModified || "",
+                    url: item.links?.websiteUrl ||
+                        "https://www.curseforge.com/minecraft/mc-mods/" + (item.slug || ""),
+                    categories: (item.categories || []).map(category => category.name),
+                    versions: (item.latestFilesIndexes || [])
+                        .map(file => file.gameVersion).filter(Boolean),
+                    loaders
+                });
 
-    const mods = data.data.map(item => {
-        const mod = {
-            projectId: String(item.id),
-            title: item.name || "Untitled mod",
+                // The project was found in each loader-specific result.
+                mod.loaders = [...loaders];
+                return mod;
+            });
+
+        data = firstResponse;
+    } else {
+        const loader = state.selectedLoaders.size
+            ? [...state.selectedLoaders][0]
+            : "";
+
+        data = await requestCurseForge(offset, loader);
+
+        if (!Array.isArray(data.data)) {
+            throw new Error(data.error || "Invalid CurseForge Worker response");
+        }
+
+        mods = data.data.map(item => normalizeCurseForge({
+            projectId: item.id,
+            title: item.name,
             author: item.authors?.[0]?.name || "Unknown author",
             description: item.summary || "",
             icon: item.logo?.url || "",
@@ -1435,10 +1241,8 @@ async function searchCurseForge(offset) {
                 .map(file => file.gameVersion).filter(Boolean),
             loaders: (item.latestFilesIndexes || [])
                 .map(file => getLoader(file.modLoader)).filter(Boolean)
-        };
-
-        return normalizeCurseForge(mod);
-    });
+        }));
+    }
 
     const total = Number(data.pagination?.totalCount) || 0;
 
@@ -1446,14 +1250,19 @@ async function searchCurseForge(offset) {
         platform: "curseforge",
         mods,
         total,
-        nextOffset: offset + mods.length,
-        hasMore: mods.length === PAGE_SIZE && offset + mods.length < total
+        nextOffset: offset + PAGE_SIZE,
+        hasMore: offset + PAGE_SIZE < total
     };
 }
 
 function matchesFilters(mod) {
     if (state.version && !mod.versions.includes(state.version)) return false;
-    if (state.loader && !mod.loaders.includes(state.loader)) return false;
+
+    // AND behavior: every selected loader must be present.
+    if (state.selectedLoaders.size &&
+        ![...state.selectedLoaders].every(loader => mod.loaders.includes(loader))) {
+        return false;
+    }
 
     if (state.category &&
         !mod.categories.some(category =>
@@ -1514,19 +1323,15 @@ function makeCard(mod, index) {
     info.append(title, author);
 
     const favorite = document.createElement("button");
-    favorite.className = "favorite" +
-        (state.favorites.has(mod.key) ? " saved" : "");
+    favorite.className = "favorite" + (state.favorites.has(mod.key) ? " saved" : "");
     favorite.type = "button";
     favorite.textContent = state.favorites.has(mod.key) ? "★" : "☆";
     favorite.title = "Toggle favorite";
     favorite.setAttribute("aria-label", "Toggle favorite");
 
     favorite.addEventListener("click", () => {
-        if (state.favorites.has(mod.key)) {
-            state.favorites.delete(mod.key);
-        } else {
-            state.favorites.add(mod.key);
-        }
+        if (state.favorites.has(mod.key)) state.favorites.delete(mod.key);
+        else state.favorites.add(mod.key);
 
         saveFavorites();
         render();
@@ -1536,8 +1341,7 @@ function makeCard(mod, index) {
 
     const description = document.createElement("p");
     description.className = "desc";
-    description.textContent = mod.description ||
-        "No description provided by the platform.";
+    description.textContent = mod.description || "No description provided by the platform.";
 
     const meta = document.createElement("div");
     meta.className = "meta";
@@ -1547,7 +1351,6 @@ function makeCard(mod, index) {
 
     const updated = document.createElement("span");
     updated.textContent = formatDate(mod.updated);
-
     meta.append(downloads, updated);
 
     const badges = document.createElement("div");
@@ -1561,7 +1364,7 @@ function makeCard(mod, index) {
         ));
     }
 
-    for (const loader of mod.loaders.slice(0, 4)) {
+    for (const loader of mod.loaders) {
         badges.append(makeBadge(
             LOADER_NAMES[loader] || loader,
             "loader",
@@ -1603,17 +1406,12 @@ function render() {
     ui.results.replaceChildren();
 
     const mods = sortedMods();
-
-    const active = activePlatforms();
-    const sourceTotal = active.reduce(
-        (sum, platform) => sum + state.totals[platform], 0
-    );
+    const platforms = activePlatforms();
+    const sourceTotal = platforms.reduce((sum, platform) => sum + state.totals[platform], 0);
 
     ui.title.textContent = state.favoritesOnly
         ? "Your favorites"
-        : state.query
-            ? "Search results"
-            : "Discover mods";
+        : state.query ? "Search results" : "Discover mods";
 
     ui.count.textContent = mods.length + " unique mod" +
         (mods.length === 1 ? "" : "s") + " shown" +
@@ -1628,9 +1426,7 @@ function render() {
         icon.textContent = state.favoritesOnly ? "☆" : "⌕";
 
         const heading = document.createElement("strong");
-        heading.textContent = state.favoritesOnly
-            ? "No favorites yet"
-            : "No matching mods found";
+        heading.textContent = state.favoritesOnly ? "No favorites yet" : "No matching mods found";
 
         const message = document.createElement("p");
         message.textContent = state.favoritesOnly
@@ -1644,12 +1440,10 @@ function render() {
     }
 
     ui.loadMore.hidden = state.favoritesOnly ||
-        !active.some(platform => state.hasMore[platform]);
+        !platforms.some(platform => state.hasMore[platform]);
 
     ui.loadMore.disabled = state.loading;
-    ui.loadMore.textContent = state.loading
-        ? "Loading more mods…"
-        : "↓ Load More Mods";
+    ui.loadMore.textContent = state.loading ? "Loading more mods…" : "↓ Load More Mods";
 
     $("#grid-view").classList.toggle("active", !state.list);
     $("#list-view").classList.toggle("active", state.list);
@@ -1658,6 +1452,10 @@ function render() {
     $("#grid-view").setAttribute("aria-pressed", String(!state.list));
     $("#list-view").setAttribute("aria-pressed", String(state.list));
     $("#favorites-view").setAttribute("aria-pressed", String(state.favoritesOnly));
+
+    document.querySelectorAll("[data-loader]").forEach(button => {
+        button.setAttribute("aria-pressed", String(state.selectedLoaders.has(button.dataset.loader)));
+    });
 }
 
 function showSkeletons() {
@@ -1682,26 +1480,20 @@ function populateSelect(selector, values, defaultLabel) {
 
     if ([...select.options].some(option => option.value === previous)) {
         select.value = previous;
+    } else {
+        select.value = "";
     }
 }
 
 function updateFilterOptions() {
-    populateSelect(
-        "#version",
-        state.mods.flatMap(mod => mod.versions),
-        "All versions"
-    );
-
-    populateSelect(
-        "#category",
-        state.mods.flatMap(mod => mod.categories),
-        "All categories"
-    );
+    populateSelect("#version", state.mods.flatMap(mod => mod.versions), "All versions");
+    populateSelect("#category", state.mods.flatMap(mod => mod.categories), "All categories");
+    ui.version.value = state.version;
+    ui.category.value = state.category;
 }
 
 async function search(append = false) {
-    if (state.loading) return;
-
+    // Invalidate any previous search and permit filter changes while requests are in flight.
     const requestId = ++state.requestId;
     const platforms = activePlatforms();
 
@@ -1711,8 +1503,6 @@ async function search(append = false) {
         state.hasMore = { modrinth: true, curseforge: true };
         state.failed.clear();
         state.mods = [];
-        ui.version.value = state.version;
-        ui.category.value = state.category;
 
         if (!state.favoritesOnly) showSkeletons();
     }
@@ -1722,9 +1512,7 @@ async function search(append = false) {
     ui.loadMore.hidden = true;
     ui.count.textContent = "Searching…";
 
-    showNotice(
-        "Searching " + platforms.map(platform => PLATFORM_NAMES[platform]).join(" and ") + "…"
-    );
+    showNotice("Searching " + platforms.map(platform => PLATFORM_NAMES[platform]).join(" and ") + "…");
 
     const jobs = platforms
         .filter(platform => state.hasMore[platform])
@@ -1751,6 +1539,7 @@ async function search(append = false) {
 
     const outcomes = await Promise.all(jobs);
 
+    // Ignore responses from an older search if the user changed filters meanwhile.
     if (requestId !== state.requestId) return;
 
     const failures = [];
@@ -1761,7 +1550,6 @@ async function search(append = false) {
                 PLATFORM_NAMES[outcome.platform] + ": " +
                 (outcome.error?.message || "Request failed")
             );
-
             state.failed.add(outcome.platform);
             state.hasMore[outcome.platform] = false;
             continue;
@@ -1771,7 +1559,6 @@ async function search(append = false) {
         state.totals[data.platform] = data.total;
         state.offsets[data.platform] = data.nextOffset;
         state.hasMore[data.platform] = data.hasMore;
-
         mergeMods(data.mods);
     }
 
@@ -1780,12 +1567,9 @@ async function search(append = false) {
     render();
 
     if (failures.length === platforms.length) {
-        showNotice("Both searches failed. " + failures.join(" · "), true);
+        showNotice("Search failed. " + failures.join(" · "), true);
     } else if (failures.length) {
-        showNotice(
-            "Some sources could not be loaded: " + failures.join(" · "),
-            true
-        );
+        showNotice("Some sources could not be loaded: " + failures.join(" · "), true);
     } else if (!state.mods.length) {
         showNotice("No mods found. Try another search or change your filters.");
     } else {
@@ -1796,8 +1580,7 @@ async function search(append = false) {
 function openDetails(mod) {
     $("#detail-title").textContent = mod.title;
     $("#detail-author").textContent = "by " + mod.author;
-    $("#detail-description").textContent =
-        mod.description || "No description available.";
+    $("#detail-description").textContent = mod.description || "No description available.";
 
     const icon = $("#detail-icon");
     icon.hidden = !mod.icon;
@@ -1825,12 +1608,10 @@ function openDetails(mod) {
     }
 
     const rows = [
-        ["Platforms", Object.keys(mod.platforms)
-            .map(platform => PLATFORM_NAMES[platform]).join(", ")],
+        ["Platforms", Object.keys(mod.platforms).map(platform => PLATFORM_NAMES[platform]).join(", ")],
         ["Downloads", formatDownloads(mod.downloads)],
         ["Last updated", formatDate(mod.updated)],
-        ["Loaders", mod.loaders.map(loader =>
-            LOADER_NAMES[loader] || loader).join(", ") || "Not listed"],
+        ["Loaders", mod.loaders.map(loader => LOADER_NAMES[loader] || loader).join(", ") || "Not listed"],
         ["Minecraft versions", mod.versions.join(", ") || "Not listed"]
     ];
 
@@ -1841,7 +1622,6 @@ function openDetails(mod) {
         const tr = document.createElement("tr");
         const th = document.createElement("th");
         const td = document.createElement("td");
-
         th.textContent = label;
         td.textContent = value;
         tr.append(th, td);
@@ -1854,9 +1634,7 @@ function openDetails(mod) {
     if (!mod.categories.length) {
         categories.textContent = "No categories listed.";
     } else {
-        for (const category of mod.categories) {
-            categories.append(makeBadge(category));
-        }
+        for (const category of mod.categories) categories.append(makeBadge(category));
     }
 
     ui.overlay.hidden = false;
@@ -1868,7 +1646,7 @@ function closeDetails() {
 }
 
 function resetFilters() {
-    state.loader = "";
+    state.selectedLoaders.clear();
     state.version = "";
     state.category = "";
     state.sort = "relevance";
@@ -1924,6 +1702,7 @@ document.querySelectorAll("[data-platform]").forEach(button => {
         }
 
         syncPlatformButtons();
+        state.favoritesOnly = false;
         search();
     });
 });
@@ -1931,31 +1710,33 @@ document.querySelectorAll("[data-platform]").forEach(button => {
 document.querySelectorAll("[data-loader]").forEach(button => {
     button.addEventListener("click", () => {
         const loader = button.dataset.loader;
-        state.loader = state.loader === loader ? "" : loader;
 
-        document.querySelectorAll("[data-loader]").forEach(other => {
-            other.setAttribute(
-                "aria-pressed",
-                String(other.dataset.loader === state.loader)
-            );
-        });
+        if (state.selectedLoaders.has(loader)) {
+            state.selectedLoaders.delete(loader);
+        } else {
+            state.selectedLoaders.add(loader);
+        }
 
+        state.favoritesOnly = false;
         search();
     });
 });
 
 ui.version.addEventListener("change", () => {
     state.version = ui.version.value;
+    state.favoritesOnly = false;
     search();
 });
 
 ui.category.addEventListener("change", () => {
     state.category = ui.category.value;
-    search();
+    state.favoritesOnly = false;
+    render();
 });
 
 ui.sort.addEventListener("change", () => {
     state.sort = ui.sort.value;
+    state.favoritesOnly = false;
     search();
 });
 
