@@ -5,6 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#100c18">
+<meta name="description" content="Discover Minecraft mods from Modrinth and CurseForge with Rip_Dead Mod Viewer.">
 <title>Minecraft Mod Viewer — Rip_Dead</title>
 
 <style>
@@ -12,482 +13,1129 @@
     color-scheme: dark;
     --bg: #0c0a11;
     --panel: #171320;
-    --panel2: #201a2c;
-    --line: #342941;
-    --text: #f5f0fb;
-    --muted: #a79bb8;
-    --purple: #a982f5;
+    --panel2: #20192d;
+    --border: #332741;
+    --text: #f4efff;
+    --muted: #a99dbb;
+    --purple: #a879ff;
+    --purple2: #7746db;
+    --teal: #4de1c1;
+    --orange: #ffad66;
+    --danger: #ff7185;
+    --radius: 16px;
 }
+
 * { box-sizing: border-box; }
+
 html { scroll-behavior: smooth; }
+
 body {
     margin: 0;
-    background: radial-gradient(ellipse at 50% -12%, #382055 0, transparent 45%), var(--bg);
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 15% -10%, #39205266, transparent 45%),
+        radial-gradient(ellipse at 100% 25%, #113f3940, transparent 35%),
+        var(--bg);
     color: var(--text);
-    font: 15px/1.5 Inter, "Segoe UI", Arial, sans-serif;
+    font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
     opacity: 0;
-    animation: pageIn .42s ease forwards;
+    animation: enter .4s ease forwards;
 }
-body.leaving { animation: pageOut .22s ease forwards; }
-@keyframes pageIn { to { opacity: 1; } }
-@keyframes pageOut { to { opacity: 0; transform: translateY(5px); } }
-@keyframes cardIn {
-    from { opacity: 0; transform: translateY(7px); }
-    to { opacity: 1; transform: translateY(0); }
+
+body.leaving {
+    opacity: 0;
+    transition: opacity .18s ease;
 }
-@keyframes shimmer { to { background-position: -220% 0; } }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slide {
-    from { transform: translateX(25px); opacity: .5; }
-    to { transform: translateX(0); opacity: 1; }
-}
+
+@keyframes enter { to { opacity: 1; } }
+
 button, input, select { font: inherit; }
-button { cursor: pointer; }
-a { color: inherit; text-decoration: none; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
-    outline: 2px solid var(--purple);
+
+button, a, select { -webkit-tap-highlight-color: transparent; }
+
+button {
+    color: inherit;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+a { color: var(--purple); }
+
+a:hover { color: #c8adff; }
+
+button:focus-visible, a:focus-visible,
+input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--teal);
     outline-offset: 3px;
 }
-[hidden] { display: none !important; }
+
+button:focus:not(:focus-visible) { outline: none; }
+
+button, select, input {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--text);
+}
+
+button {
+    padding: 9px 13px;
+    transition: background .18s, border-color .18s, transform .18s;
+}
+
+button:hover:not(:disabled) {
+    border-color: #735a91;
+    background: #251d34;
+}
+
+button:active:not(:disabled) { transform: scale(.98); }
+
+.container {
+    width: min(1500px, 100%);
+    margin: auto;
+    padding: 0 25px;
+}
 
 .topbar {
-    min-height: 76px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid #332741aa;
+    background: #0c0a11eF;
+    backdrop-filter: blur(18px);
+}
+
+.nav {
+    min-height: 72px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 12px clamp(16px, 5vw, 72px);
-    border-bottom: 1px solid #ffffff12;
-    background: #0d0a13b8;
-    backdrop-filter: blur(12px);
+    gap: 18px;
 }
-.brand { display: flex; align-items: center; gap: 11px; font-weight: 850; }
-.brandmark {
-    display: grid; place-items: center; width: 42px; height: 42px;
-    flex-shrink: 0; border-radius: 13px;
-    background: linear-gradient(135deg, #a47af4, #4c2678);
-    box-shadow: 0 5px 24px #8051ca40;
-}
-.brand small {
-    display: block; font-size: 10px; letter-spacing: 2px; color: var(--muted);
-}
-.return-button {
-    display: inline-flex; align-items: center; gap: 8px;
-    border: 1px solid #57416e;
-    background: linear-gradient(135deg, #292037, #1a1424);
-    padding: 10px 14px; border-radius: 11px;
-    font-size: 12px; font-weight: 750; transition: .18s;
-}
-.return-button:hover {
-    border-color: var(--purple); background: #302141; transform: translateY(-1px);
-}
-main { width: min(1280px, 100%); margin: auto; padding: 0 24px; }
-.hero { padding: 58px 0 28px; }
-.eyebrow { font-size: 10px; letter-spacing: 3px; color: var(--purple); font-weight: 850; }
-h1 { font-size: clamp(36px, 5.5vw, 61px); letter-spacing: -2px; line-height: 1.05; margin: 14px 0 12px; }
-h1 span { color: #b99bff; }
-.hero > p { margin: 0 0 25px; color: var(--muted); }
-.searchrow {
-    display: flex; gap: 9px; padding: 8px;
-    border: 1px solid #4b385f; background: #171220;
-    border-radius: 15px; box-shadow: 0 15px 55px #0002;
-}
-.searchrow input {
-    flex: 1; min-width: 0; padding: 12px 10px;
-    border: 0; outline: 0; background: transparent; color: var(--text);
-}
-.btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    border: 1px solid transparent; border-radius: 10px;
-    padding: 11px 16px; background: #8d61d7; color: white;
-    font-weight: 750; transition: background .15s, transform .15s;
-}
-.btn:hover { background: #a47be9; transform: translateY(-1px); }
-.btn.secondary { background: #221a2e; border-color: var(--line); color: #e6dcf6; }
-.btn.secondary:hover { background: #30243f; }
 
-.filterbar {
-    display: flex; flex-wrap: wrap; align-items: end;
-    gap: 18px; margin: 22px 0 0;
-}
-.filtergroup { display: flex; flex-direction: column; gap: 8px; }
-.filterlabel { font-size: 10px; letter-spacing: 1.5px; font-weight: 850; color: var(--muted); }
-.chips { display: flex; flex-wrap: wrap; gap: 7px; }
-.chip {
-    display: inline-flex; align-items: center; gap: 7px;
-    padding: 8px 10px; border: 1px solid var(--line);
-    border-radius: 9px; background: #171320; color: #b9aec8;
-    font-size: 12px; transition: .15s;
-}
-.chip img { width: 19px; height: 19px; object-fit: contain; flex-shrink: 0; }
-.chip[aria-pressed="true"] { color: white; border-color: #9e7cce; background: #3b2a50; }
-.chip[data-platform="modrinth"][aria-pressed="true"] { background: #205637; border-color: #3f9b65; }
-.chip[data-platform="curseforge"][aria-pressed="true"] { background: #70401f; border-color: #c4773b; }
-.filterhint { font-size: 10px; color: #8c809b; }
-select {
-    max-width: 100%; min-width: 145px; padding: 9px 11px;
-    background: #171320; border: 1px solid var(--line);
-    border-radius: 9px; color: var(--text);
-}
-.toolbar {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 15px; margin: 34px 0 17px;
-}
-.toolbar h2 { font-size: 23px; margin: 0; }
-.toolbar p { font-size: 12px; color: var(--muted); margin: 4px 0 0; }
-.toolbarright { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-.viewbtn {
-    padding: 8px 10px; border: 1px solid var(--line);
-    border-radius: 8px; background: #171320; color: var(--muted);
-}
-.viewbtn.active { color: white; background: #342343; border-color: #7952a2; }
-.notice {
-    padding: 12px 14px; border: 1px solid var(--line);
-    border-radius: 10px; background: #171320; color: var(--muted);
-    font-size: 12px; margin: 12px 0 18px;
-}
-.notice.error { border-color: #804155; color: #ffb5c5; }
-.notice a { color: #c9adff; text-decoration: underline; }
-
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
-.grid.list { grid-template-columns: 1fr; }
-.modcard {
-    min-width: 0; display: flex; flex-direction: column; padding: 17px;
-    background: linear-gradient(145deg, #1b1625, #13101a);
-    border: 1px solid var(--line); border-radius: 15px;
-    transition: transform .18s, border-color .18s, box-shadow .18s;
-    animation: cardIn .28s ease both;
-}
-.modcard:hover { transform: translateY(-3px); border-color: #75549b; box-shadow: 0 12px 32px #0003; }
-.cardhead { display: flex; gap: 12px; align-items: center; }
-.modicon { width: 55px; height: 55px; flex-shrink: 0; object-fit: cover; border-radius: 12px; background: #292132; }
-.modtitle { margin: 0; font-size: 16px; line-height: 1.3; font-weight: 850; overflow-wrap: anywhere; }
-.author { color: var(--muted); font-size: 11px; margin-top: 5px; }
-.desc { font-size: 12px; color: #c4b9d0; line-height: 1.65; margin: 14px 0; }
-.meta {
-    display: flex; flex-wrap: wrap; align-items: center;
-    gap: 6px 14px; color: var(--muted); font-size: 11px;
-    line-height: 1.6; margin: 0 0 13px; min-width: 0;
-}
-.meta > span { display: inline-flex; align-items: center; min-width: 0; overflow-wrap: anywhere; }
-.meta > span + span { padding-left: 10px; border-left: 1px solid var(--line); }
-.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
-.badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 7px; border-radius: 6px; background: #2a2335; color: #d9cde9; font-size: 10px; }
-.badge img { width: 16px; height: 16px; object-fit: contain; }
-.badge.modrinth { background: #205637; color: #e0ffe9; }
-.badge.curseforge { background: #70401f; color: #fff0df; }
-.badge.loader { background: #28253d; }
-.cardactions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
-.cardactions a, .cardactions button {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 8px 10px; border: 1px solid #49355e;
-    border-radius: 8px; background: #282036; color: #e8dcfb;
-    font-size: 10px; font-weight: 750;
-}
-.cardactions a:hover, .cardactions button:hover { background: #44305c; }
-.iconbtn {
-    width: 34px; height: 34px; display: grid; place-items: center;
-    margin-left: auto; border: 1px solid var(--line);
-    border-radius: 9px; background: #211a2c; color: #b7a7ce; font-size: 17px;
-}
-.iconbtn.saved { color: #ffd67c; border-color: #82663c; }
-.skeleton {
-    height: 270px; border-radius: 15px; border: 1px solid var(--line);
-    background: linear-gradient(100deg, #171320 25%, #292035 45%, #171320 65%);
-    background-size: 220% 100%; animation: shimmer 1.2s linear infinite;
-}
-.empty { grid-column: 1 / -1; padding: 48px 20px; text-align: center; border: 1px dashed #4a3a5b; border-radius: 15px; color: var(--muted); }
-.empty strong { display: block; color: var(--text); font-size: 17px; margin-bottom: 6px; }
-
-/* Load More Mods button */
-.pagination {
+.brand {
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 30px 0 55px;
+    gap: 12px;
+    color: var(--text);
+    text-decoration: none;
+    min-width: 0;
 }
-#load-more {
+
+.brandmark {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 14px;
+    color: white;
+    font-weight: 950;
+    font-size: 19px;
+    background: linear-gradient(135deg, #b38aff, #6e43cf 65%, #392c65);
+    box-shadow: 0 5px 25px #8a57d733;
+}
+
+.brandname { font-size: 16px; font-weight: 850; }
+.brandname span { color: var(--purple); }
+.brandsub { color: var(--muted); font-size: 11px; }
+
+.navright {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.backbtn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-width: 210px;
-    padding: 14px 25px;
-    border: 1px solid #b99bff;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #925ce5, #6336a8);
-    color: #fff;
-    font-size: 14px;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 9px 13px;
+    border-radius: 10px;
+    font-weight: 650;
+    transition: .18s;
+}
+
+.backbtn:hover {
+    border-color: var(--purple);
+    background: var(--panel2);
+    color: white;
+}
+
+.hero { padding: 38px 0 27px; }
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    color: var(--teal);
+    background: #4de1c10e;
+    border: 1px solid #4de1c128;
+    border-radius: 30px;
+    font-size: 11px;
     font-weight: 800;
-    box-shadow: 0 6px 22px #8d61d733;
-    transition: transform .2s, box-shadow .2s, background .2s;
+    text-transform: uppercase;
+    letter-spacing: .1em;
 }
-#load-more:hover:not(:disabled) {
+
+.eyedot {
+    width: 7px;
+    height: 7px;
+    background: var(--teal);
+    border-radius: 50%;
+    box-shadow: 0 0 12px #4de1c1aa;
+}
+
+h1 {
+    margin: 15px 0 8px;
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.12;
+    letter-spacing: -.045em;
+}
+
+h1 span {
+    background: linear-gradient(90deg, #c6a5ff, #8eafff, #69e8ce);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 650px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.stat {
+    border: 1px solid var(--border);
+    background: #171320aa;
+    padding: 7px 11px;
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat strong { color: var(--text); }
+
+.workspace {
+    display: grid;
+    grid-template-columns: 245px minmax(0, 1fr);
+    align-items: start;
+    gap: 20px;
+    padding-bottom: 50px;
+}
+
+.sidebar {
+    position: sticky;
+    top: 91px;
+    display: grid;
+    gap: 14px;
+}
+
+.panel {
+    background: linear-gradient(150deg, #1b1526, #14101c);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.panelbody { padding: 16px; }
+
+.paneltitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 13px;
+    font-size: 12px;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+}
+
+.sectionlabel {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin: 18px 0 9px;
+}
+
+.sectionlabel:first-child { margin-top: 0; }
+
+.searchbox {
+    display: flex;
+    gap: 8px;
+}
+
+.searchbox input {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 13px;
+    background: #0e0b14;
+}
+
+.primary {
+    background: linear-gradient(135deg, var(--purple2), #9463ed);
+    border-color: #a984ff;
+    color: white;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #8551e9, #a982ff);
+}
+
+.full { width: 100%; }
+
+.smallmuted {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.platformchoices {
+    display: grid;
+    gap: 8px;
+}
+
+.platformchoice {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding: 10px;
+    background: #110e19;
+}
+
+.platformchoice[aria-pressed="true"] {
+    border-color: var(--purple);
+    background: #8e62d51c;
+    box-shadow: inset 0 0 0 1px #a879ff22;
+}
+
+.platformchoice img {
+    width: 27px;
+    height: 27px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.platformchoice .choicecopy { flex: 1; }
+.platformchoice strong { display: block; font-size: 12px; }
+.platformchoice small { display: block; color: var(--muted); font-size: 10px; }
+
+.checkmark {
+    width: 17px;
+    height: 17px;
+    border: 1px solid #59496d;
+    border-radius: 5px;
+    display: grid;
+    place-items: center;
+    color: var(--teal);
+    font-size: 11px;
+}
+
+.platformchoice[aria-pressed="true"] .checkmark {
+    background: #4de1c11c;
+    border-color: var(--teal);
+}
+
+.filterchips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.chip {
+    padding: 6px 9px;
+    border-radius: 9px;
+    font-size: 11px;
+    background: #110e19;
+    color: var(--muted);
+}
+
+.chip[aria-pressed="true"] {
+    color: white;
+    border-color: var(--purple);
+    background: #8e62d529;
+}
+
+.field { margin-top: 11px; }
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.field select, .field input {
+    width: 100%;
+    min-height: 39px;
+    padding: 8px 10px;
+    background: #100d17;
+}
+
+.resetbtn {
+    margin-top: 14px;
+    color: var(--muted);
+    background: transparent;
+    width: 100%;
+}
+
+.content { min-width: 0; }
+
+.contenthead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 13px;
+}
+
+.headinggroup h2 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -.02em;
+}
+
+.headinggroup p {
+    margin: 3px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.viewtools {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.toolbtn { font-size: 11px; padding: 8px 10px; }
+.toolbtn.active { color: white; border-color: var(--purple); background: #8e62d52b; }
+.toolbtn.favactive { border-color: var(--orange); color: var(--orange); }
+
+.notice {
+    border: 1px solid #4de1c133;
+    background: #4de1c10d;
+    color: var(--muted);
+    padding: 11px 13px;
+    border-radius: 11px;
+    margin: 0 0 13px;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.notice.error {
+    color: #ffc1ca;
+    border-color: #ff718544;
+    background: #ff71850d;
+}
+
+.notice:empty { display: none; }
+
+.results {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.modcard {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    background: linear-gradient(145deg, #1b1526, #15111e);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    animation: cardin .25s ease both;
+    transition: border-color .18s, transform .18s, background .18s;
+}
+
+.modcard:hover {
+    border-color: #57406f;
     transform: translateY(-2px);
-    background: linear-gradient(135deg, #aa7bfa, #7847c5);
-    box-shadow: 0 10px 28px #8d61d755;
 }
-#load-more:disabled { opacity: .65; cursor: wait; transform: none; }
-#load-more[hidden] { display: none !important; }
+
+@keyframes cardin {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.cardhead {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.modicon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #2b223b;
+    border: 1px solid #ffffff10;
+}
+
+.modtitle {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 850;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.author {
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 4px;
+    overflow-wrap: anywhere;
+}
+
+.favorite {
+    margin-left: auto;
+    padding: 4px 7px;
+    background: transparent;
+    border: 0;
+    color: #82768f;
+    font-size: 21px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.favorite:hover { background: transparent; color: var(--orange); }
+.favorite.saved { color: var(--orange); }
+
+.desc {
+    margin: 0;
+    color: #b7adc5;
+    font-size: 11px;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    min-height: 54px;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 100%;
+    border: 1px solid #4b3b5d;
+    border-radius: 7px;
+    background: #20182c;
+    color: #d2c2e7;
+    padding: 3px 6px;
+    font-size: 9px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.badge img {
+    width: 13px;
+    height: 13px;
+    object-fit: contain;
+}
+
+.badge.modrinth {
+    color: #8bf1c1;
+    border-color: #42c78a45;
+    background: #42c78a10;
+}
+
+.badge.curseforge {
+    color: #ffc28b;
+    border-color: #ffad6645;
+    background: #ffad6610;
+}
+
+.badge.loader {
+    color: #b8c9ff;
+    border-color: #809bff33;
+    background: #809bff0c;
+}
+
+.cardactions {
+    margin-top: auto;
+    display: grid;
+    gap: 6px;
+}
+
+.cardactions a, .cardactions button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 750;
+    padding: 8px 7px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    background: #211a2d;
+    overflow-wrap: anywhere;
+}
+
+.cardactions a:hover {
+    border-color: var(--purple);
+    background: #8e62d51c;
+    color: white;
+}
+
+.cardactions button {
+    color: var(--muted);
+    background: transparent;
+}
+
+.list { grid-template-columns: 1fr; }
+
+.list .modcard {
+    display: grid;
+    grid-template-columns: minmax(170px, .85fr) minmax(0, 1.3fr) minmax(150px, .75fr);
+    align-items: center;
+    gap: 13px;
+}
+
+.list .desc { min-height: 0; }
+.list .cardactions { margin: 0; }
+
+.skeleton {
+    height: 255px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: linear-gradient(100deg, #171320 20%, #251c34 38%, #171320 56%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+    to { background-position-x: -200%; }
+}
+
+.empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    border: 1px dashed #4b3b5d;
+    border-radius: 15px;
+    color: var(--muted);
+}
+
+.emptyicon { font-size: 35px; margin-bottom: 10px; }
+.empty strong { display: block; color: var(--text); font-size: 15px; }
+.empty p { margin: 5px 0 0; font-size: 12px; }
+
+.loadmorewrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#load-more { min-width: 190px; }
+
+.footer {
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    padding: 20px 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer a { text-decoration: none; }
 
 .overlay {
-    position: fixed; inset: 0; z-index: 10; display: flex;
-    justify-content: flex-end; background: #050409b9;
-    backdrop-filter: blur(5px); animation: fade .18s ease;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: flex-end;
+    background: #050309c9;
+    backdrop-filter: blur(7px);
+    animation: fadein .18s ease;
 }
+
+.overlay[hidden] { display: none; }
+
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
 .drawer {
-    width: min(650px, 100%); height: 100%; overflow: auto;
-    background: #110e18; border-left: 1px solid #49345e;
-    padding: 25px; animation: slide .22s ease;
+    width: min(560px, 100%);
+    height: 100%;
+    overflow-y: auto;
+    background: #130f1c;
+    border-left: 1px solid var(--border);
+    padding: 23px;
+    animation: slidein .24s ease;
 }
-.drawerhead { display: flex; align-items: center; gap: 13px; }
-.drawerhead .modicon { width: 72px; height: 72px; }
-.drawerhead h2 { margin: 0; font-size: 24px; }
-.drawerclose { margin-left: auto; }
-.drawersection { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; }
-.drawersection h3 { font-size: 12px; letter-spacing: 1px; color: #cbb4ec; }
-.drawersection p { color: #c7bdd3; font-size: 13px; white-space: pre-wrap; }
-.platformrow { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid #ffffff0c; }
-.platformrow small { display: block; color: var(--muted); font-size: 11px; }
-.platformrow a { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; color: #c9adff; }
-.platformrow img { width: 18px; height: 18px; object-fit: contain; }
-.compare { width: 100%; border-collapse: collapse; font-size: 12px; }
-.compare th, .compare td { text-align: left; padding: 10px 7px; border-bottom: 1px solid var(--line); }
-.compare th { color: var(--muted); font-weight: 600; }
-footer {
-    display: flex; justify-content: space-between; gap: 15px;
-    padding: 23px clamp(16px, 5vw, 72px);
-    border-top: 1px solid #ffffff10; color: #81758f; font-size: 11px;
+
+@keyframes slidein {
+    from { transform: translateX(25px); opacity: .5; }
+    to { transform: translateX(0); opacity: 1; }
 }
-@media(max-width:950px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .filterbar { gap: 14px; } }
-@media(max-width:620px) {
-    main { padding: 0 15px; }
-    .topbar { padding: 12px 15px; }
+
+.drawerhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.drawerhead strong { font-size: 13px; }
+.closebtn { font-size: 20px; padding: 4px 10px; }
+
+.detailhero {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.detailhero img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 17px;
+    background: var(--panel2);
+    flex-shrink: 0;
+}
+
+.detailhero h2 {
+    margin: 0;
+    font-size: 23px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.detailhero p { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+
+.detailsection { margin-top: 25px; }
+
+.detailsection h3 {
+    margin: 0 0 10px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.detaildescription {
+    color: #d2c7e0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 12px;
+}
+
+.platformlinks { display: grid; gap: 8px; }
+
+.platformrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px;
+    background: #1b1526;
+}
+
+.platformrow strong { font-size: 12px; }
+
+.platformrow a {
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.detailtable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.detailtable th, .detailtable td {
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 7px;
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+}
+
+.detailtable th { width: 38%; color: var(--muted); font-weight: 600; }
+.detailtable td { color: var(--text); }
+
+@media (max-width: 1150px) {
+    .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .list .modcard { grid-template-columns: 1fr; }
+    .list .cardactions { margin-top: 4px; }
+}
+
+@media (max-width: 800px) {
+    .container { padding: 0 15px; }
+    .workspace { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .nav { min-height: 63px; }
+    .hero { padding-top: 28px; }
+    .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sidebar .panelbody { padding: 14px; }
+}
+
+@media (max-width: 520px) {
+    .brandsub { display: none; }
     .brandmark { width: 37px; height: 37px; }
-    .return-button { font-size: 10px; padding: 9px; }
-    .hero { padding-top: 42px; }
-    .grid { grid-template-columns: 1fr; }
-    .toolbar { align-items: flex-start; flex-direction: column; }
-    .toolbarright { gap: 5px; }
-    .viewbtn { font-size: 10px; padding: 7px; }
-    .filtergroup { width: 100%; }
-    .filtergroup select { width: 100%; }
-    .searchrow { gap: 4px; }
-    .searchrow .btn { padding: 10px; }
-    .drawer { padding: 18px; }
-    footer { flex-direction: column; }
-    .meta { gap: 5px 10px; }
-    .meta > span + span { padding-left: 0; border-left: 0; }
-}
-@media(prefers-reduced-motion:reduce) {
-    *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
-    }
+    .brandname { font-size: 14px; }
+    .backbtn { font-size: 11px; padding: 8px; }
+    .results { grid-template-columns: 1fr; }
+    .contenthead { align-items: flex-start; }
+    .viewtools { width: 100%; }
+    .viewtools button { flex: 1; }
+    .drawer { padding: 17px; }
 }
 </style>
 </head>
 
 <body>
 <header class="topbar">
-    <a class="brand" href="./" aria-label="Rip_Dead Mod Viewer home">
-        <span class="brandmark">RD</span>
-        <span>Rip_Dead<small>MINECRAFT MOD VIEWER</small></span>
-    </a>
-    <a class="return-button" id="return-link" href="https://ripdead.de5.net/">
-        ← Return to Rip_Dead Site
-    </a>
+    <div class="container nav">
+        <a class="brand" href="./index.html" aria-label="Rip_Dead Mod Viewer home">
+            <div class="brandmark">RD</div>
+            <div>
+                <div class="brandname">Rip_Dead's Mod Viewer <span></span></div>
+                <div class="brandsub">Minecraft Mod Viewer</div>
+            </div>
+        </a>
+
+        <div class="navright">
+            <a class="backbtn" id="return-link"
+               href="https://ripdead.de5.net/">
+                <span aria-hidden="true">←</span>
+                Return to Rip_Dead Site
+            </a>
+        </div>
+    </div>
 </header>
 
-<main>
-<section class="hero">
-    <div class="eyebrow">THE COMMUNITY MOD INDEX</div>
-    <h1>Find your next <span>Minecraft mod.</span></h1>
-    <p>Explore projects, inspect compatibility, and compare listings across mod platforms.</p>
+<main class="container">
+    <section class="hero">
+        <div class="eyebrow"><span class="eyedot"></span> WARNING: NOT AFFILIATED WITH ANY COMPANIES</div>
+        <h1>Find your next <span>Minecraft mod.</span></h1>
+        <p>
+            Search Modrinth and CurseForge in one place.
+            Explore projects, compare their sources, and find mods for your setup.
+        </p>
+        <div class="stats">
+            <div class="stat"><strong>2</strong> mod platforms</div>
+            <div class="stat"><strong>4</strong> loader filters</div>
+            <div class="stat"><strong>∞</strong> things to discover</div>
+        </div>
+    </section>
 
-    <form class="searchrow" id="search-form">
-        <input id="query" type="search" maxlength="120" placeholder="Search mods, authors, or features…" autocomplete="off" aria-label="Search mods">
-        <button class="btn" type="submit">Search</button>
-        <button class="btn secondary" type="button" id="clear-search">Clear</button>
-    </form>
+    <div class="workspace">
+        <aside class="sidebar">
+            <section class="panel">
+                <div class="panelbody">
+                    <h2 class="paneltitle">Search mods</h2>
+                    <form id="search-form">
+                        <div class="searchbox">
+                            <input id="query" type="search"
+                                   placeholder="Search Minecraft mods…"
+                                   autocomplete="off" maxlength="180">
+                            <button class="primary" type="submit">Search</button>
+                        </div>
+                    </form>
+                    <button id="clear-search" class="resetbtn" type="button">
+                        ↺ Reset search and filters
+                    </button>
+                </div>
+            </section>
 
-    <div class="filterbar">
-        <div class="filtergroup">
-            <span class="filterlabel">PLATFORMS</span>
-            <div class="chips">
-                <button class="chip" type="button" data-platform="modrinth" aria-pressed="false"><img src="./modrinth.png" alt=""> Modrinth</button>
-                <button class="chip" type="button" data-platform="curseforge" aria-pressed="false"><img src="./curseforge.png" alt=""> CurseForge</button>
+            <section class="panel">
+                <div class="panelbody">
+                    <h2 class="paneltitle">Sources</h2>
+                    <div class="smallmuted" style="margin-bottom:11px">
+                        Select either or both. With neither selected, both are searched.
+                    </div>
+
+                    <div class="platformchoices">
+                        <button class="platformchoice" type="button"
+                                data-platform="modrinth" aria-pressed="false">
+                            <img src="./modrinth.png" alt=""
+                                 onerror="this.style.display='none'">
+                            <span class="choicecopy">
+                                <strong>Modrinth</strong>
+                                <small>Mods via Modrinth</small>
+                            </span>
+                            <span class="checkmark">✓</span>
+                        </button>
+
+                        <button class="platformchoice" type="button"
+                                data-platform="curseforge" aria-pressed="false">
+                            <img src="./curseforge.png" alt=""
+                                 onerror="this.style.display='none'">
+                            <span class="choicecopy">
+                                <strong>CurseForge</strong>
+                                <small>Mods via CurseForge</small>
+                            </span>
+                            <span class="checkmark">✓</span>
+                        </button>
+                    </div>
+
+                    <div class="smallmuted" style="margin-top:10px">
+                        Both disabled = both sources included.
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panelbody">
+                    <h2 class="paneltitle">Filters</h2>
+
+                    <div class="sectionlabel">Mod loader</div>
+                    <div class="filterchips">
+                        <button class="chip" type="button" data-loader="fabric"
+                                aria-pressed="false">Fabric</button>
+                        <button class="chip" type="button" data-loader="forge"
+                                aria-pressed="false">Forge</button>
+                        <button class="chip" type="button" data-loader="neoforge"
+                                aria-pressed="false">NeoForge</button>
+                        <button class="chip" type="button" data-loader="quilt"
+                                aria-pressed="false">Quilt</button>
+                    </div>
+
+                    <div class="field">
+                        <label for="version">Minecraft version</label>
+                        <select id="version">
+                            <option value="">All versions</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="category">Category</label>
+                        <select id="category">
+                            <option value="">All categories</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="sort">Sort results</label>
+                        <select id="sort">
+                            <option value="relevance">Relevance</option>
+                            <option value="downloads">Most downloads</option>
+                            <option value="updated">Recently updated</option>
+                        </select>
+                    </div>
+
+                    <button id="reset-filters" class="resetbtn" type="button">
+                        Clear filters
+                    </button>
+                </div>
+            </section>
+        </aside>
+
+        <section class="content">
+            <div class="contenthead">
+                <div class="headinggroup">
+                    <h2 id="section-title">Discover mods</h2>
+                    <p id="result-count">Ready to search</p>
+                </div>
+
+                <div class="viewtools">
+                    <button id="favorites-view" class="toolbtn" type="button"
+                            aria-pressed="false">☆ Favorites</button>
+                    <button id="grid-view" class="toolbtn active" type="button"
+                            aria-pressed="true">▦ Grid</button>
+                    <button id="list-view" class="toolbtn" type="button"
+                            aria-pressed="false">☷ List</button>
+                </div>
             </div>
-            <span class="filterhint">No selection searches Modrinth. CurseForge requires API configuration.</span>
-        </div>
 
-        <div class="filtergroup">
-            <label class="filterlabel" for="version">MINECRAFT VERSION</label>
-            <select id="version"><option value="">All versions</option></select>
-        </div>
+            <div id="notice" class="notice" role="status" aria-live="polite"></div>
 
-        <div class="filtergroup">
-            <span class="filterlabel">MOD LOADER</span>
-            <div class="chips loader-chips">
-                <button class="chip" type="button" data-loader="fabric" aria-pressed="false"><img src="./fabric.png" alt=""> Fabric</button>
-                <button class="chip" type="button" data-loader="forge" aria-pressed="false"><img src="./forge.png" alt=""> Forge</button>
-                <button class="chip" type="button" data-loader="neoforge" aria-pressed="false"><img src="./neoforge.png" alt=""> NeoForge</button>
-                <button class="chip" type="button" data-loader="quilt" aria-pressed="false"><img src="./quilt.png" alt=""> Quilt</button>
+            <div id="results" class="results" aria-live="polite"></div>
+
+            <div class="loadmorewrap">
+                <button id="load-more" class="primary" type="button" hidden>
+                    ↓ Load More Mods
+                </button>
             </div>
-        </div>
-
-        <div class="filtergroup">
-            <label class="filterlabel" for="category">CATEGORY</label>
-            <select id="category"><option value="">All categories</option></select>
-        </div>
-
-        <div class="filtergroup">
-            <label class="filterlabel" for="sort">SORT BY</label>
-            <select id="sort">
-                <option value="relevance">Relevance</option>
-                <option value="downloads">Downloads</option>
-                <option value="updated">Recently updated</option>
-            </select>
-        </div>
+        </section>
     </div>
-</section>
-
-<section>
-    <div class="toolbar">
-        <div>
-            <h2 id="section-title">Discover mods</h2>
-            <p id="result-count">Connecting to Modrinth…</p>
-        </div>
-        <div class="toolbarright">
-            <button class="viewbtn active" id="grid-view" type="button">▦ Grid</button>
-            <button class="viewbtn" id="list-view" type="button">☰ List</button>
-            <button class="viewbtn" id="favorites-view" type="button">☆ Favorites</button>
-        </div>
-    </div>
-
-    <div id="notice" class="notice" role="status" aria-live="polite">Connecting to Modrinth…</div>
-    <div id="results" class="grid"></div>
-
-    <!-- The button is below the results and is styled by #load-more above. -->
-    <div class="pagination">
-        <button class="btn" id="load-more" type="button" hidden>
-            ↓ Load More Mods
-        </button>
-    </div>
-</section>
 </main>
 
-<footer>
-    <span>Rip_Dead Minecraft Mod Viewer</span>
-    <span>Independent project · Not affiliated with Mojang, Modrinth, or CurseForge.</span>
+<footer class="container footer">
+    <span>© <span id="year"></span> Rip_Dead Site · Minecraft Mod Viewer</span>
+    <span>Powered by
+        <a href="https://modrinth.com/" target="_blank" rel="noopener noreferrer">Modrinth</a>
+        and
+        <a href="https://www.curseforge.com/minecraft" target="_blank" rel="noopener noreferrer">CurseForge</a>
+    </span>This Mod Viewer is NOT affiliated with Modrinth or CurseForge or Mojang / Microsoft.
 </footer>
 
-<div id="details-overlay" class="overlay" hidden role="dialog" aria-modal="true" aria-label="Mod details">
-    <section class="drawer">
+<div id="details-overlay" class="overlay" hidden>
+    <section class="drawer" role="dialog" aria-modal="true"
+             aria-labelledby="detail-title">
         <div class="drawerhead">
-            <img id="detail-icon" class="modicon" alt="">
+            <strong>MOD DETAILS</strong>
+            <button id="close-details" class="closebtn" type="button"
+                    aria-label="Close details">×</button>
+        </div>
+
+        <div class="detailhero">
+            <img id="detail-icon" alt="" hidden>
             <div>
-                <h2 id="detail-title"></h2>
-                <div id="detail-author" class="author"></div>
+                <h2 id="detail-title">Mod title</h2>
+                <p id="detail-author"></p>
             </div>
-            <button class="iconbtn drawerclose" id="close-details" type="button" aria-label="Close details">×</button>
         </div>
-        <div class="drawersection">
-            <h3>DESCRIPTION</h3>
-            <p id="detail-description"></p>
-            <div class="badges" id="detail-badges"></div>
+
+        <div class="detailsection">
+            <h3>Description</h3>
+            <div id="detail-description" class="detaildescription"></div>
         </div>
-        <div class="drawersection">
-            <h3>PLATFORM LISTINGS</h3>
-            <div id="detail-platforms"></div>
+
+        <div class="detailsection">
+            <h3>Platform pages</h3>
+            <div id="detail-platforms" class="platformlinks"></div>
         </div>
-        <div class="drawersection">
-            <h3>LISTING COMPARISON</h3>
-            <div id="detail-compare"></div>
+
+        <div class="detailsection">
+            <h3>Compatibility and metadata</h3>
+            <table class="detailtable">
+                <tbody id="detail-metadata"></tbody>
+            </table>
         </div>
-        <div class="drawersection">
-            <h3>COMPATIBILITY METADATA</h3>
-            <p id="detail-compat"></p>
-        </div>
-        <div class="drawersection">
-            <h3>CATEGORIES</h3>
+
+        <div class="detailsection">
+            <h3>Categories</h3>
             <div id="detail-categories" class="badges"></div>
         </div>
     </section>
 </div>
 
-<script src="./curseforge.js"></script>
-<script src="./mod-details.js"></script>
-
 <script>
 (() => {
 "use strict";
 
+/*
+ * Modrinth is queried directly.
+ * CurseForge is queried through your Cloudflare Worker.
+ * Keep your CurseForge API key on the Worker, never in this file.
+ */
+const MODRINTH_API = "https://api.modrinth.com/v2/search";
+const CURSEFORGE_API =
+    "https://ripdead-curseforge-api.ripdead890.workers.dev/search";
+
+const PAGE_SIZE = 24;
+
 const $ = selector => document.querySelector(selector);
-const results = $("#results");
-const notice = $("#notice");
-const count = $("#result-count");
-const more = $("#load-more");
+
+const ui = {
+    form: $("#search-form"),
+    query: $("#query"),
+    results: $("#results"),
+    notice: $("#notice"),
+    count: $("#result-count"),
+    title: $("#section-title"),
+    loadMore: $("#load-more"),
+    version: $("#version"),
+    category: $("#category"),
+    sort: $("#sort"),
+    overlay: $("#details-overlay")
+};
+
+const PLATFORM_NAMES = {
+    modrinth: "Modrinth",
+    curseforge: "CurseForge"
+};
+
+const PLATFORM_ICONS = {
+    modrinth: "./modrinth.png",
+    curseforge: "./curseforge.png"
+};
+
+const LOADER_NAMES = {
+    fabric: "Fabric",
+    forge: "Forge",
+    neoforge: "NeoForge",
+    quilt: "Quilt"
+};
 
 const state = {
     query: "",
-    platforms: new Set(),
-    version: "",
+    selectedPlatforms: new Set(),
     loader: "",
+    version: "",
     category: "",
     sort: "relevance",
-    offset: 0,
-    limit: 24,
-    request: 0,
     mods: [],
-    total: 0,
-    hasMore: false,
+    offsets: { modrinth: 0, curseforge: 0 },
+    totals: { modrinth: 0, curseforge: 0 },
+    hasMore: { modrinth: true, curseforge: true },
+    failed: new Set(),
+    favorites: readFavorites(),
     favoritesOnly: false,
-    favorites: loadFavorites(),
     list: false,
-    loading: false
+    loading: false,
+    requestId: 0
 };
 
-const platformNames = { modrinth: "Modrinth", curseforge: "CurseForge" };
-const logos = { modrinth: "./modrinth.png", curseforge: "./curseforge.png" };
-const loaderNames = { fabric: "Fabric", forge: "Forge", neoforge: "NeoForge", quilt: "Quilt" };
-
-function normalize(value) {
-    return String(value ?? "").normalize("NFKD").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-}
-
-function setNotice(message, error = false) {
-    notice.replaceChildren();
-    notice.textContent = message;
-    notice.classList.toggle("error", error);
-    notice.hidden = !message;
-}
-
-function selectedPlatforms() {
-    return state.platforms.size ? [...state.platforms] : ["modrinth"];
-}
-
-function safeUrl(value) {
+function readFavorites() {
     try {
-        const url = new URL(value);
-        return ["https:", "http:"].includes(url.protocol) ? url.href : "#";
-    } catch {
-        return "#";
-    }
-}
-
-function formatDate(value) {
-    if (!value) return "Unknown";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "Unknown";
-    return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-}
-
-function loadFavorites() {
-    try {
-        const value = JSON.parse(localStorage.getItem("rdmv:favorites") || "[]");
+        const value = JSON.parse(
+            localStorage.getItem("ripdead-modviewer-favorites") || "[]"
+        );
         return new Set(Array.isArray(value) ? value : []);
     } catch {
         return new Set();
@@ -496,45 +1144,346 @@ function loadFavorites() {
 
 function saveFavorites() {
     try {
-        localStorage.setItem("rdmv:favorites", JSON.stringify([...state.favorites]));
+        localStorage.setItem(
+            "ripdead-modviewer-favorites",
+            JSON.stringify([...state.favorites])
+        );
     } catch {
-        setNotice("Favorites could not be saved in this browser.", true);
+        showNotice("Favorites could not be saved in this browser.", true);
     }
 }
 
-function makeBadge(text, className = "", image = "") {
-    const badge = document.createElement("span");
-    badge.className = "badge " + className;
-    if (image) {
-        const img = document.createElement("img");
-        img.src = image;
-        img.alt = "";
-        img.onerror = () => img.hidden = true;
-        badge.append(img);
+function normalize(value) {
+    return String(value || "")
+        .normalize("NFKD")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim();
+}
+
+function safeUrl(value) {
+    try {
+        const url = new URL(value);
+        return url.protocol === "https:" || url.protocol === "http:"
+            ? url.href : "";
+    } catch {
+        return "";
     }
-    badge.append(document.createTextNode(text));
+}
+
+function showNotice(message = "", error = false) {
+    ui.notice.textContent = message;
+    ui.notice.classList.toggle("error", error);
+    ui.notice.hidden = !message;
+}
+
+function activePlatforms() {
+    return state.selectedPlatforms.size
+        ? [...state.selectedPlatforms]
+        : ["modrinth", "curseforge"];
+}
+
+function formatDate(value) {
+    if (!value) return "Unknown";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "Unknown";
+
+    return date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+    });
+}
+
+function formatDownloads(value) {
+    return (Number(value) || 0).toLocaleString();
+}
+
+function unique(values) {
+    return [...new Set(values.filter(value => value !== undefined && value !== null && value !== ""))];
+}
+
+function getLoader(value) {
+    const loaders = {
+        "1": "forge",
+        "2": "cauldron",
+        "3": "liteloader",
+        "4": "fabric",
+        "5": "quilt",
+        "6": "neoforge"
+    };
+    return loaders[String(value)] || "";
+}
+
+function makeBadge(label, kind = "", iconUrl = "") {
+    const badge = document.createElement("span");
+    badge.className = "badge" + (kind ? " " + kind : "");
+
+    if (iconUrl) {
+        const image = document.createElement("img");
+        image.src = iconUrl;
+        image.alt = "";
+        image.onerror = () => image.remove();
+        badge.append(image);
+    }
+
+    badge.append(document.createTextNode(label));
     return badge;
 }
 
+function normalizeModrinth(item) {
+    const id = String(item.project_id || item.id || "");
+    const slug = item.slug || id;
+    const categories = Array.isArray(item.display_categories) &&
+        item.display_categories.length
+        ? item.display_categories
+        : item.categories || [];
+
+    const loaders = unique((item.categories || []).filter(
+        value => Object.hasOwn(LOADER_NAMES, value)
+    ));
+
+    const versions = Array.isArray(item.versions) ? item.versions : [];
+
+    return {
+        key: "modrinth:" + id,
+        matchKey: normalize(item.title),
+        title: item.title || "Untitled mod",
+        author: item.author || "Unknown author",
+        description: item.description || "",
+        icon: safeUrl(item.icon_url),
+        downloads: Number(item.downloads) || 0,
+        updated: item.date_modified || "",
+        versions,
+        loaders,
+        categories: unique(categories.filter(
+            value => !Object.hasOwn(LOADER_NAMES, value)
+        )),
+        platforms: {
+            modrinth: {
+                id,
+                url: "https://modrinth.com/mod/" + encodeURIComponent(slug)
+            }
+        }
+    };
+}
+
+function normalizeCurseForge(item) {
+    const id = String(item.projectId || item.id || "");
+    const rawVersions = Array.isArray(item.versions) ? item.versions : [];
+    const rawLoaders = Array.isArray(item.loaders) ? item.loaders : [];
+    const categories = Array.isArray(item.categories)
+        ? item.categories.map(value =>
+            typeof value === "string" ? value : value.name
+        ).filter(Boolean)
+        : [];
+
+    const url = safeUrl(item.url) ||
+        "https://www.curseforge.com/minecraft/search";
+
+    return {
+        key: "curseforge:" + id,
+        matchKey: normalize(item.title || item.name),
+        title: item.title || item.name || "Untitled mod",
+        author: item.author || "Unknown author",
+        description: item.description || "",
+        icon: safeUrl(item.icon),
+        downloads: Number(item.downloads) || 0,
+        updated: item.updated || "",
+        versions: rawVersions,
+        loaders: rawLoaders.filter(value =>
+            Object.hasOwn(LOADER_NAMES, value)
+        ),
+        categories: unique(categories.filter(value =>
+            !Object.hasOwn(LOADER_NAMES, value)
+        )),
+        platforms: {
+            curseforge: {
+                id,
+                url
+            }
+        }
+    };
+}
+
+function mergeMods(incoming) {
+    for (const mod of incoming) {
+        // Exact normalized titles are used as a best-effort duplicate match.
+        const existing = state.mods.find(candidate =>
+            candidate.matchKey &&
+            candidate.matchKey === mod.matchKey
+        );
+
+        if (!existing) {
+            state.mods.push(mod);
+            continue;
+        }
+
+        Object.assign(existing.platforms, mod.platforms);
+
+        if ((mod.description || "").length >
+            (existing.description || "").length) {
+            existing.description = mod.description;
+        }
+
+        if (!existing.icon && mod.icon) existing.icon = mod.icon;
+        if (!existing.author || existing.author === "Unknown author") {
+            existing.author = mod.author;
+        }
+
+        existing.categories = unique([
+            ...existing.categories, ...mod.categories
+        ]);
+
+        existing.versions = unique([
+            ...existing.versions, ...mod.versions
+        ]);
+
+        existing.loaders = unique([
+            ...existing.loaders, ...mod.loaders
+        ]);
+
+        existing.downloads = Math.max(existing.downloads, mod.downloads);
+
+        if (!existing.updated || mod.updated > existing.updated) {
+            existing.updated = mod.updated;
+        }
+    }
+}
+
+async function fetchJson(url) {
+    const response = await fetch(url, {
+        headers: { Accept: "application/json" }
+    });
+
+    if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+    }
+
+    return response.json();
+}
+
+async function searchModrinth(offset) {
+    const params = new URLSearchParams({
+        query: state.query,
+        offset: String(offset),
+        limit: String(PAGE_SIZE),
+        index: state.sort
+    });
+
+    const facets = [["project_type:mod"]];
+
+    if (state.version) facets.push(["versions:" + state.version]);
+    if (state.loader) facets.push(["categories:" + state.loader]);
+
+    params.set("facets", JSON.stringify(facets));
+
+    const data = await fetchJson(MODRINTH_API + "?" + params);
+    const hits = Array.isArray(data.hits) ? data.hits : [];
+    const total = Number(data.total_hits) || 0;
+
+    return {
+        platform: "modrinth",
+        mods: hits.map(normalizeModrinth),
+        total,
+        nextOffset: offset + hits.length,
+        hasMore: hits.length === PAGE_SIZE && offset + hits.length < total
+    };
+}
+
+async function searchCurseForge(offset) {
+    const params = new URLSearchParams({
+        query: state.query,
+        index: String(offset),
+        pageSize: String(PAGE_SIZE)
+    });
+
+    if (state.version) params.set("gameVersion", state.version);
+
+    if (state.loader) {
+        const loaderIds = {
+            forge: 1,
+            fabric: 4,
+            quilt: 5,
+            neoforge: 6
+        };
+
+        if (loaderIds[state.loader] !== undefined) {
+            params.set("modLoaderType", String(loaderIds[state.loader]));
+        }
+    }
+
+    const data = await fetchJson(CURSEFORGE_API + "?" + params);
+
+    if (!Array.isArray(data.data)) {
+        throw new Error(data.error || "Invalid CurseForge Worker response");
+    }
+
+    const mods = data.data.map(item => {
+        const mod = {
+            projectId: String(item.id),
+            title: item.name || "Untitled mod",
+            author: item.authors?.[0]?.name || "Unknown author",
+            description: item.summary || "",
+            icon: item.logo?.url || "",
+            downloads: item.downloadCount || 0,
+            updated: item.dateModified || "",
+            url: item.links?.websiteUrl ||
+                "https://www.curseforge.com/minecraft/mc-mods/" + (item.slug || ""),
+            categories: (item.categories || []).map(category => category.name),
+            versions: (item.latestFilesIndexes || [])
+                .map(file => file.gameVersion).filter(Boolean),
+            loaders: (item.latestFilesIndexes || [])
+                .map(file => getLoader(file.modLoader)).filter(Boolean)
+        };
+
+        return normalizeCurseForge(mod);
+    });
+
+    const total = Number(data.pagination?.totalCount) || 0;
+
+    return {
+        platform: "curseforge",
+        mods,
+        total,
+        nextOffset: offset + mods.length,
+        hasMore: mods.length === PAGE_SIZE && offset + mods.length < total
+    };
+}
+
 function matchesFilters(mod) {
-    if (state.version && !(mod.versions || []).includes(state.version)) return false;
-    if (state.loader && !(mod.loaders || []).includes(state.loader)) return false;
-    if (state.category && !(mod.categories || []).some(x => normalize(x) === normalize(state.category))) return false;
+    if (state.version && !mod.versions.includes(state.version)) return false;
+    if (state.loader && !mod.loaders.includes(state.loader)) return false;
+
+    if (state.category &&
+        !mod.categories.some(category =>
+            normalize(category) === normalize(state.category)
+        )) {
+        return false;
+    }
+
     if (state.favoritesOnly && !state.favorites.has(mod.key)) return false;
     return true;
 }
 
-function sortMods(mods) {
-    const output = [...mods];
-    if (state.sort === "downloads") output.sort((a, b) => b.downloads - a.downloads);
-    if (state.sort === "updated") output.sort((a, b) => (Date.parse(b.updated) || 0) - (Date.parse(a.updated) || 0));
-    return output;
+function sortedMods() {
+    const mods = state.mods.filter(matchesFilters);
+
+    if (state.sort === "downloads") {
+        mods.sort((a, b) => b.downloads - a.downloads);
+    } else if (state.sort === "updated") {
+        mods.sort((a, b) =>
+            (Date.parse(b.updated) || 0) - (Date.parse(a.updated) || 0)
+        );
+    }
+
+    return mods;
 }
 
 function makeCard(mod, index) {
     const card = document.createElement("article");
     card.className = "modcard";
-    card.style.animationDelay = Math.min(index * 18, 180) + "ms";
+    card.style.animationDelay = Math.min(index * 15, 180) + "ms";
 
     const head = document.createElement("div");
     head.className = "cardhead";
@@ -543,10 +1492,13 @@ function makeCard(mod, index) {
     icon.className = "modicon";
     icon.alt = "";
     icon.loading = "lazy";
+
     if (mod.icon) {
-        icon.src = safeUrl(mod.icon);
+        icon.src = mod.icon;
         icon.onerror = () => icon.hidden = true;
-    } else icon.hidden = true;
+    } else {
+        icon.hidden = true;
+    }
 
     const info = document.createElement("div");
     info.style.minWidth = "0";
@@ -557,64 +1509,82 @@ function makeCard(mod, index) {
 
     const author = document.createElement("div");
     author.className = "author";
-    author.textContent = "by " + (mod.author || "Unknown author");
+    author.textContent = "by " + mod.author;
 
     info.append(title, author);
-    head.append(icon, info);
 
     const favorite = document.createElement("button");
+    favorite.className = "favorite" +
+        (state.favorites.has(mod.key) ? " saved" : "");
     favorite.type = "button";
-    favorite.className = "iconbtn" + (state.favorites.has(mod.key) ? " saved" : "");
     favorite.textContent = state.favorites.has(mod.key) ? "★" : "☆";
     favorite.title = "Toggle favorite";
     favorite.setAttribute("aria-label", "Toggle favorite");
+
     favorite.addEventListener("click", () => {
-        if (state.favorites.has(mod.key)) state.favorites.delete(mod.key);
-        else state.favorites.add(mod.key);
+        if (state.favorites.has(mod.key)) {
+            state.favorites.delete(mod.key);
+        } else {
+            state.favorites.add(mod.key);
+        }
+
         saveFavorites();
         render();
     });
-    head.append(favorite);
+
+    head.append(icon, info, favorite);
 
     const description = document.createElement("p");
     description.className = "desc";
-    description.textContent = mod.description || "No description supplied by the platform.";
+    description.textContent = mod.description ||
+        "No description provided by the platform.";
 
     const meta = document.createElement("div");
     meta.className = "meta";
 
     const downloads = document.createElement("span");
-    downloads.textContent = mod.downloads.toLocaleString() + " downloads";
-    meta.append(downloads);
+    downloads.textContent = "↓ " + formatDownloads(mod.downloads);
 
-    if (mod.updated) {
-        const updated = document.createElement("span");
-        updated.textContent = "Updated " + formatDate(mod.updated);
-        meta.append(updated);
-    }
+    const updated = document.createElement("span");
+    updated.textContent = formatDate(mod.updated);
+
+    meta.append(downloads, updated);
 
     const badges = document.createElement("div");
     badges.className = "badges";
 
-    for (const platform of Object.keys(mod.platforms || {})) {
-        badges.append(makeBadge(platformNames[platform] || platform, platform, logos[platform]));
+    for (const platform of Object.keys(mod.platforms)) {
+        badges.append(makeBadge(
+            PLATFORM_NAMES[platform],
+            platform,
+            PLATFORM_ICONS[platform]
+        ));
     }
-    for (const loader of (mod.loaders || []).slice(0, 4)) {
-        badges.append(makeBadge(loaderNames[loader] || loader, "loader", "./" + loader + ".png"));
+
+    for (const loader of mod.loaders.slice(0, 4)) {
+        badges.append(makeBadge(
+            LOADER_NAMES[loader] || loader,
+            "loader",
+            "./" + loader + ".png"
+        ));
     }
-    for (const category of (mod.categories || []).slice(0, 3)) {
+
+    for (const category of mod.categories.slice(0, 3)) {
         badges.append(makeBadge(category));
     }
 
     const actions = document.createElement("div");
     actions.className = "cardactions";
 
-    for (const platform of Object.keys(mod.platforms || {})) {
+    for (const platform of Object.keys(mod.platforms)) {
+        const url = safeUrl(mod.platforms[platform].url);
+        if (!url) continue;
+
         const link = document.createElement("a");
-        link.href = safeUrl(mod.platforms[platform].url);
+        link.href = url;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
-        link.textContent = "View Mod Page (" + (platformNames[platform] || platform) + ")";
+        link.textContent = "View Mod Page (" + PLATFORM_NAMES[platform] + ")";
         actions.append(link);
     }
 
@@ -629,393 +1599,414 @@ function makeCard(mod, index) {
 }
 
 function render() {
-    results.classList.toggle("list", state.list);
-    results.replaceChildren();
-    const mods = sortMods(state.mods.filter(matchesFilters));
+    ui.results.classList.toggle("list", state.list);
+    ui.results.replaceChildren();
 
-    $("#section-title").textContent = state.favoritesOnly ? "Your favorites" : state.query ? "Search results" : "Discover mods";
-    count.textContent = mods.length + " mods shown" + (state.total ? " · " + state.total.toLocaleString() + " matching source results" : "");
+    const mods = sortedMods();
+
+    const active = activePlatforms();
+    const sourceTotal = active.reduce(
+        (sum, platform) => sum + state.totals[platform], 0
+    );
+
+    ui.title.textContent = state.favoritesOnly
+        ? "Your favorites"
+        : state.query
+            ? "Search results"
+            : "Discover mods";
+
+    ui.count.textContent = mods.length + " unique mod" +
+        (mods.length === 1 ? "" : "s") + " shown" +
+        (sourceTotal ? " · " + formatDownloads(sourceTotal) + " source results" : "");
 
     if (!mods.length) {
         const empty = document.createElement("div");
         empty.className = "empty";
+
+        const icon = document.createElement("div");
+        icon.className = "emptyicon";
+        icon.textContent = state.favoritesOnly ? "☆" : "⌕";
+
         const heading = document.createElement("strong");
-        heading.textContent = state.favoritesOnly ? "No favorites yet" : "No matching mods found";
-        const message = document.createElement("span");
-        message.textContent = state.favoritesOnly ? "Tap ☆ on a mod card to save it here." : "Try another query or clear one of the filters.";
-        empty.append(heading, message);
-        results.append(empty);
+        heading.textContent = state.favoritesOnly
+            ? "No favorites yet"
+            : "No matching mods found";
+
+        const message = document.createElement("p");
+        message.textContent = state.favoritesOnly
+            ? "Use the star on a mod card to save it here."
+            : "Try another search or clear some filters.";
+
+        empty.append(icon, heading, message);
+        ui.results.append(empty);
     } else {
-        mods.forEach((mod, index) => results.append(makeCard(mod, index)));
+        mods.forEach((mod, index) => ui.results.append(makeCard(mod, index)));
     }
 
-    // The button is controlled from one place and only shown when more results exist.
-    more.hidden = state.favoritesOnly || !state.hasMore;
-    more.disabled = state.loading;
-    more.textContent = state.loading ? "Loading more mods…" : "↓ Load More Mods";
+    ui.loadMore.hidden = state.favoritesOnly ||
+        !active.some(platform => state.hasMore[platform]);
+
+    ui.loadMore.disabled = state.loading;
+    ui.loadMore.textContent = state.loading
+        ? "Loading more mods…"
+        : "↓ Load More Mods";
+
+    $("#grid-view").classList.toggle("active", !state.list);
+    $("#list-view").classList.toggle("active", state.list);
+    $("#favorites-view").classList.toggle("favactive", state.favoritesOnly);
+
+    $("#grid-view").setAttribute("aria-pressed", String(!state.list));
+    $("#list-view").setAttribute("aria-pressed", String(state.list));
+    $("#favorites-view").setAttribute("aria-pressed", String(state.favoritesOnly));
 }
 
 function showSkeletons() {
-    results.replaceChildren();
-    for (let i = 0; i < 9; i++) {
+    ui.results.replaceChildren();
+
+    for (let index = 0; index < 9; index++) {
         const skeleton = document.createElement("div");
         skeleton.className = "skeleton";
-        results.append(skeleton);
+        ui.results.append(skeleton);
     }
 }
 
-function fillOptions(selector, values, label) {
+function populateSelect(selector, values, defaultLabel) {
     const select = $(selector);
     const previous = select.value;
-    select.replaceChildren(new Option(label, ""));
-    [...new Set(values.filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }))
-        .forEach(value => select.add(new Option(value, value)));
-    if ([...select.options].some(option => option.value === previous)) select.value = previous;
-}
 
-function updateFilterOptions(mods) {
-    fillOptions("#version", mods.flatMap(mod => mod.versions || []), "All versions");
-    fillOptions("#category", mods.flatMap(mod => mod.categories || []), "All categories");
-}
+    select.replaceChildren(new Option(defaultLabel, ""));
 
-function normalizeModrinth(item) {
-    const id = item.project_id || item.id;
-    const slug = item.slug || id;
-    const rawCategories = Array.isArray(item.categories) ? item.categories : [];
-    const loaders = rawCategories.filter(category => Object.hasOwn(loaderNames, category));
-    const categories = (item.display_categories?.length ? item.display_categories : rawCategories)
-        .filter(category => !Object.hasOwn(loaderNames, category));
+    unique(values).sort((a, b) =>
+        String(a).localeCompare(String(b), undefined, { numeric: true })
+    ).forEach(value => select.add(new Option(value, value)));
 
-    return {
-        key: "modrinth:" + id,
-        title: item.title || "Untitled mod",
-        author: item.author || "Unknown author",
-        description: item.description || "",
-        icon: item.icon_url || "",
-        downloads: Number(item.downloads) || 0,
-        updated: item.date_modified || "",
-        categories,
-        versions: Array.isArray(item.versions) ? item.versions : [],
-        loaders,
-        platforms: {
-            modrinth: { url: "https://modrinth.com/mod/" + encodeURIComponent(slug) }
-        }
-    };
-}
-
-async function searchModrinth() {
-    const params = new URLSearchParams({
-        query: state.query,
-        offset: String(state.offset),
-        limit: String(state.limit),
-        index: state.sort === "downloads" ? "downloads" : state.sort === "updated" ? "updated" : "relevance"
-    });
-
-    const facets = [["project_type:mod"]];
-    if (state.version) facets.push(["versions:" + state.version]);
-    if (state.loader) facets.push(["categories:" + state.loader]);
-    if (state.category) facets.push(["categories:" + state.category]);
-    params.set("facets", JSON.stringify(facets));
-
-    const response = await fetch("https://api.modrinth.com/v2/search?" + params.toString(), {
-        headers: { "Accept": "application/json" }
-    });
-
-    if (!response.ok) {
-        throw new Error("Modrinth returned HTTP " + response.status + ".");
+    if ([...select.options].some(option => option.value === previous)) {
+        select.value = previous;
     }
+}
 
-    const data = await response.json();
-    const hits = Array.isArray(data.hits) ? data.hits : [];
-    const total = Number(data.total_hits ?? data.total) || 0;
+function updateFilterOptions() {
+    populateSelect(
+        "#version",
+        state.mods.flatMap(mod => mod.versions),
+        "All versions"
+    );
 
-    return {
-        mods: hits.map(normalizeModrinth),
-        total,
-        hasMore: state.offset + hits.length < total
-    };
+    populateSelect(
+        "#category",
+        state.mods.flatMap(mod => mod.categories),
+        "All categories"
+    );
 }
 
 async function search(append = false) {
     if (state.loading) return;
 
-    const requestId = ++state.request;
-    const platforms = selectedPlatforms();
+    const requestId = ++state.requestId;
+    const platforms = activePlatforms();
 
     if (!append) {
-        state.offset = 0;
+        state.offsets = { modrinth: 0, curseforge: 0 };
+        state.totals = { modrinth: 0, curseforge: 0 };
+        state.hasMore = { modrinth: true, curseforge: true };
+        state.failed.clear();
         state.mods = [];
-        state.total = 0;
-        state.hasMore = false;
+        ui.version.value = state.version;
+        ui.category.value = state.category;
+
         if (!state.favoritesOnly) showSkeletons();
     }
 
     state.loading = true;
-    more.hidden = true;
-    more.disabled = true;
-    more.textContent = "Loading mods…";
-    count.textContent = "Searching…";
+    ui.loadMore.disabled = true;
+    ui.loadMore.hidden = true;
+    ui.count.textContent = "Searching…";
 
-    const useModrinth = platforms.includes("modrinth");
-    const useCurseForge = platforms.includes("curseforge");
+    showNotice(
+        "Searching " + platforms.map(platform => PLATFORM_NAMES[platform]).join(" and ") + "…"
+    );
 
-    if (useCurseForge) {
-        setNotice("CurseForge search needs your configured API integration. Modrinth results can still be loaded.");
-    } else {
-        setNotice("Connecting to Modrinth…");
-    }
+    const jobs = platforms
+        .filter(platform => state.hasMore[platform])
+        .map(async platform => {
+            const offset = state.offsets[platform];
 
-    if (!useModrinth) {
+            try {
+                const data = platform === "modrinth"
+                    ? await searchModrinth(offset)
+                    : await searchCurseForge(offset);
+
+                return { ok: true, platform, data };
+            } catch (error) {
+                return { ok: false, platform, error };
+            }
+        });
+
+    if (!jobs.length) {
         state.loading = false;
-        results.replaceChildren();
-
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        const heading = document.createElement("strong");
-        heading.textContent = "CurseForge API not configured";
-        const paragraph = document.createElement("p");
-        paragraph.textContent = "Select Modrinth to search the live mod directory.";
-        const link = document.createElement("a");
-        link.className = "btn";
-        link.href = "https://www.curseforge.com/minecraft/search";
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = "Search CurseForge";
-        empty.append(heading, paragraph, link);
-        results.append(empty);
-        setNotice("CurseForge needs its API integration before in-page search can work.");
         render();
+        showNotice("There are no more results to load.");
         return;
     }
 
-    try {
-        const data = await searchModrinth();
-        if (requestId !== state.request) return;
+    const outcomes = await Promise.all(jobs);
 
-        state.total = data.total;
-        state.hasMore = data.hasMore;
+    if (requestId !== state.requestId) return;
 
-        for (const mod of data.mods) {
-            const existing = state.mods.find(current => current.key === mod.key);
-            if (!existing) state.mods.push(mod);
+    const failures = [];
+
+    for (const outcome of outcomes) {
+        if (!outcome.ok) {
+            failures.push(
+                PLATFORM_NAMES[outcome.platform] + ": " +
+                (outcome.error?.message || "Request failed")
+            );
+
+            state.failed.add(outcome.platform);
+            state.hasMore[outcome.platform] = false;
+            continue;
         }
 
-        // Advance by the number of results actually returned, not a hardcoded page size.
-        state.offset += data.mods.length;
+        const data = outcome.data;
+        state.totals[data.platform] = data.total;
+        state.offsets[data.platform] = data.nextOffset;
+        state.hasMore[data.platform] = data.hasMore;
 
-        updateFilterOptions(state.mods);
-        state.loading = false;
-        render();
+        mergeMods(data.mods);
+    }
 
-        if (data.mods.length === 0 && !append) {
-            setNotice("No mods matched that search. Try a different query or filters.");
-        } else if (useCurseForge) {
-            setNotice("Showing Modrinth results. CurseForge in-page search requires API configuration.");
-        } else {
-            setNotice("");
-        }
-    } catch (error) {
-        if (requestId !== state.request) return;
-        state.loading = false;
-        state.hasMore = false;
-        render();
-        setNotice("Could not load mods: " + (error?.message || String(error)), true);
+    state.loading = false;
+    updateFilterOptions();
+    render();
+
+    if (failures.length === platforms.length) {
+        showNotice("Both searches failed. " + failures.join(" · "), true);
+    } else if (failures.length) {
+        showNotice(
+            "Some sources could not be loaded: " + failures.join(" · "),
+            true
+        );
+    } else if (!state.mods.length) {
+        showNotice("No mods found. Try another search or change your filters.");
+    } else {
+        showNotice("");
     }
 }
 
 function openDetails(mod) {
     $("#detail-title").textContent = mod.title;
-    $("#detail-author").textContent = "by " + (mod.author || "Unknown author");
-    $("#detail-description").textContent = mod.description || "No description available.";
+    $("#detail-author").textContent = "by " + mod.author;
+    $("#detail-description").textContent =
+        mod.description || "No description available.";
 
     const icon = $("#detail-icon");
     icon.hidden = !mod.icon;
-    icon.src = mod.icon ? safeUrl(mod.icon) : "";
+    icon.src = mod.icon || "";
     icon.onerror = () => icon.hidden = true;
 
-    const badges = $("#detail-badges");
-    badges.replaceChildren();
-    for (const loader of mod.loaders || []) {
-        badges.append(makeBadge(loaderNames[loader] || loader, "loader", "./" + loader + ".png"));
-    }
+    const platformLinks = $("#detail-platforms");
+    platformLinks.replaceChildren();
 
-    const platforms = $("#detail-platforms");
-    platforms.replaceChildren();
-
-    for (const platform of Object.keys(mod.platforms || {})) {
+    for (const platform of Object.keys(mod.platforms)) {
         const row = document.createElement("div");
         row.className = "platformrow";
-        const label = document.createElement("div");
-        const image = document.createElement("img");
-        image.src = logos[platform] || "";
-        image.alt = "";
-        const name = document.createElement("strong");
-        name.textContent = platformNames[platform] || platform;
-        label.append(image, name);
+
+        const label = document.createElement("strong");
+        label.textContent = PLATFORM_NAMES[platform];
 
         const link = document.createElement("a");
         link.href = safeUrl(mod.platforms[platform].url);
         link.target = "_blank";
         link.rel = "noopener noreferrer";
-        link.textContent = "View Mod Page (" + (platformNames[platform] || platform) + ") ↗";
+        link.textContent = "View Mod Page ↗";
+
         row.append(label, link);
-        platforms.append(row);
+        platformLinks.append(row);
     }
-
-    const comparison = $("#detail-compare");
-    comparison.replaceChildren();
-    const table = document.createElement("table");
-    table.className = "compare";
-
-    const header = document.createElement("tr");
-    for (const text of ["Property", "Value"]) {
-        const th = document.createElement("th");
-        th.textContent = text;
-        header.append(th);
-    }
-    table.append(header);
 
     const rows = [
-        ["Downloads", mod.downloads.toLocaleString()],
+        ["Platforms", Object.keys(mod.platforms)
+            .map(platform => PLATFORM_NAMES[platform]).join(", ")],
+        ["Downloads", formatDownloads(mod.downloads)],
         ["Last updated", formatDate(mod.updated)],
-        ["Loaders", (mod.loaders || []).map(x => loaderNames[x] || x).join(", ") || "Not listed"],
-        ["Minecraft versions", (mod.versions || []).join(", ") || "Not listed"]
+        ["Loaders", mod.loaders.map(loader =>
+            LOADER_NAMES[loader] || loader).join(", ") || "Not listed"],
+        ["Minecraft versions", mod.versions.join(", ") || "Not listed"]
     ];
+
+    const metadata = $("#detail-metadata");
+    metadata.replaceChildren();
 
     for (const [label, value] of rows) {
         const tr = document.createElement("tr");
         const th = document.createElement("th");
         const td = document.createElement("td");
+
         th.textContent = label;
         td.textContent = value;
         tr.append(th, td);
-        table.append(tr);
+        metadata.append(tr);
     }
-    comparison.append(table);
-
-    $("#detail-compat").textContent =
-        "Loaders: " + ((mod.loaders || []).map(x => loaderNames[x] || x).join(", ") || "Not listed") +
-        "\nMinecraft versions: " + ((mod.versions || []).join(", ") || "Not listed");
 
     const categories = $("#detail-categories");
     categories.replaceChildren();
-    for (const category of mod.categories || []) categories.append(makeBadge(category));
 
-    $("#details-overlay").hidden = false;
+    if (!mod.categories.length) {
+        categories.textContent = "No categories listed.";
+    } else {
+        for (const category of mod.categories) {
+            categories.append(makeBadge(category));
+        }
+    }
+
+    ui.overlay.hidden = false;
+    $("#close-details").focus();
 }
 
 function closeDetails() {
-    $("#details-overlay").hidden = true;
+    ui.overlay.hidden = true;
 }
 
-$("#search-form").addEventListener("submit", event => {
+function resetFilters() {
+    state.loader = "";
+    state.version = "";
+    state.category = "";
+    state.sort = "relevance";
+
+    ui.version.value = "";
+    ui.category.value = "";
+    ui.sort.value = "relevance";
+
+    document.querySelectorAll("[data-loader]").forEach(button => {
+        button.setAttribute("aria-pressed", "false");
+    });
+}
+
+function syncPlatformButtons() {
+    document.querySelectorAll("[data-platform]").forEach(button => {
+        button.setAttribute(
+            "aria-pressed",
+            String(state.selectedPlatforms.has(button.dataset.platform))
+        );
+    });
+}
+
+ui.form.addEventListener("submit", event => {
     event.preventDefault();
-    state.query = $("#query").value.trim();
+    state.query = ui.query.value.trim();
     state.favoritesOnly = false;
-    $("#favorites-view").classList.remove("active");
     search();
 });
 
 $("#clear-search").addEventListener("click", () => {
-    $("#query").value = "";
-    $("#version").value = "";
-    $("#category").value = "";
-    $("#sort").value = "relevance";
-
+    ui.query.value = "";
     state.query = "";
-    state.version = "";
-    state.loader = "";
-    state.category = "";
-    state.sort = "relevance";
+    state.selectedPlatforms.clear();
     state.favoritesOnly = false;
-    state.platforms.clear();
+    resetFilters();
+    syncPlatformButtons();
+    search();
+});
 
-    document.querySelectorAll("[data-platform], [data-loader]").forEach(button => {
-        button.setAttribute("aria-pressed", "false");
-    });
-
-    $("#favorites-view").classList.remove("active");
+$("#reset-filters").addEventListener("click", () => {
+    resetFilters();
     search();
 });
 
 document.querySelectorAll("[data-platform]").forEach(button => {
     button.addEventListener("click", () => {
         const platform = button.dataset.platform;
-        if (state.platforms.has(platform)) state.platforms.delete(platform);
-        else state.platforms.add(platform);
-        button.setAttribute("aria-pressed", String(state.platforms.has(platform)));
+
+        if (state.selectedPlatforms.has(platform)) {
+            state.selectedPlatforms.delete(platform);
+        } else {
+            state.selectedPlatforms.add(platform);
+        }
+
+        syncPlatformButtons();
         search();
     });
 });
 
 document.querySelectorAll("[data-loader]").forEach(button => {
     button.addEventListener("click", () => {
-        state.loader = state.loader === button.dataset.loader ? "" : button.dataset.loader;
+        const loader = button.dataset.loader;
+        state.loader = state.loader === loader ? "" : loader;
+
         document.querySelectorAll("[data-loader]").forEach(other => {
-            other.setAttribute("aria-pressed", String(other.dataset.loader === state.loader));
+            other.setAttribute(
+                "aria-pressed",
+                String(other.dataset.loader === state.loader)
+            );
         });
+
         search();
     });
 });
 
-$("#version").addEventListener("change", event => {
-    state.version = event.target.value;
-    search();
-});
-$("#category").addEventListener("change", event => {
-    state.category = event.target.value;
-    search();
-});
-$("#sort").addEventListener("change", event => {
-    state.sort = event.target.value;
+ui.version.addEventListener("change", () => {
+    state.version = ui.version.value;
     search();
 });
 
-/* Load More Mods: request the next batch and keep the button's state in sync. */
-more.addEventListener("click", async () => {
-    if (state.loading || !state.hasMore) return;
-    await search(true);
+ui.category.addEventListener("change", () => {
+    state.category = ui.category.value;
+    search();
+});
+
+ui.sort.addEventListener("change", () => {
+    state.sort = ui.sort.value;
+    search();
+});
+
+ui.loadMore.addEventListener("click", () => {
+    if (!state.loading) search(true);
 });
 
 $("#grid-view").addEventListener("click", () => {
     state.list = false;
-    $("#grid-view").classList.add("active");
-    $("#list-view").classList.remove("active");
     render();
 });
 
 $("#list-view").addEventListener("click", () => {
     state.list = true;
-    $("#list-view").classList.add("active");
-    $("#grid-view").classList.remove("active");
     render();
 });
 
 $("#favorites-view").addEventListener("click", () => {
     state.favoritesOnly = !state.favoritesOnly;
-    $("#favorites-view").classList.toggle("active", state.favoritesOnly);
     render();
 });
 
+$("#close-details").addEventListener("click", closeDetails);
+
+ui.overlay.addEventListener("click", event => {
+    if (event.target === ui.overlay) closeDetails();
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !ui.overlay.hidden) closeDetails();
+});
+
 $("#return-link").addEventListener("click", event => {
-    const url = new URL(event.currentTarget.href);
-    if (url.origin === location.origin) {
+    const target = new URL(event.currentTarget.href);
+
+    if (target.origin === location.origin) {
         event.preventDefault();
         document.body.classList.add("leaving");
-        setTimeout(() => location.href = url.href, 190);
+        setTimeout(() => location.href = target.href, 190);
     }
 });
 
-window.addEventListener("pageshow", () => document.body.classList.remove("leaving"));
-$("#close-details").addEventListener("click", closeDetails);
-$("#details-overlay").addEventListener("click", event => {
-    if (event.target.id === "details-overlay") closeDetails();
-});
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeDetails();
+window.addEventListener("pageshow", () => {
+    document.body.classList.remove("leaving");
 });
 
+$("#year").textContent = new Date().getFullYear();
+
+syncPlatformButtons();
 search();
+
 })();
 </script>
 </body>
