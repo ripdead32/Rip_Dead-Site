@@ -1,0 +1,12 @@
+
+{
+  "name": "RCLauncher",
+  "publisher": "Rip_Dead Studios",
+  "repository": "ripdead32/RCLauncher",
+  "currentVersion": "0.2.0",
+  "releasesApi": "https://api.github.com/repos/ripdead32/RCLauncher/releases",
+  "latestReleaseApi": "https://api.github.com/repos/ripdead32/RCLauncher/releases/latest",
+  "releasesPage": "https://github.com/ripdead32/RCLauncher/releases",
+  "archivesPath": "/rclauncher/archives",
+  "downloadAssetPattern": "RCLauncher.Setup.{version}.exe"
+}
